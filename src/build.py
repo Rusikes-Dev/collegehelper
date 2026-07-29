@@ -82,11 +82,11 @@ def attr(s):
 
 # ----------------------------------------------------------------- helpers --
 MARK = ('<svg class="brand-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true">'
-        '<rect x="1" y="1" width="24" height="24" rx="6" fill="#141E36" stroke="#26314F"/>'
-        '<rect x="5" y="6.5" width="2" height="13" rx="1" fill="#E4B429"/>'
-        '<rect x="9.5" y="7" width="11" height="2" rx="1" fill="#E7ECF6"/>'
-        '<rect x="9.5" y="12" width="8" height="2" rx="1" fill="#8D9AB8"/>'
-        '<rect x="9.5" y="17" width="10" height="2" rx="1" fill="#8D9AB8"/></svg>')
+        '<rect x="1.5" y="1.5" width="23" height="23" rx="5" fill="#F7F8FA" stroke="#CDD5E0"/>'
+        '<rect x="5.5" y="6.5" width="2" height="13" rx="1" fill="#15509E"/>'
+        '<rect x="10" y="7" width="10.5" height="2" rx="1" fill="#1A2233"/>'
+        '<rect x="10" y="12" width="7.5" height="2" rx="1" fill="#8A93A3"/>'
+        '<rect x="10" y="17" width="9.5" height="2" rx="1" fill="#8A93A3"/></svg>')
 
 ICON_SEARCH = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" '
                'aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 4 4"/></svg>')
@@ -129,7 +129,7 @@ def head(title, desc, path, *, extra="", jsonld=None, og_type="website"):
 <meta name="description" content="{attr(desc)}">
 <link rel="canonical" href="{attr(url)}">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
-<meta name="theme-color" content="#0B1220">
+<meta name="theme-color" content="#FFFFFF">
 <meta property="og:site_name" content="{attr(CFG['name'])}">
 <meta property="og:type" content="{og_type}">
 <meta property="og:title" content="{attr(title)}">
@@ -145,7 +145,6 @@ def head(title, desc, path, *, extra="", jsonld=None, og_type="website"):
 <link rel="apple-touch-icon" href="/assets/img/icon-180.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="preload" href="/assets/fonts/InstrumentSans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/BricolageGrotesque.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/site.css">
 {ld}{extra}
 </head>
@@ -290,11 +289,19 @@ def exam_card(exam):
 
 
 def table(t):
-    thead = "".join(f"<th>{e(h)}</th>" for h in t["head"])
+    """Content table. `data-label` lets the CSS stack it into label/value rows
+    on phones instead of forcing a horizontal scroll."""
+    head = t["head"]
+    thead = "".join(f"<th>{e(h)}</th>" for h in head)
     body = ""
     for r in t["rows"]:
-        body += "<tr>" + "".join(f"<td>{e(str(c))}</td>" for c in r) + "</tr>"
-    return f'<div class="tw"><table><thead><tr>{thead}</tr></thead><tbody>{body}</tbody></table></div>'
+        cells = ""
+        for i, c in enumerate(r):
+            lbl = head[i] if i < len(head) else ""
+            cells += f'<td data-label="{attr(lbl)}">{e(str(c))}</td>'
+        body += f"<tr>{cells}</tr>"
+    return (f'<div class="tw stack"><table><thead><tr>{thead}</tr></thead>'
+            f'<tbody>{body}</tbody></table></div>')
 
 
 # ================================================================= homepage ==
@@ -348,19 +355,19 @@ def build_home():
 
 <section class="board-wrap">
   <div class="board-head">
-    <p class="eyebrow">Live as of {e(fmt_date(CFG['built']))}</p>
-    <h1>Every Indian competitive exam, tracked in one place.</h1>
+    <p class="eyebrow">Updated {e(fmt_date(CFG["built"]))}</p>
+    <h1>Exam dates, syllabus and cutoffs — in one place</h1>
     <p class="lede">Dates, syllabus, eligibility, cutoffs and college predictors — for
     JEE, NEET, UPSC, SSC, banking, CAT, CLAT, GATE, CUET and MHT CET. Every exam page is free, no sign-up needed.</p>
   </div>
   <div class="board">
-    <div class="board-title"><span><span class="dot"></span>Exam status board</span>
-      <span>Next milestone</span></div>
+    <div class="board-title"><span><span class="dot"></span>What is happening now</span>
+      <span>Next date</span></div>
     {board}
     <div class="board-foot">
-      <a href="/exams/">All {len(EXAMS)} exams →</a>
-      <a href="/calendar.html">Full calendar →</a>
-      <span>Countdowns update in your local time.</span>
+      <a href="/exams/">All {len(EXAMS)} exams</a>
+      <a href="/calendar.html">Full calendar</a>
+      
     </div>
   </div>
 </section>
@@ -408,8 +415,8 @@ def build_home():
       <p>No account, no ads, no email capture. The two college predictors are one-time paid
       unlocks — the only thing that funds the site. If something is out of date,
       tell us and it gets fixed.</p></div>
-      <div class="btns"><a class="btn on-dark" href="/calendar.html">Open the calendar</a>
-      <a class="btn ghost" href="/contact.html" style="color:#fff;border-color:#26314F">Report a correction</a></div>
+      <div class="btns"><a class="btn" href="/calendar.html">Open the calendar</a>
+      <a class="btn ghost" href="/contact.html">Report a correction</a></div>
     </div>
   </div>
 </section>
@@ -484,7 +491,7 @@ def build_exam(x):
         if t:
             extras += f"""<div class="cta-strip" style="margin-bottom:1rem">
 <div><h2>{e(t['name'])}</h2><p>{e(t['blurb'])}</p></div>
-<div class="btns"><a class="btn on-dark" href="/tools/{attr(t['slug'])}.html">Open the predictor</a></div></div>"""
+<div class="btns"><a class="btn" href="/tools/{attr(t['slug'])}.html">Open the predictor</a></div></div>"""
 
     rel = [y for y in EXAMS if y["category"] == x["category"] and y["slug"] != x["slug"]][:4]
     rl = "".join(f'<a href="/exams/{attr(y["slug"])}.html">{e(y["name"])}<span>{e(status_of(y)[1])}</span></a>'
