@@ -11,14 +11,14 @@
   body{background:var(--paper-2)}
   .adm{display:grid;min-height:100vh}
   @media(min-width:980px){.adm{grid-template-columns:250px 1fr}}
-  .side{background:var(--ink);color:var(--ink-text);padding:1.2rem 1rem;display:flex;flex-direction:column;gap:.2rem}
+  .side{background:var(--paper-2);color:var(--text);border-right:1px solid var(--line);padding:1.2rem 1rem;display:flex;flex-direction:column;gap:.2rem}
   @media(min-width:980px){.side{position:sticky;top:0;height:100vh;overflow-y:auto}}
   .side .brand{margin-bottom:1.2rem}
-  .side button.tab{display:flex;justify-content:space-between;align-items:center;gap:.5rem;width:100%;text-align:left;background:transparent;border:0;color:var(--ink-muted);padding:.6rem .7rem;border-radius:8px;cursor:pointer;font:inherit;font-size:.92rem}
-  .side button.tab:hover{background:var(--ink-2);color:#fff}
-  .side button.tab[aria-selected=true]{background:var(--ink-2);color:var(--live);font-weight:600}
-  .side .n{font-family:'JetBrains',monospace;font-size:.7rem;background:var(--ink-3);padding:.1rem .4rem;border-radius:4px;color:var(--ink-muted)}
-  .side .sep{margin-top:auto;padding-top:1rem;border-top:1px solid var(--ink-3);font-size:.75rem;color:var(--ink-muted)}
+  .side button.tab{display:flex;justify-content:space-between;align-items:center;gap:.5rem;width:100%;text-align:left;background:transparent;border:0;color:var(--text-2);padding:.6rem .7rem;border-radius:8px;cursor:pointer;font:inherit;font-size:.92rem}
+  .side button.tab:hover{background:var(--paper-3);color:var(--text)}
+  .side button.tab[aria-selected=true]{background:var(--paper);border:1px solid var(--line);color:var(--accent);font-weight:600}
+  .side .n{font-family:'JetBrains',monospace;font-size:.7rem;background:var(--paper);border:1px solid var(--line);padding:.1rem .4rem;border-radius:4px;color:var(--text-2)}
+  .side .sep{margin-top:auto;padding-top:1rem;border-top:1px solid var(--line);font-size:.75rem;color:var(--text-2)}
   .main{padding:1.4rem clamp(1rem,3vw,2rem) 4rem;max-width:1000px}
   .panel{display:none}.panel.on{display:block}
   .bar{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;justify-content:space-between;margin-bottom:1.3rem;padding-bottom:1rem;border-bottom:1px solid var(--line)}
@@ -37,7 +37,7 @@
   .list-item{display:grid;grid-template-columns:3px 1fr auto;gap:0 .8rem;align-items:center;padding:.7rem .9rem;border:1px solid var(--line);border-radius:var(--r);background:var(--paper);margin-bottom:.45rem}
   .list-item h4{margin:0;font-size:.98rem}
   .list-item p{margin:.15rem 0 0;font-size:.8rem;color:var(--text-2)}
-  .dirty{position:fixed;bottom:0;left:0;right:0;background:var(--ink);color:#fff;padding:.75rem 1rem;display:none;align-items:center;gap:1rem;justify-content:space-between;z-index:80;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.2)}
+  .dirty{position:fixed;bottom:0;left:0;right:0;background:var(--text);color:#fff;padding:.75rem 1rem;display:none;align-items:center;gap:1rem;justify-content:space-between;z-index:80;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.2)}
   .dirty.on{display:flex}
   .dirty span{font-size:.87rem}
   .gate{max-width:400px;margin:14vh auto;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.6rem}
@@ -69,14 +69,14 @@
 <!-- ============================== APP ================================== -->
 <div class="adm" id="app" hidden>
   <nav class="side">
-    <a class="brand" href="/" style="color:#fff;text-decoration:none">
+    <a class="brand" href="/" style="color:var(--text);text-decoration:none">
       <svg class="brand-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-        <rect x="1" y="1" width="24" height="24" rx="6" fill="#141E36" stroke="#26314F"/>
-        <rect x="5" y="6.5" width="2" height="13" rx="1" fill="#E4B429"/>
-        <rect x="9.5" y="7" width="11" height="2" rx="1" fill="#E7ECF6"/>
-        <rect x="9.5" y="12" width="8" height="2" rx="1" fill="#8D9AB8"/>
-        <rect x="9.5" y="17" width="10" height="2" rx="1" fill="#8D9AB8"/>
-      </svg>College<em style="font-style:normal;color:#E4B429">Helper</em></a>
+        <rect x="1.5" y="1.5" width="23" height="23" rx="5" fill="#F7F8FA" stroke="#CDD5E0"/>
+        <rect x="5.5" y="6.5" width="2" height="13" rx="1" fill="#15509E"/>
+        <rect x="10" y="7" width="10.5" height="2" rx="1" fill="#1A2233"/>
+        <rect x="10" y="12" width="7.5" height="2" rx="1" fill="#8A93A3"/>
+        <rect x="10" y="17" width="9.5" height="2" rx="1" fill="#8A93A3"/>
+      </svg>College<em style="font-style:normal;color:#15509E">Helper</em></a>
     <button class="tab" data-panel="dash" aria-selected="true">Dashboard</button>
     <button class="tab" data-panel="exams" aria-selected="false">Exams <span class="n" id="n-exams">0</span></button>
     <button class="tab" data-panel="guides" aria-selected="false">Guides <span class="n" id="n-guides">0</span></button>
@@ -219,7 +219,7 @@
 <div class="dirty" id="dirtybar">
   <span id="dirty-text">Unsaved changes in this draft.</span>
   <span style="display:flex;gap:.5rem">
-    <button class="btn sm on-dark" type="button" onclick="document.querySelector('[data-panel=publish]').click()">Go to Publish</button>
+    <button class="btn sm" type="button" onclick="document.querySelector('[data-panel=publish]').click()">Go to Publish</button>
   </span>
 </div>
 
