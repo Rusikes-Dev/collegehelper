@@ -17,7 +17,7 @@
 
   // PASTE YOUR KV NAMESPACE ID BELOW (Storage & Databases -> KV -> your namespace).
   "kv_namespaces": [
-    { "binding": "CH_KV", "id": "PASTE_YOUR_KV_NAMESPACE_ID_HERE" }
+    { "binding": "CH_KV", "id": "52689b11c4fe442192fe7268dfe8a0e0" }
   ],
 
   // Prices in rupees. Safe to keep in the repo — they are not secrets.
