@@ -1,0 +1,4402 @@
+{
+ "site": {
+  "name": "College Helper",
+  "domain": "collegehelper.xyz",
+  "url": "https://collegehelper.xyz",
+  "tagline": "Every Indian competitive exam, tracked in one place",
+  "description": "Exam dates, syllabus, eligibility, cutoffs and college predictors for JEE, NEET, UPSC, SSC, banking, CAT, CLAT, GATE, CUET and MHT CET. Updated as notifications drop.",
+  "email": "hello@collegehelper.xyz",
+  "twitter": "@collegehelper",
+  "locale": "en_IN",
+  "built": "2026-07-29",
+  "repo": "",
+  "branch": "main"
+ },
+ "categories": {
+  "engineering": {
+   "label": "Engineering",
+   "blurb": "JEE, GATE and state engineering entrance tests"
+  },
+  "medical": {
+   "label": "Medical",
+   "blurb": "NEET UG and medical admission counselling"
+  },
+  "civil-services": {
+   "label": "Civil Services",
+   "blurb": "UPSC and state public service commissions"
+  },
+  "ssc": {
+   "label": "SSC",
+   "blurb": "Staff Selection Commission recruitment"
+  },
+  "banking": {
+   "label": "Banking",
+   "blurb": "IBPS, SBI and RBI recruitment"
+  },
+  "management": {
+   "label": "Management",
+   "blurb": "MBA entrance tests"
+  },
+  "law": {
+   "label": "Law",
+   "blurb": "CLAT and law school admissions"
+  },
+  "university": {
+   "label": "University",
+   "blurb": "Central and state university admission tests"
+  }
+ },
+ "exams": [
+  {
+   "slug": "jee-main",
+   "name": "JEE Main",
+   "fullName": "Joint Entrance Examination (Main)",
+   "body": "National Testing Agency (NTA)",
+   "category": "engineering",
+   "level": "national",
+   "state": null,
+   "site": "https://jeemain.nta.nic.in",
+   "mode": "Computer-based test (Drawing section of Paper 2A is pen-and-paper)",
+   "frequency": "Twice a year — January and April sessions",
+   "tagline": "The gateway to NITs, IIITs and GFTIs, and the qualifying round for JEE Advanced.",
+   "summary": "JEE Main is India's largest engineering entrance exam. NTA runs it in two sessions each year and the better of your two scores is used for the final rank. Paper 1 leads to BE/BTech seats through JoSAA counselling; Papers 2A and 2B lead to BArch and BPlan. Clearing the cutoff percentile also makes you eligible to sit JEE Advanced for the IITs.",
+   "status": "cycle-closed",
+   "statusLabel": "2026 cycle complete",
+   "stage": "JoSAA counselling underway · JEE Main 2027 notification expected October–November 2026",
+   "nextDate": "2026-07-31",
+   "nextEvent": "Last day to download the JEE Main 2026 scorecard",
+   "eligibility": [
+    [
+     "Qualification",
+     "Passed Class 12 (or equivalent) with Physics, Chemistry and Mathematics. Candidates who passed in 2025 or 2026, or who appear in 2027, are eligible for JEE Main 2027."
+    ],
+    [
+     "Age limit",
+     "No age limit set by NTA. Individual institutes may apply their own criteria."
+    ],
+    [
+     "Minimum marks",
+     "None to sit the exam. But for admission to NITs, IIITs and GFTIs you need 75% in Class 12 (65% for SC/ST) or be in the top 20 percentile of your board."
+    ],
+    [
+     "Attempts",
+     "No cap on the number of years. Both sessions in a year count as one attempt cycle."
+    ],
+    [
+     "Subject rule",
+     "Paper 1 needs PCM. Paper 2A (BArch) needs Physics, Chemistry and Maths. Paper 2B (BPlan) needs Mathematics."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Paper",
+     "Subjects",
+     "Questions",
+     "Marks",
+     "Duration"
+    ],
+    "rows": [
+     [
+      "Paper 1 — BE/BTech",
+      "Physics, Chemistry, Mathematics",
+      "75 (25 per subject: 20 MCQ + 5 numerical)",
+      "300",
+      "3 hours"
+     ],
+     [
+      "Paper 2A — BArch",
+      "Mathematics, Aptitude, Drawing",
+      "82",
+      "400",
+      "3 hours"
+     ],
+     [
+      "Paper 2B — BPlan",
+      "Mathematics, Aptitude, Planning",
+      "105",
+      "400",
+      "3 hours"
+     ]
+    ],
+    "notes": [
+     "Marking for Paper 1: +4 for a correct MCQ, −1 for a wrong MCQ, 0 for unattempted.",
+     "All five numerical-value questions per subject are compulsory and carry no negative marking.",
+     "Scores are normalised into percentiles across shifts, so your raw marks and your percentile are not the same thing.",
+     "From the 2026 January session onward NTA uses facial biometric authentication at exam centres."
+    ]
+   },
+   "syllabus": [
+    [
+     "Physics",
+     "Units and measurement · Kinematics · Laws of motion · Work, energy and power · Rotational motion · Gravitation · Properties of solids and liquids · Thermodynamics · Kinetic theory of gases · Oscillations and waves · Electrostatics · Current electricity · Magnetic effects of current and magnetism · Electromagnetic induction and AC · Electromagnetic waves · Optics · Dual nature of matter and radiation · Atoms and nuclei · Electronic devices · Experimental skills"
+    ],
+    [
+     "Chemistry",
+     "Physical: Some basic concepts · Atomic structure · Chemical bonding · Chemical thermodynamics · Solutions · Equilibrium · Redox and electrochemistry · Chemical kinetics. Inorganic: Classification and periodicity · p-block · d- and f-block · Coordination compounds. Organic: Purification and characterisation · Basic principles · Hydrocarbons · Halides · Oxygen-containing compounds · Nitrogen-containing compounds · Biomolecules · Principles of practical chemistry"
+    ],
+    [
+     "Mathematics",
+     "Sets, relations and functions · Complex numbers and quadratic equations · Matrices and determinants · Permutations and combinations · Binomial theorem · Sequences and series · Limits, continuity and differentiability · Integral calculus · Differential equations · Coordinate geometry · Three-dimensional geometry · Vector algebra · Statistics and probability · Trigonometry"
+    ]
+   ],
+   "dates": [
+    [
+     "JEE Main 2026 Session 1 registration",
+     "31 Oct – 27 Nov 2025",
+     "done"
+    ],
+    [
+     "Session 1 exam",
+     "21, 22, 23, 24, 28, 29 Jan 2026",
+     "done"
+    ],
+    [
+     "Session 1 result",
+     "16 Feb 2026",
+     "done"
+    ],
+    [
+     "Session 2 registration",
+     "Feb – Mar 2026",
+     "done"
+    ],
+    [
+     "Session 2 city intimation slip",
+     "21 Mar 2026",
+     "done"
+    ],
+    [
+     "Session 2 exam",
+     "2 – 8 Apr 2026",
+     "done"
+    ],
+    [
+     "Session 2 result (Paper 1)",
+     "20 Apr 2026",
+     "done"
+    ],
+    [
+     "Paper 2 result",
+     "5 May 2026",
+     "done"
+    ],
+    [
+     "JoSAA counselling 2026",
+     "From June 2026",
+     "live"
+    ],
+    [
+     "Last date to download 2026 scorecard",
+     "31 Jul 2026",
+     "next"
+    ],
+    [
+     "JEE Main 2027 notification",
+     "Expected Oct – Nov 2026",
+     "upcoming"
+    ],
+    [
+     "JEE Main 2027 Session 1",
+     "Expected January 2027",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "Qualifying percentile for JEE Advanced. The General cutoff for 2026 was 93.41 percentile.",
+    "head": [
+     "Category",
+     "2026 cutoff percentile"
+    ],
+    "rows": [
+     [
+      "General (CRL)",
+      "93.41"
+     ],
+     [
+      "EWS",
+      "Around 80–82"
+     ],
+     [
+      "OBC-NCL",
+      "Around 79–81"
+     ],
+     [
+      "SC",
+      "Around 61–63"
+     ],
+     [
+      "ST",
+      "Around 47–49"
+     ]
+    ],
+    "disclaimer": "Category cutoffs other than General are indicative ranges based on recent years. Always confirm against the NTA notice."
+   },
+   "careers": [
+    [
+     "BTech at an NIT/IIIT/GFTI",
+     "Core engineering, software, analytics and consulting roles. Campus placements at top NITs regularly cross ₹15–25 LPA for computer science branches."
+    ],
+    [
+     "Route to JEE Advanced",
+     "Clearing the percentile cutoff and being in the top 2,50,000 gets you a shot at the 23 IITs."
+    ],
+    [
+     "State and private admissions",
+     "Many state and private universities accept JEE Main scores, including under Maharashtra's CAP process."
+    ]
+   ],
+   "faqs": [
+    [
+     "Which session score counts?",
+     "The better of your two normalised scores. If you appear in both January and April, NTA takes the higher percentile for the final rank list."
+    ],
+    [
+     "Is there negative marking in the numerical questions?",
+     "No. All five numerical-value questions per subject are compulsory and carry no negative marking. Only MCQs carry −1."
+    ],
+    [
+     "Do I need 75% in Class 12 to write JEE Main?",
+     "No. You can write the exam regardless. The 75% (65% for SC/ST) rule applies only at the time of admission to NITs, IIITs and GFTIs."
+    ],
+    [
+     "How many times can I attempt JEE Main?",
+     "There is no attempt limit on the exam itself, though the top engineering institutes have their own age and year restrictions for admission."
+    ]
+   ],
+   "keywords": [
+    "jee main 2027",
+    "jee main exam date",
+    "jee main syllabus",
+    "jee main eligibility",
+    "jee main cutoff percentile",
+    "nta jee main"
+   ],
+   "tools": []
+  },
+  {
+   "slug": "jee-advanced",
+   "name": "JEE Advanced",
+   "fullName": "Joint Entrance Examination (Advanced)",
+   "body": "One of the seven zonal IITs, on rotation",
+   "category": "engineering",
+   "level": "national",
+   "state": null,
+   "site": "https://jeeadv.ac.in",
+   "mode": "Computer-based test, two compulsory papers",
+   "frequency": "Once a year, usually in May",
+   "tagline": "The only route into the 23 IITs.",
+   "summary": "JEE Advanced is written by roughly 2.5 lakh candidates who clear the JEE Main percentile cutoff. Both papers are compulsory and the question style is markedly harder than JEE Main — multi-concept problems, multiple-correct options and matching-type questions dominate. Seats are allotted through JoSAA alongside the NITs and IIITs.",
+   "status": "cycle-closed",
+   "statusLabel": "2026 exam complete",
+   "stage": "JoSAA 2026 counselling underway",
+   "nextDate": "2027-05-16",
+   "nextEvent": "JEE Advanced 2027 (expected)",
+   "eligibility": [
+    [
+     "JEE Main rank",
+     "Be among the top 2,50,000 successful candidates in JEE Main Paper 1, category-wise."
+    ],
+    [
+     "Age",
+     "Born on or after 1 October 2001. Five-year relaxation for SC, ST and PwD candidates."
+    ],
+    [
+     "Attempts",
+     "A maximum of two attempts, in consecutive years."
+    ],
+    [
+     "Class 12",
+     "Must have appeared in Class 12 (or equivalent) for the first time in the current or previous year."
+    ],
+    [
+     "Prior admission",
+     "You must not have accepted an IIT seat in an earlier year, regardless of whether you continued."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Paper",
+     "Subjects",
+     "Duration",
+     "Note"
+    ],
+    "rows": [
+     [
+      "Paper 1",
+      "Physics, Chemistry, Mathematics",
+      "3 hours",
+      "Compulsory"
+     ],
+     [
+      "Paper 2",
+      "Physics, Chemistry, Mathematics",
+      "3 hours",
+      "Compulsory"
+     ]
+    ],
+    "notes": [
+     "The number of questions, marks and marking scheme are not fixed in advance — the organising IIT decides them each year and announces them in the paper itself.",
+     "Expect single-correct MCQs, multiple-correct MCQs with partial marking, numerical answer type and matching-list questions.",
+     "Both papers must be attempted. Missing one means your candidature is not considered.",
+     "AAT (Architecture Aptitude Test) is a separate test for BArch at IIT Kharagpur and IIT Roorkee."
+    ]
+   },
+   "syllabus": [
+    [
+     "Scope",
+     "Broadly the same topic list as JEE Main, but tested at much greater depth. Expect problems that chain three or four concepts together in a single question."
+    ],
+    [
+     "Physics emphasis",
+     "Mechanics, electrodynamics, modern physics and thermodynamics carry the heaviest weight."
+    ],
+    [
+     "Chemistry emphasis",
+     "Physical chemistry numericals, organic reaction mechanisms and inorganic qualitative analysis."
+    ],
+    [
+     "Mathematics emphasis",
+     "Calculus, coordinate geometry, algebra and probability."
+    ]
+   ],
+   "dates": [
+    [
+     "JEE Advanced 2026 registration",
+     "23 Apr – 5 May 2026",
+     "done"
+    ],
+    [
+     "Admit card",
+     "11 May 2026",
+     "done"
+    ],
+    [
+     "JEE Advanced 2026 exam",
+     "17 May 2026 (Paper 1 and Paper 2)",
+     "done"
+    ],
+    [
+     "JoSAA 2026 counselling",
+     "From June 2026",
+     "live"
+    ],
+    [
+     "JEE Advanced 2027",
+     "Expected May 2027",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "Qualifying for a rank in JEE Advanced needs both a minimum subject-wise score and a minimum aggregate, set fresh each year by the organising IIT.",
+    "head": [
+     "Category",
+     "Minimum aggregate (indicative)",
+     "Minimum per subject (indicative)"
+    ],
+    "rows": [
+     [
+      "Common rank list",
+      "Around 30%",
+      "Around 10%"
+     ],
+     [
+      "OBC-NCL / EWS",
+      "Around 27%",
+      "Around 9%"
+     ],
+     [
+      "SC / ST / PwD",
+      "Around 15%",
+      "Around 5%"
+     ]
+    ],
+    "disclaimer": "These thresholds move every year. Confirm from the official JEE Advanced result notice."
+   },
+   "careers": [
+    [
+     "BTech at an IIT",
+     "Median packages at older IITs sit in the ₹18–25 LPA range, with computer science branches higher."
+    ],
+    [
+     "Research and higher study",
+     "IIT degrees are the standard feeder into MS and PhD programmes in India and abroad."
+    ],
+    [
+     "Dual degree and integrated MTech",
+     "Five-year programmes at IITs that save a year over a separate masters."
+    ]
+   ],
+   "faqs": [
+    [
+     "Can I skip Paper 1 and write only Paper 2?",
+     "No. Both papers are compulsory and skipping either one disqualifies you."
+    ],
+    [
+     "Does the JEE Main score carry into JEE Advanced?",
+     "No. JEE Main only decides whether you are eligible. Your IIT rank comes purely from JEE Advanced marks."
+    ],
+    [
+     "Is the marking scheme announced in advance?",
+     "Not usually. The organising IIT prints the scheme in the paper. Read the instructions carefully in the first few minutes."
+    ]
+   ],
+   "keywords": [
+    "jee advanced 2027",
+    "jee advanced eligibility",
+    "iit jee",
+    "jee advanced cutoff",
+    "jee advanced exam date"
+   ],
+   "tools": []
+  },
+  {
+   "slug": "neet-ug",
+   "name": "NEET UG",
+   "fullName": "National Eligibility cum Entrance Test (Undergraduate)",
+   "body": "National Testing Agency (NTA)",
+   "category": "medical",
+   "level": "national",
+   "state": null,
+   "site": "https://neet.nta.nic.in",
+   "mode": "Pen-and-paper, OMR sheet",
+   "frequency": "Once a year",
+   "tagline": "The single entrance test for every MBBS, BDS, AYUSH and nursing seat in India.",
+   "summary": "NEET UG is the only route to an MBBS or BDS seat anywhere in India, government or private. Around 20 lakh candidates sit it each year for roughly 1.1 lakh MBBS seats. Counselling splits in two: the Medical Counselling Committee handles the 15% All India Quota plus AIIMS, JIPMER, deemed and central universities, while each state runs its own counselling for the remaining 85%.",
+   "status": "counselling",
+   "statusLabel": "Result out · counselling next",
+   "stage": "Re-NEET result declared 16 July 2026. MCC counselling schedule awaited at mcc.nic.in.",
+   "nextDate": "2026-08-05",
+   "nextEvent": "MCC NEET UG 2026 counselling registration (expected)",
+   "alert": "The NEET UG 2026 paper scheduled for 3 May was cancelled after a paper leak. A re-examination was held on 21 June 2026 and the result was declared on 16 July 2026. About 11.21 lakh of roughly 20 lakh candidates qualified. MCC has not yet published the counselling schedule.",
+   "eligibility": [
+    [
+     "Qualification",
+     "Class 12 or equivalent with Physics, Chemistry, Biology/Biotechnology and English as a compulsory subject."
+    ],
+    [
+     "Minimum marks",
+     "50% aggregate in PCB for General, 40% for SC/ST/OBC, 45% for General-PwD."
+    ],
+    [
+     "Age",
+     "At least 17 years as on 31 December of the year of admission. No upper age limit."
+    ],
+    [
+     "Attempts",
+     "No limit."
+    ],
+    [
+     "Nationality",
+     "Indian nationals, NRIs, OCIs, PIOs and foreign nationals may all appear, under the applicable seat categories."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Subject",
+     "Questions",
+     "Marks",
+     "Time"
+    ],
+    "rows": [
+     [
+      "Physics",
+      "45",
+      "180",
+      ""
+     ],
+     [
+      "Chemistry",
+      "45",
+      "180",
+      ""
+     ],
+     [
+      "Biology (Botany + Zoology)",
+      "90",
+      "360",
+      ""
+     ],
+     [
+      "Total",
+      "180",
+      "720",
+      "200 minutes"
+     ]
+    ],
+    "notes": [
+     "Marking: +4 for a correct answer, −1 for a wrong answer, 0 for unattempted.",
+     "The paper is offline on an OMR sheet — practise darkening bubbles under time pressure.",
+     "Qualifying percentile: 50th for General, 40th for SC/ST/OBC, 45th for General-PwD.",
+     "Available in 13 languages including Hindi, Marathi, Bengali, Tamil and Urdu."
+    ]
+   },
+   "syllabus": [
+    [
+     "Physics",
+     "Physical world and measurement · Kinematics · Laws of motion · Work, energy and power · Motion of system of particles and rigid body · Gravitation · Properties of bulk matter · Thermodynamics · Behaviour of perfect gas and kinetic theory · Oscillations and waves · Electrostatics · Current electricity · Magnetic effects of current and magnetism · Electromagnetic induction and alternating currents · Electromagnetic waves · Optics · Dual nature of matter and radiation · Atoms and nuclei · Electronic devices"
+    ],
+    [
+     "Chemistry",
+     "Some basic concepts · Structure of atom · Classification of elements and periodicity · Chemical bonding and molecular structure · Thermodynamics · Equilibrium · Redox reactions · p-block, d- and f-block elements · Coordination compounds · Haloalkanes and haloarenes · Alcohols, phenols and ethers · Aldehydes, ketones and carboxylic acids · Amines · Biomolecules · Solutions · Electrochemistry · Chemical kinetics"
+    ],
+    [
+     "Biology",
+     "Diversity in living world · Structural organisation in animals and plants · Cell structure and function · Plant physiology · Human physiology · Reproduction · Genetics and evolution · Biology and human welfare · Biotechnology and its applications · Ecology and environment"
+    ]
+   ],
+   "dates": [
+    [
+     "NEET UG 2026 registration",
+     "Extended to 11 Mar 2026",
+     "done"
+    ],
+    [
+     "Original exam date",
+     "3 May 2026 — cancelled after paper leak",
+     "cancelled"
+    ],
+    [
+     "Re-NEET 2026 exam",
+     "21 Jun 2026",
+     "done"
+    ],
+    [
+     "Re-NEET 2026 result",
+     "16 Jul 2026",
+     "done"
+    ],
+    [
+     "MCC counselling schedule",
+     "Expected late Jul – early Aug 2026",
+     "next"
+    ],
+    [
+     "MCC Round 1 registration",
+     "Expected August 2026",
+     "upcoming"
+    ],
+    [
+     "State quota counselling",
+     "Follows the MCC schedule, state by state",
+     "upcoming"
+    ],
+    [
+     "NEET UG 2027",
+     "Expected May 2027",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "Qualifying percentile decides who is eligible for counselling. Actual admission cutoffs are far higher and depend on your All India Rank.",
+    "head": [
+     "Category",
+     "Qualifying percentile",
+     "Indicative score band"
+    ],
+    "rows": [
+     [
+      "General / EWS",
+      "50th percentile",
+      "Roughly 160–165 out of 720"
+     ],
+     [
+      "OBC / SC / ST",
+      "40th percentile",
+      "Roughly 125–130 out of 720"
+     ],
+     [
+      "General-PwD",
+      "45th percentile",
+      "Roughly 145–150 out of 720"
+     ]
+    ],
+    "disclaimer": "Qualifying is not the same as getting a seat. A government MBBS seat under General category typically needs a score well above 600."
+   },
+   "careers": [
+    [
+     "MBBS",
+     "Five and a half years including internship. Leads to practice, NEET PG for specialisation, or public health and administrative roles."
+    ],
+    [
+     "BDS",
+     "Five years including internship. Dental practice, MDS specialisation, or academia."
+    ],
+    [
+     "BSc Nursing",
+     "Four years. Strong demand in India and abroad, with clear routes into critical care and nurse practitioner roles."
+    ],
+    [
+     "AYUSH — BAMS, BHMS, BUMS, BNYS",
+     "Five and a half years. Separate AACCC counselling handles the All India Quota for these seats."
+    ],
+    [
+     "Veterinary — BVSc & AH",
+     "Five and a half years, admitted through the 15% VCI quota using NEET scores."
+    ]
+   ],
+   "faqs": [
+    [
+     "What happened to the 3 May 2026 exam?",
+     "It was cancelled after a paper leak. NTA held a re-examination on 21 June 2026 and declared the result on 16 July 2026."
+    ],
+    [
+     "Does qualifying NEET guarantee a seat?",
+     "No. Qualifying only makes you eligible for counselling. Whether you get a seat depends on your rank, category, quota and the seat matrix."
+    ],
+    [
+     "Do I register separately for counselling?",
+     "Yes. Your NEET application does not carry over. You must register fresh on the MCC portal for All India Quota, and on your state portal for state quota."
+    ],
+    [
+     "What is the difference between AIQ and state quota?",
+     "All India Quota is 15% of government college seats, open to any NEET-qualified Indian candidate regardless of home state. The remaining 85% is state quota, which almost always requires domicile proof."
+    ]
+   ],
+   "keywords": [
+    "neet ug 2026 counselling",
+    "neet result 2026",
+    "mcc neet counselling",
+    "neet cutoff 2026",
+    "neet college predictor",
+    "neet ug syllabus"
+   ],
+   "tools": [
+    "neet-college-predictor"
+   ]
+  },
+  {
+   "slug": "mht-cet",
+   "name": "MHT CET",
+   "fullName": "Maharashtra Health and Technical Common Entrance Test",
+   "body": "State Common Entrance Test Cell, Maharashtra",
+   "category": "engineering",
+   "level": "state",
+   "state": "Maharashtra",
+   "site": "https://cetcell.mahacet.org",
+   "mode": "Computer-based test",
+   "frequency": "Two sessions a year; the better percentile counts",
+   "tagline": "The entrance test for over 750 engineering, pharmacy and agriculture colleges in Maharashtra.",
+   "summary": "MHT CET is the state-level test that feeds Maharashtra's Centralised Admission Process. The PCM group leads to BE/BTech and BPharm; the PCB group leads to pharmacy and agriculture programmes. Admission is entirely through CAP, run by DTE Maharashtra — there is no college-level walk-in for CAP seats. From 2026 the CET Cell applies a best-of-two-attempts rule.",
+   "status": "counselling",
+   "statusLabel": "CAP Round 1 live",
+   "stage": "Final merit list out 27 July 2026. CAP Round 1 option entry open 28–30 July 2026.",
+   "nextDate": "2026-07-30",
+   "nextEvent": "CAP Round 1 option form closes",
+   "alert": "CAP Round 1 option entry for MHT CET 2026 is open from 28 to 30 July 2026. Fill and lock your choice list carefully — a badly ordered list costs more seats than a low percentile does.",
+   "eligibility": [
+    [
+     "Qualification",
+     "Passed Class 12 with Physics and Mathematics compulsory for PCM, plus Chemistry, Biology, Biotechnology or a technical vocational subject."
+    ],
+    [
+     "Minimum marks",
+     "45% aggregate in the relevant subjects for open category, 40% for reserved categories in Maharashtra."
+    ],
+    [
+     "Domicile",
+     "CAP seats under state quota require Maharashtra domicile and the associated candidature type. Non-Maharashtra candidates may sit the exam but usually compete under All India seats using JEE Main."
+    ],
+    [
+     "Age",
+     "No upper age limit."
+    ],
+    [
+     "Attempts",
+     "No limit. From 2026 you may sit both sessions and the higher percentile is used automatically."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Group",
+     "Subject",
+     "Questions",
+     "Marks per question",
+     "Total"
+    ],
+    "rows": [
+     [
+      "PCM",
+      "Physics",
+      "50",
+      "1",
+      "50"
+     ],
+     [
+      "PCM",
+      "Chemistry",
+      "50",
+      "1",
+      "50"
+     ],
+     [
+      "PCM",
+      "Mathematics",
+      "50",
+      "2",
+      "100"
+     ],
+     [
+      "PCB",
+      "Physics",
+      "50",
+      "1",
+      "50"
+     ],
+     [
+      "PCB",
+      "Chemistry",
+      "50",
+      "1",
+      "50"
+     ],
+     [
+      "PCB",
+      "Biology",
+      "100",
+      "1",
+      "100"
+     ]
+    ],
+    "notes": [
+     "Total 200 marks, 180 minutes, for both groups.",
+     "There is no negative marking — attempt everything.",
+     "Weightage is roughly 20% Class 11 syllabus and 80% Class 12.",
+     "In PCM, Mathematics alone is half the paper. In PCB, Biology alone is half. Weight your revision accordingly.",
+     "Available in English, Marathi and Urdu."
+    ]
+   },
+   "syllabus": [
+    [
+     "Basis",
+     "The Maharashtra State Board Class 11 and Class 12 syllabus. Roughly 20% of questions come from Class 11 topics and 80% from Class 12."
+    ],
+    [
+     "Physics",
+     "Measurements · Motion in a plane · Laws of motion · Gravitation · Thermal properties · Sound · Optics · Electrostatics · Current electricity · Magnetism · Electromagnetic induction · Semiconductors · Dual nature of radiation"
+    ],
+    [
+     "Chemistry",
+     "Some basic concepts · Structure of atom · Chemical bonding · Redox · Elements of groups 1, 2, 13–18 · Solutions · Electrochemistry · Chemical kinetics · Coordination compounds · Halogen derivatives · Alcohols, phenols and ethers · Aldehydes, ketones and acids · Amines · Biomolecules · Polymers"
+    ],
+    [
+     "Mathematics",
+     "Trigonometry · Straight line · Circle · Conic sections · Measures of dispersion · Probability · Complex numbers · Permutations and combinations · Matrices · Differentiation · Applications of derivatives · Integration · Differential equations · Vectors · Three-dimensional geometry · Linear programming"
+    ],
+    [
+     "Biology",
+     "Diversity in organisms · Cell biology · Plant and animal physiology · Reproduction · Genetics · Evolution · Biotechnology · Ecology"
+    ]
+   ],
+   "dates": [
+    [
+     "MHT CET 2026 Session 1 — PCM",
+     "11 – 19 Apr 2026",
+     "done"
+    ],
+    [
+     "Session 1 — PCB",
+     "21 – 26 Apr 2026",
+     "done"
+    ],
+    [
+     "Session 2 — PCB",
+     "10 – 11 May 2026",
+     "done"
+    ],
+    [
+     "Session 2 — PCM",
+     "14 – 17 May 2026",
+     "done"
+    ],
+    [
+     "Final answer key",
+     "30 May 2026",
+     "done"
+    ],
+    [
+     "PCB result",
+     "8 – 9 Jun 2026",
+     "done"
+    ],
+    [
+     "PCM result",
+     "12 – 16 Jun 2026",
+     "done"
+    ],
+    [
+     "CAP registration",
+     "Completed",
+     "done"
+    ],
+    [
+     "Final merit list",
+     "27 Jul 2026",
+     "done"
+    ],
+    [
+     "CAP Round 1 option entry",
+     "28 – 30 Jul 2026",
+     "live"
+    ],
+    [
+     "CAP Round 1 provisional allotment",
+     "Expected early Aug 2026",
+     "next"
+    ],
+    [
+     "CAP Rounds 2, 3 and 4",
+     "Through Aug – Sep 2026",
+     "upcoming"
+    ],
+    [
+     "Institute-level admissions close",
+     "13 Sep 2026",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "MHT CET cutoffs are published as closing Maharashtra State General Merit Numbers per college, branch, category, seat type and CAP round. Percentile is shown for reference only.",
+    "head": [
+     "Tier",
+     "Typical closing percentile — CSE/IT, OPEN, Home University"
+    ],
+    "rows": [
+     [
+      "COEP Pune, VJTI Mumbai",
+      "99.5+"
+     ],
+     [
+      "Government and top autonomous colleges",
+      "97 – 99.5"
+     ],
+     [
+      "Established private colleges in Pune and Mumbai",
+      "92 – 97"
+     ],
+     [
+      "Tier-2 city private colleges",
+      "80 – 92"
+     ],
+     [
+      "Remaining seats, mostly non-CS branches",
+      "Below 80"
+     ]
+    ],
+    "disclaimer": "Use the MHT CET College Predictor on this site for your exact merit number against the full 2025 CAP Rounds I–III cutoff data."
+   },
+   "careers": [
+    [
+     "BE / BTech",
+     "Four years at one of 350+ engineering colleges. Placement quality varies enormously — COEP, VJTI, ICT and the top autonomous colleges are in a different league from the tail."
+    ],
+    [
+     "BPharm and PharmD",
+     "Pharmaceutical manufacturing, clinical research and regulatory affairs. Maharashtra has a dense pharma industry around Mumbai and Pune."
+    ],
+    [
+     "BSc Agriculture",
+     "State agriculture universities, agri-business, and state agriculture department roles."
+    ]
+   ],
+   "faqs": [
+    [
+     "Which session score is used?",
+     "From 2026, the CET Cell automatically takes the higher percentile of your two attempts for the merit list. You do not need to request it."
+    ],
+    [
+     "Is there negative marking?",
+     "No. Attempt every question."
+    ],
+    [
+     "Can I get a CAP seat with a JEE Main score?",
+     "Yes. Maharashtra reserves a share of seats for JEE Main scorers, and non-Maharashtra candidates typically compete for All India seats that way."
+    ],
+    [
+     "How much does the choice list order matter?",
+     "A great deal. Allotment runs strictly down your preference list, so putting a reach college below a safe one can cost you the reach seat entirely."
+    ]
+   ],
+   "keywords": [
+    "mht cet 2026 cap round",
+    "mht cet cutoff",
+    "mht cet college predictor",
+    "mht cet result",
+    "cetcell mahacet",
+    "mht cet percentile"
+   ],
+   "tools": [
+    "mht-cet-college-predictor"
+   ]
+  },
+  {
+   "slug": "upsc-cse",
+   "name": "UPSC CSE",
+   "fullName": "Civil Services Examination",
+   "body": "Union Public Service Commission",
+   "category": "civil-services",
+   "level": "national",
+   "state": null,
+   "site": "https://upsc.gov.in",
+   "mode": "Prelims objective, Mains descriptive, then a personality test",
+   "frequency": "Once a year",
+   "tagline": "Roughly ten lakh applicants, under a thousand posts. The IAS, IPS and IFS exam.",
+   "summary": "The Civil Services Examination recruits for 21 services including the IAS, IPS, IFS and IRS. Three stages spread over about a year: a screening Prelims in May, a nine-paper Mains in August, and an interview early the following year. Prelims marks do not count towards the final merit — only Mains and the interview do.",
+   "status": "in-progress",
+   "statusLabel": "Mains in 3 weeks",
+   "stage": "Prelims 2026 result out 15 June. Mains 2026 begins 21 August.",
+   "nextDate": "2026-08-21",
+   "nextEvent": "UPSC CSE Mains 2026 begins",
+   "alert": "UPSC CSE Mains 2026 runs on 21, 22, 23, 29 and 30 August 2026, in two sessions each day — 9:00 am to 12:00 noon and 2:30 pm to 5:30 pm.",
+   "eligibility": [
+    [
+     "Qualification",
+     "A bachelor's degree from a recognised university, in any discipline. Final-year students may sit Prelims but must produce proof of graduation before Mains."
+    ],
+    [
+     "Age",
+     "21 to 32 years for General. Relaxations: 35 for OBC, 37 for SC/ST, 42 for PwBD."
+    ],
+    [
+     "Attempts",
+     "Six for General and EWS, nine for OBC, unlimited for SC/ST until the age limit. PwBD candidates get nine."
+    ],
+    [
+     "Nationality",
+     "Indian citizens for IAS, IPS and IFS. Certain other services also admit specified categories of Nepali, Bhutanese and Tibetan-refugee candidates."
+    ],
+    [
+     "Physical standards",
+     "Apply to IPS and some other services, checked at the medical examination stage."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Stage",
+     "Paper",
+     "Marks",
+     "Duration"
+    ],
+    "rows": [
+     [
+      "Prelims",
+      "General Studies Paper I (100 questions)",
+      "200",
+      "2 hours"
+     ],
+     [
+      "Prelims",
+      "CSAT Paper II (80 questions, qualifying at 33%)",
+      "200",
+      "2 hours"
+     ],
+     [
+      "Mains",
+      "Paper A — Indian Language (qualifying)",
+      "300",
+      "3 hours"
+     ],
+     [
+      "Mains",
+      "Paper B — English (qualifying)",
+      "300",
+      "3 hours"
+     ],
+     [
+      "Mains",
+      "Essay",
+      "250",
+      "3 hours"
+     ],
+     [
+      "Mains",
+      "General Studies I – IV",
+      "250 each, 1000 total",
+      "3 hours each"
+     ],
+     [
+      "Mains",
+      "Optional Subject Paper I and II",
+      "250 each, 500 total",
+      "3 hours each"
+     ],
+     [
+      "Interview",
+      "Personality test",
+      "275",
+      "—"
+     ]
+    ],
+    "notes": [
+     "Prelims marks are used only for screening. They do not count towards the final merit list.",
+     "Merit total is 2025 marks: 1750 from the seven counted Mains papers plus 275 from the interview.",
+     "Prelims negative marking is one-third of the marks for each wrong answer.",
+     "Papers A and B are qualifying only. Failing them means the rest of your Mains papers are not evaluated."
+    ]
+   },
+   "syllabus": [
+    [
+     "Prelims GS Paper I",
+     "Current events of national and international importance · History of India and the national movement · Indian and world geography · Indian polity and governance · Economic and social development · Environment, biodiversity and climate change · General science"
+    ],
+    [
+     "Prelims CSAT Paper II",
+     "Comprehension · Interpersonal and communication skills · Logical reasoning and analytical ability · Decision making and problem solving · General mental ability · Basic numeracy and data interpretation up to Class 10 level"
+    ],
+    [
+     "Mains GS I",
+     "Indian heritage and culture · Modern Indian history · World history · Indian society · Physical geography and resource distribution"
+    ],
+    [
+     "Mains GS II",
+     "Constitution and polity · Governance and transparency · Social justice · International relations"
+    ],
+    [
+     "Mains GS III",
+     "Indian economy · Agriculture · Science and technology · Environment · Internal security · Disaster management"
+    ],
+    [
+     "Mains GS IV",
+     "Ethics, integrity and aptitude · Attitude and emotional intelligence · Public and civil service values · Probity in governance · Case studies"
+    ],
+    [
+     "Optional subject",
+     "One from 48 options — 26 literature papers plus subjects like Geography, PSIR, Sociology, Anthropology, History, Public Administration and several engineering and science disciplines."
+    ]
+   ],
+   "dates": [
+    [
+     "UPSC CSE 2026 notification",
+     "4 Feb 2026",
+     "done"
+    ],
+    [
+     "Application window",
+     "4 – 24 Feb 2026",
+     "done"
+    ],
+    [
+     "Prelims 2026",
+     "24 May 2026",
+     "done"
+    ],
+    [
+     "Prelims result",
+     "15 Jun 2026",
+     "done"
+    ],
+    [
+     "Mains 2026",
+     "21, 22, 23, 29, 30 Aug 2026",
+     "next"
+    ],
+    [
+     "Mains result",
+     "Expected Dec 2026",
+     "upcoming"
+    ],
+    [
+     "Personality test",
+     "Expected Jan – Apr 2027",
+     "upcoming"
+    ],
+    [
+     "Final result",
+     "Expected Apr – May 2027",
+     "upcoming"
+    ],
+    [
+     "CSE 2027 notification",
+     "13 Jan 2027",
+     "upcoming"
+    ],
+    [
+     "CSE 2027 Prelims",
+     "23 May 2027",
+     "upcoming"
+    ],
+    [
+     "CSE 2027 Mains",
+     "From 20 Aug 2027",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "The 2026 cycle offers 933 vacancies including 33 posts reserved for Persons with Benchmark Disabilities.",
+    "head": [
+     "Category",
+     "Indicative Prelims GS-I cutoff (out of 200)"
+    ],
+    "rows": [
+     [
+      "General",
+      "Around 87 – 96"
+     ],
+     [
+      "EWS",
+      "Around 75 – 85"
+     ],
+     [
+      "OBC",
+      "Around 85 – 94"
+     ],
+     [
+      "SC",
+      "Around 74 – 84"
+     ],
+     [
+      "ST",
+      "Around 72 – 82"
+     ]
+    ],
+    "disclaimer": "Cutoffs swing by ten marks or more between years depending on paper difficulty. UPSC publishes the exact figures only after the final result."
+   },
+   "careers": [
+    [
+     "IAS — Indian Administrative Service",
+     "District administration, then state and central secretariat postings. Entry pay Level 10, basic ₹56,100. A Cabinet Secretary draws ₹2,50,000 basic."
+    ],
+    [
+     "IPS — Indian Police Service",
+     "ASP on probation, then SP of a district. Same entry pay level as the IAS."
+    ],
+    [
+     "IFS — Indian Foreign Service",
+     "Diplomatic postings at Indian missions abroad, with a foreign allowance that substantially raises take-home pay."
+    ],
+    [
+     "IRS — Income Tax and Customs",
+     "Assistant Commissioner on entry. Postings concentrated in metros and major commercial centres."
+    ],
+    [
+     "Other Group A services",
+     "Indian Audit and Accounts Service, Indian Railway Management Service, Indian Information Service, Indian Postal Service and others."
+    ]
+   ],
+   "faqs": [
+    [
+     "Do Prelims marks count in the final merit?",
+     "No. Prelims is purely a screening test. Your final rank comes from the 1750 Mains marks plus 275 interview marks."
+    ],
+    [
+     "How do I choose an optional subject?",
+     "Pick on the basis of your genuine interest, availability of material and mentors, and overlap with GS papers. Chasing a supposedly 'scoring' optional you dislike is the more common mistake."
+    ],
+    [
+     "Is CSAT counted?",
+     "No, it is qualifying only. You need 33%, which is 66 out of 200. But candidates from non-maths backgrounds do fail it, so do not ignore it."
+    ],
+    [
+     "How long does one full cycle take?",
+     "About twelve to fourteen months from notification to final result."
+    ]
+   ],
+   "keywords": [
+    "upsc cse 2026 mains",
+    "upsc prelims cutoff",
+    "upsc syllabus",
+    "ias exam",
+    "upsc notification 2027",
+    "upsc optional subject"
+   ],
+   "tools": []
+  },
+  {
+   "slug": "ssc-cgl",
+   "name": "SSC CGL",
+   "fullName": "Combined Graduate Level Examination",
+   "body": "Staff Selection Commission",
+   "category": "ssc",
+   "level": "national",
+   "state": null,
+   "site": "https://ssc.gov.in",
+   "mode": "Computer-based, two tiers",
+   "frequency": "Once a year",
+   "tagline": "12,256 posts in 2026 — the biggest graduate-level government recruitment in the country.",
+   "summary": "SSC CGL fills Group B and Group C posts across central government ministries and departments — Income Tax Inspector, CBI Sub-Inspector, Assistant Section Officer, Excise Inspector, Assistant Audit Officer and more than forty others. Two computer-based tiers decide the outcome; Tier 1 only qualifies you for Tier 2 and does not count towards the final merit.",
+   "status": "in-progress",
+   "statusLabel": "Tier 1 next month",
+   "stage": "Applications closed. Tier 1 scheduled for August–September 2026.",
+   "nextDate": "2026-08-15",
+   "nextEvent": "SSC CGL 2026 Tier 1 window opens (Aug–Sep)",
+   "alert": "Three changes this cycle: sectional timing of 15 minutes per section in Tier 1, the return of Assistant Audit Officer and Assistant Accounts Officer posts, and a new Paper 3 in Tier 2 for AAO/AAAO candidates only.",
+   "eligibility": [
+    [
+     "Qualification",
+     "A bachelor's degree in any discipline. Assistant Audit Officer and Assistant Accounts Officer prefer or require CA, CS, MBA, Cost Accountancy or a Masters in Commerce or Economics."
+    ],
+    [
+     "Statistical posts",
+     "Junior Statistical Officer needs a degree with Mathematics at Class 12 with at least 60%, or a degree with Statistics as a subject."
+    ],
+    [
+     "Age",
+     "18 to 32 depending on the post. Most posts sit in the 18–30 or 20–30 band. Standard relaxations apply — 3 years OBC, 5 years SC/ST, 10 years PwBD."
+    ],
+    [
+     "Nationality",
+     "Indian citizen, or a Nepali or Bhutanese subject, or specified categories of persons of Indian origin."
+    ],
+    [
+     "Registration",
+     "One Time Registration on the new SSC portal is mandatory. Old OTR IDs do not carry over."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Stage",
+     "Section",
+     "Questions",
+     "Marks",
+     "Time"
+    ],
+    "rows": [
+     [
+      "Tier 1",
+      "General Intelligence and Reasoning",
+      "25",
+      "50",
+      "15 min"
+     ],
+     [
+      "Tier 1",
+      "General Awareness",
+      "25",
+      "50",
+      "15 min"
+     ],
+     [
+      "Tier 1",
+      "Quantitative Aptitude",
+      "25",
+      "50",
+      "15 min"
+     ],
+     [
+      "Tier 1",
+      "English Comprehension",
+      "25",
+      "50",
+      "15 min"
+     ],
+     [
+      "Tier 2 Paper 1, Session I",
+      "Maths and Reasoning",
+      "60",
+      "180",
+      "1 hour"
+     ],
+     [
+      "Tier 2 Paper 1, Session I",
+      "English and General Awareness",
+      "70",
+      "210",
+      "1 hour"
+     ],
+     [
+      "Tier 2 Paper 1, Session II",
+      "Computer Knowledge",
+      "20",
+      "60",
+      "15 min"
+     ],
+     [
+      "Tier 2 Paper 2",
+      "Statistics — for JSO posts only",
+      "100",
+      "200",
+      "2 hours"
+     ],
+     [
+      "Tier 2 Paper 3",
+      "General Studies, Finance and Economics — AAO/AAAO only",
+      "100",
+      "200",
+      "2 hours"
+     ]
+    ],
+    "notes": [
+     "Tier 1 total: 100 questions, 200 marks, 60 minutes, with negative marking of 0.50 per wrong answer.",
+     "New in 2026: sectional timing. Once a section's 15 minutes are up you cannot return to it.",
+     "Tier 1 is qualifying. The final merit is built from Tier 2 alone.",
+     "Tier 2 negative marking is 1 mark per wrong answer in Paper 1 Session I, and 0.50 in the Computer Knowledge module."
+    ]
+   },
+   "syllabus": [
+    [
+     "Quantitative Aptitude",
+     "Number systems · Percentage · Ratio and proportion · Profit and loss · Simple and compound interest · Time, speed and distance · Time and work · Averages · Mixtures · Algebra · Geometry · Mensuration · Trigonometry · Data interpretation"
+    ],
+    [
+     "Reasoning",
+     "Analogy · Classification · Series · Coding-decoding · Blood relations · Direction sense · Syllogism · Venn diagrams · Matrix · Paper folding and cutting · Mirror and water images · Non-verbal reasoning"
+    ],
+    [
+     "English",
+     "Reading comprehension · Cloze test · Error spotting · Sentence improvement · Fill in the blanks · Synonyms and antonyms · Idioms and phrases · One-word substitution · Active and passive voice · Direct and indirect speech · Para jumbles"
+    ],
+    [
+     "General Awareness",
+     "Indian history · Geography · Polity · Economy · General science · Static GK · Current affairs of roughly the last twelve months · Schemes and awards"
+    ]
+   ],
+   "dates": [
+    [
+     "SSC CGL 2026 notification",
+     "21 May 2026",
+     "done"
+    ],
+    [
+     "Application window",
+     "21 May – 22 Jun 2026",
+     "done"
+    ],
+    [
+     "Fee payment last date",
+     "23 Jun 2026",
+     "done"
+    ],
+    [
+     "Correction window",
+     "29 Jun – 3 Jul 2026",
+     "done"
+    ],
+    [
+     "Tier 1 exam",
+     "Aug – Sep 2026",
+     "next"
+    ],
+    [
+     "Tier 1 result",
+     "Expected Oct – Nov 2026",
+     "upcoming"
+    ],
+    [
+     "Tier 2 exam",
+     "Dec 2026",
+     "upcoming"
+    ],
+    [
+     "Final result",
+     "Expected 2027",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "12,256 tentative vacancies across more than 40 posts.",
+    "head": [
+     "Post group",
+     "Indicative Tier 1 cutoff, General (out of 200)"
+    ],
+    "rows": [
+     [
+      "Assistant Audit Officer",
+      "155 – 165"
+     ],
+     [
+      "Income Tax Inspector, Excise Inspector",
+      "145 – 155"
+     ],
+     [
+      "Assistant Section Officer, CBI SI",
+      "140 – 152"
+     ],
+     [
+      "Junior Statistical Officer",
+      "130 – 145"
+     ],
+     [
+      "Other Group C posts",
+      "120 – 140"
+     ]
+    ],
+    "disclaimer": "Indicative only, and the introduction of sectional timing may move these. SSC publishes exact cutoffs with each result."
+   },
+   "careers": [
+    [
+     "Assistant Audit Officer / Assistant Accounts Officer",
+     "Group B gazetted. Pay Level 8, scale ₹47,600 – ₹1,51,100. The highest-paying and most sought post in CGL."
+    ],
+    [
+     "Income Tax Inspector",
+     "Group C, Pay Level 7. Assessment and investigation work under CBDT, with good promotion prospects to Income Tax Officer."
+    ],
+    [
+     "Assistant Section Officer, CSS",
+     "Group B, Pay Level 7. Ministry postings in Delhi with the clearest path to Section Officer and Under Secretary."
+    ],
+    [
+     "Sub-Inspector, CBI",
+     "Group B, Pay Level 7. Investigation work, transferable, with a field allowance."
+    ],
+    [
+     "Inspector, Central Excise and GST",
+     "Group B, Pay Level 7. Enforcement and assessment under CBIC."
+    ],
+    [
+     "Auditor, Accountant, Tax Assistant, UDC",
+     "Group C, Pay Levels 4 to 5, scale roughly ₹25,500 – ₹81,100."
+    ]
+   ],
+   "faqs": [
+    [
+     "Does Tier 1 count in the final merit?",
+     "No. Tier 1 only decides who advances. Your final rank depends entirely on Tier 2."
+    ],
+    [
+     "What does sectional timing change?",
+     "Everything about your strategy. You can no longer bank time from an easy section to spend on a hard one. Practise each section in a fixed 15-minute block."
+    ],
+    [
+     "Which post should I put first in my preference list?",
+     "That depends on whether you value pay, promotion speed, posting location or work-life balance. AAO pays best; ASO in a ministry gives Delhi postings; Income Tax Inspector offers strong promotion prospects."
+    ],
+    [
+     "Can final-year students apply?",
+     "Yes, provided you can produce your degree by the cut-off date specified in the notification."
+    ]
+   ],
+   "keywords": [
+    "ssc cgl 2026 tier 1",
+    "ssc cgl exam date",
+    "ssc cgl vacancy",
+    "ssc cgl syllabus",
+    "ssc cgl salary",
+    "ssc cgl sectional timing"
+   ],
+   "tools": []
+  },
+  {
+   "slug": "ssc-chsl",
+   "name": "SSC CHSL",
+   "fullName": "Combined Higher Secondary Level Examination",
+   "body": "Staff Selection Commission",
+   "category": "ssc",
+   "level": "national",
+   "state": null,
+   "site": "https://ssc.gov.in",
+   "mode": "Computer-based, two tiers plus a typing or skill test",
+   "frequency": "Once a year",
+   "tagline": "A central government job on a Class 12 qualification.",
+   "summary": "CHSL recruits Lower Division Clerks, Junior Secretariat Assistants and Data Entry Operators across central ministries and departments. It is the most accessible central government recruitment for anyone who has finished Class 12, and the syllabus overlaps heavily with SSC CGL — many candidates prepare for both together.",
+   "status": "watch",
+   "statusLabel": "Notification expected",
+   "stage": "SSC CHSL 2026 notification expected in the second half of 2026.",
+   "nextDate": null,
+   "nextEvent": "SSC CHSL 2026 notification",
+   "eligibility": [
+    [
+     "Qualification",
+     "Passed Class 12 or equivalent. For Data Entry Operator in the Comptroller and Auditor General's office, Science stream with Mathematics is required."
+    ],
+    [
+     "Age",
+     "18 to 27 years. Three years relaxation for OBC, five for SC/ST, ten for PwBD."
+    ],
+    [
+     "Typing",
+     "LDC and JSA posts require a typing test — 35 words per minute in English or 30 in Hindi."
+    ],
+    [
+     "Data entry speed",
+     "DEO posts require 8,000 key depressions per hour on a data entry skill test."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Stage",
+     "Section",
+     "Questions",
+     "Marks",
+     "Time"
+    ],
+    "rows": [
+     [
+      "Tier 1",
+      "General Intelligence",
+      "25",
+      "50",
+      ""
+     ],
+     [
+      "Tier 1",
+      "General Awareness",
+      "25",
+      "50",
+      ""
+     ],
+     [
+      "Tier 1",
+      "Quantitative Aptitude",
+      "25",
+      "50",
+      ""
+     ],
+     [
+      "Tier 1",
+      "English Language",
+      "25",
+      "50",
+      ""
+     ],
+     [
+      "Tier 1",
+      "Total",
+      "100",
+      "200",
+      "60 minutes"
+     ],
+     [
+      "Tier 2",
+      "Module-based paper with Maths, Reasoning, English, GA and Computer Knowledge",
+      "—",
+      "405",
+      "2 hours 15 minutes"
+     ],
+     [
+      "Skill test",
+      "Typing test or data entry skill test, qualifying",
+      "—",
+      "Qualifying",
+      "10–15 minutes"
+     ]
+    ],
+    "notes": [
+     "Tier 1 negative marking is 0.50 per wrong answer.",
+     "Tier 2 is the merit-deciding stage; Tier 1 only screens.",
+     "The typing and data entry tests are qualifying, not scored, but failing them ends your candidature."
+    ]
+   },
+   "syllabus": [
+    [
+     "Scope",
+     "The same four subjects as SSC CGL but pitched at Class 10 to 12 level rather than graduate level."
+    ],
+    [
+     "Quantitative Aptitude",
+     "Arithmetic, algebra, geometry, mensuration, trigonometry and data interpretation at Class 10 standard."
+    ],
+    [
+     "English",
+     "Grammar, vocabulary, comprehension, sentence structure, synonyms, antonyms and correct usage."
+    ],
+    [
+     "General Intelligence",
+     "Verbal and non-verbal reasoning, series, analogy, coding-decoding, classification, and figural patterns."
+    ],
+    [
+     "General Awareness",
+     "India and its neighbours, history, culture, geography, economy, polity, science and current events."
+    ]
+   ],
+   "dates": [
+    [
+     "SSC CHSL 2026 notification",
+     "Expected in the second half of 2026",
+     "upcoming"
+    ],
+    [
+     "Tier 1",
+     "To be announced",
+     "upcoming"
+    ],
+    [
+     "Tier 2",
+     "To be announced",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "Vacancies typically run between 3,000 and 5,000 depending on the year.",
+    "head": [
+     "Category",
+     "Indicative Tier 1 cutoff (out of 200)"
+    ],
+    "rows": [
+     [
+      "General",
+      "150 – 160"
+     ],
+     [
+      "OBC",
+      "148 – 158"
+     ],
+     [
+      "EWS",
+      "140 – 152"
+     ],
+     [
+      "SC",
+      "130 – 145"
+     ],
+     [
+      "ST",
+      "120 – 138"
+     ]
+    ],
+    "disclaimer": "Indicative, based on recent cycles."
+   },
+   "careers": [
+    [
+     "Lower Division Clerk / Junior Secretariat Assistant",
+     "Pay Level 2, roughly ₹19,900 – ₹63,200. Clerical and record work in ministries and attached offices."
+    ],
+    [
+     "Data Entry Operator",
+     "Pay Level 4 or 5, roughly ₹25,500 – ₹81,100 for the higher grades. Better paid than LDC and available in CAG and other departments."
+    ],
+    [
+     "Promotion path",
+     "LDC to UDC to Assistant, with departmental exams available to speed this up."
+    ]
+   ],
+   "faqs": [
+    [
+     "Is CHSL easier than CGL?",
+     "The syllabus is pitched lower, but with far more applicants per post the competition is not soft. Cutoffs regularly sit above 150 out of 200."
+    ],
+    [
+     "Can I prepare for CGL and CHSL together?",
+     "Yes, and most serious candidates do. The subjects are identical; only the depth differs."
+    ],
+    [
+     "Does the typing test carry marks?",
+     "No, it is purely qualifying — but you must clear it to be appointed."
+    ]
+   ],
+   "keywords": [
+    "ssc chsl 2026",
+    "ssc chsl notification",
+    "ssc chsl syllabus",
+    "ldc deo recruitment",
+    "ssc chsl salary"
+   ],
+   "tools": []
+  },
+  {
+   "slug": "ibps-po",
+   "name": "IBPS PO",
+   "fullName": "Common Recruitment Process for Probationary Officers / Management Trainees",
+   "body": "Institute of Banking Personnel Selection",
+   "category": "banking",
+   "level": "national",
+   "state": null,
+   "site": "https://www.ibps.in",
+   "mode": "Online prelims and mains, plus an interview",
+   "frequency": "Once a year",
+   "tagline": "7,365 officer posts across eleven public sector banks.",
+   "summary": "IBPS PO is the common recruitment for Probationary Officers and Management Trainees at eleven participating public sector banks. Three stages: a sectional-timed prelims, a mains with a descriptive paper, and an interview. Final selection weighs mains and interview at 80:20 — prelims marks are dropped entirely.",
+   "status": "in-progress",
+   "statusLabel": "Prelims next month",
+   "stage": "Notification out 1 July 2026. Prelims on 22 and 23 August 2026.",
+   "nextDate": "2026-08-22",
+   "nextEvent": "IBPS PO 2026 Prelims",
+   "alert": "IBPS reopened the application window for two days on 29 and 30 July 2026. Vacancies were revised upward from 6,715 to 7,365.",
+   "eligibility": [
+    [
+     "Qualification",
+     "A bachelor's degree in any discipline from a recognised university, with the degree in hand by the date specified in the notification."
+    ],
+    [
+     "Age",
+     "20 to 30 years. Relaxations: 3 years OBC, 5 years SC/ST, 10 years PwBD, 5 years for ex-servicemen."
+    ],
+    [
+     "Computer literacy",
+     "Operating and working knowledge of computers is required, evidenced by a certificate or by having studied computing at school or college."
+    ],
+    [
+     "Language",
+     "Proficiency in the official language of the state you apply for is preferred and is checked at the interview stage."
+    ],
+    [
+     "Attempts",
+     "No limit."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Stage",
+     "Section",
+     "Questions",
+     "Marks",
+     "Time"
+    ],
+    "rows": [
+     [
+      "Prelims",
+      "English Language",
+      "30",
+      "30",
+      "20 min"
+     ],
+     [
+      "Prelims",
+      "Quantitative Aptitude",
+      "35",
+      "35",
+      "20 min"
+     ],
+     [
+      "Prelims",
+      "Reasoning Ability",
+      "35",
+      "35",
+      "20 min"
+     ],
+     [
+      "Mains",
+      "Reasoning and Computer Aptitude",
+      "45",
+      "60",
+      "60 min"
+     ],
+     [
+      "Mains",
+      "General, Economy and Banking Awareness",
+      "40",
+      "40",
+      "35 min"
+     ],
+     [
+      "Mains",
+      "English Language",
+      "35",
+      "40",
+      "40 min"
+     ],
+     [
+      "Mains",
+      "Data Analysis and Interpretation",
+      "35",
+      "60",
+      "45 min"
+     ],
+     [
+      "Mains",
+      "English Descriptive — letter and essay",
+      "2",
+      "25",
+      "30 min"
+     ],
+     [
+      "Interview",
+      "Personality assessment",
+      "—",
+      "100",
+      "—"
+     ]
+    ],
+    "notes": [
+     "Prelims total: 100 questions, 100 marks, 60 minutes with sectional timing. It is qualifying only.",
+     "Mains total: 155 objective questions for 200 marks, plus 25 marks of descriptive writing.",
+     "Negative marking is 0.25 marks per wrong answer in both prelims and mains.",
+     "Final merit is 80% mains and 20% interview. Prelims marks are discarded once you qualify."
+    ]
+   },
+   "syllabus": [
+    [
+     "Quantitative Aptitude and Data Analysis",
+     "Simplification and approximation · Number series · Quadratic equations · Data interpretation in tables, bars, lines, pies and caselets · Arithmetic word problems · Data sufficiency"
+    ],
+    [
+     "Reasoning",
+     "Puzzles and seating arrangements — the largest block · Syllogism · Inequality · Blood relations · Direction sense · Order and ranking · Input-output · Coding-decoding · Data sufficiency · Critical reasoning"
+    ],
+    [
+     "English",
+     "Reading comprehension · Cloze test · Error detection · Sentence rearrangement · Fillers · Word usage and vocabulary · Paragraph completion"
+    ],
+    [
+     "General and Banking Awareness",
+     "Banking terms and abbreviations · RBI functions and monetary policy · Types of accounts and NPAs · Financial markets · Government schemes · Budget and Economic Survey · Current affairs of the past six months"
+    ],
+    [
+     "Computer Aptitude",
+     "Computer fundamentals · Operating systems · MS Office · Internet and networking · Database basics · Security and shortcuts"
+    ]
+   ],
+   "dates": [
+    [
+     "IBPS Calendar 2026-27 released",
+     "Jul 2026",
+     "done"
+    ],
+    [
+     "IBPS PO 2026 notification",
+     "1 Jul 2026",
+     "done"
+    ],
+    [
+     "Application reopened",
+     "29 – 30 Jul 2026",
+     "live"
+    ],
+    [
+     "Prelims exam",
+     "22 – 23 Aug 2026",
+     "next"
+    ],
+    [
+     "Prelims result",
+     "Expected Sep 2026",
+     "upcoming"
+    ],
+    [
+     "Mains exam",
+     "4 Oct 2026",
+     "upcoming"
+    ],
+    [
+     "Interview",
+     "Expected Dec 2026 – Jan 2027",
+     "upcoming"
+    ],
+    [
+     "Provisional allotment",
+     "Expected Jan – Feb 2027",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "7,365 vacancies across eleven participating public sector banks. SBI recruits separately.",
+    "head": [
+     "Stage",
+     "Indicative cutoff, General"
+    ],
+    "rows": [
+     [
+      "Prelims (out of 100)",
+      "Around 55 – 65, varies by state"
+     ],
+     [
+      "Mains (out of 200)",
+      "Around 75 – 95"
+     ],
+     [
+      "Final (out of 100, weighted)",
+      "Around 45 – 55"
+     ]
+    ],
+    "disclaimer": "IBPS publishes separate state-wise cutoffs. Competition varies sharply between states."
+   },
+   "careers": [
+    [
+     "Probationary Officer — JMGS-I",
+     "Two-year probation, then confirmation as an officer. Basic pay under the current bipartite settlement starts around ₹48,480, with gross monthly pay in the region of ₹85,000 depending on location and allowances."
+    ],
+    [
+     "Promotion path",
+     "Scale I to Scale II (Manager) to Scale III (Senior Manager) and upward. Promotion is faster than in most government services, and internal exams accelerate it further."
+    ],
+    [
+     "Postings",
+     "Anywhere across the bank's network. Expect rural or semi-urban branches early in your career."
+    ],
+    [
+     "Exit options",
+     "Banking experience feeds into NBFCs, fintech credit teams, insurance and financial services roles."
+    ]
+   ],
+   "faqs": [
+    [
+     "Do prelims marks count towards the final merit?",
+     "No. Once you clear prelims, those marks are discarded. Final selection is 80% mains and 20% interview."
+    ],
+    [
+     "How is IBPS PO different from SBI PO?",
+     "SBI runs its own separate recruitment with its own notification, pattern and higher pay. IBPS PO covers eleven other public sector banks under one common process."
+    ],
+    [
+     "Which section decides the outcome?",
+     "Reasoning puzzles and data interpretation. They carry the most marks and take the most time, and speed on them is what separates candidates."
+    ],
+    [
+     "Is there a bond or service commitment?",
+     "Most participating banks require a service bond. Read the notification for the bank you are allotted."
+    ]
+   ],
+   "keywords": [
+    "ibps po 2026 prelims",
+    "ibps po notification",
+    "ibps po exam date",
+    "bank po syllabus",
+    "ibps po salary",
+    "ibps calendar 2026"
+   ],
+   "tools": []
+  },
+  {
+   "slug": "ibps-clerk",
+   "name": "IBPS Clerk",
+   "fullName": "Common Recruitment Process for Customer Service Associates",
+   "body": "Institute of Banking Personnel Selection",
+   "category": "banking",
+   "level": "national",
+   "state": null,
+   "site": "https://www.ibps.in",
+   "mode": "Online prelims and mains. No interview.",
+   "frequency": "Once a year",
+   "tagline": "A public sector bank job with no interview stage — mains marks decide everything.",
+   "summary": "The Customer Service Associate recruitment, still universally called IBPS Clerk, is the entry-level clerical cadre role at eleven public sector banks. It is the one major banking exam with no interview: your mains score alone decides selection. Postings are state-specific, so you apply for one state and compete only against candidates for that state.",
+   "status": "upcoming",
+   "statusLabel": "Prelims in October",
+   "stage": "Prelims scheduled for 10 and 11 October 2026, mains on 27 December 2026.",
+   "nextDate": "2026-10-10",
+   "nextEvent": "IBPS Clerk 2026 Prelims",
+   "eligibility": [
+    [
+     "Qualification",
+     "A bachelor's degree in any discipline."
+    ],
+    [
+     "Age",
+     "20 to 28 years. Standard category relaxations apply."
+    ],
+    [
+     "Language",
+     "You must be proficient in the official language of the state or union territory you apply for — reading, writing and speaking. This is verified before appointment."
+    ],
+    [
+     "State choice",
+     "You may apply for only one state or union territory, and you compete only within it."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Stage",
+     "Section",
+     "Questions",
+     "Marks",
+     "Time"
+    ],
+    "rows": [
+     [
+      "Prelims",
+      "English Language",
+      "30",
+      "30",
+      "20 min"
+     ],
+     [
+      "Prelims",
+      "Numerical Ability",
+      "35",
+      "35",
+      "20 min"
+     ],
+     [
+      "Prelims",
+      "Reasoning Ability",
+      "35",
+      "35",
+      "20 min"
+     ],
+     [
+      "Mains",
+      "General and Financial Awareness",
+      "50",
+      "50",
+      "35 min"
+     ],
+     [
+      "Mains",
+      "General English",
+      "40",
+      "40",
+      "35 min"
+     ],
+     [
+      "Mains",
+      "Reasoning Ability and Computer Aptitude",
+      "50",
+      "60",
+      "45 min"
+     ],
+     [
+      "Mains",
+      "Quantitative Aptitude",
+      "50",
+      "50",
+      "45 min"
+     ]
+    ],
+    "notes": [
+     "Prelims: 100 questions, 100 marks, 60 minutes with sectional timing. Qualifying only.",
+     "Mains: 190 questions, 200 marks, 160 minutes.",
+     "Negative marking is 0.25 per wrong answer at both stages.",
+     "There is no interview. The mains score is the entire basis of selection."
+    ]
+   },
+   "syllabus": [
+    [
+     "Scope",
+     "The same four areas as IBPS PO, pitched slightly easier but with tighter time pressure."
+    ],
+    [
+     "Numerical Ability",
+     "Simplification, number series, arithmetic word problems, and basic data interpretation."
+    ],
+    [
+     "Reasoning",
+     "Puzzles, seating arrangement, syllogism, inequality, coding-decoding, blood relations and direction sense."
+    ],
+    [
+     "English",
+     "Reading comprehension, error spotting, fillers, cloze test and para jumbles."
+    ],
+    [
+     "Financial Awareness",
+     "Banking basics, RBI, government schemes, budget, and current affairs of the past six months."
+    ]
+   ],
+   "dates": [
+    [
+     "IBPS Clerk 2026 short notification",
+     "Jul 2026",
+     "done"
+    ],
+    [
+     "Prelims exam",
+     "10 – 11 Oct 2026",
+     "upcoming"
+    ],
+    [
+     "Prelims result",
+     "Expected Nov 2026",
+     "upcoming"
+    ],
+    [
+     "Mains exam",
+     "27 Dec 2026",
+     "upcoming"
+    ],
+    [
+     "Provisional allotment",
+     "Expected Mar – Apr 2027",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "Cutoffs are published state by state and differ widely — a mark that clears in one state may fall well short in another.",
+    "head": [
+     "Stage",
+     "Indicative range, General"
+    ],
+    "rows": [
+     [
+      "Prelims (out of 100)",
+      "Around 60 – 78 depending on state"
+     ],
+     [
+      "Mains (out of 200)",
+      "Around 70 – 95 depending on state"
+     ]
+    ],
+    "disclaimer": "Kerala, Tamil Nadu, Delhi and Uttar Pradesh usually see the highest cutoffs."
+   },
+   "careers": [
+    [
+     "Customer Service Associate",
+     "Branch counter operations, account services, cash handling and customer support. Basic pay under the current settlement starts around ₹24,050, with gross monthly pay near ₹40,000 depending on location."
+    ],
+    [
+     "Promotion",
+     "Clerk to Officer Scale I through internal promotion or the JAIIB and CAIIB professional exams, which also carry pay increments."
+    ],
+    [
+     "Work-life balance",
+     "Fixed branch hours and a stable posting within your chosen state make this one of the more predictable government-sector jobs."
+    ]
+   ],
+   "faqs": [
+    [
+     "Is there really no interview?",
+     "Correct. IBPS Clerk selection is based purely on the mains score."
+    ],
+    [
+     "Can I apply for more than one state?",
+     "No. One state or union territory only, and your language proficiency for it will be verified."
+    ],
+    [
+     "How fast is promotion to officer?",
+     "It varies by bank, but clearing JAIIB and CAIIB materially speeds it up and adds increments in the meantime."
+    ]
+   ],
+   "keywords": [
+    "ibps clerk 2026",
+    "ibps clerk exam date",
+    "ibps clerk cutoff",
+    "bank clerk syllabus",
+    "ibps csa recruitment"
+   ],
+   "tools": []
+  },
+  {
+   "slug": "sbi-po",
+   "name": "SBI PO",
+   "fullName": "State Bank of India — Probationary Officer",
+   "body": "State Bank of India",
+   "category": "banking",
+   "level": "national",
+   "state": null,
+   "site": "https://sbi.co.in/careers",
+   "mode": "Online prelims and mains, then a group exercise and interview",
+   "frequency": "Once a year",
+   "tagline": "The most competitive banking exam in the country, and the best paid.",
+   "summary": "SBI recruits its Probationary Officers separately from the IBPS common process. The pattern is close to IBPS PO but harder, particularly the mains, which includes a data analysis section that is notoriously time-pressured. The 2026 cycle offers 1,500 posts. Final selection weighs mains at 75% and the group exercise plus interview at 25%.",
+   "status": "in-progress",
+   "statusLabel": "Applications closed",
+   "stage": "Notification out 18 June 2026 for 1,500 posts. Applications closed 8 July 2026.",
+   "nextDate": null,
+   "nextEvent": "SBI PO 2026 Prelims (date to be announced)",
+   "eligibility": [
+    [
+     "Qualification",
+     "A bachelor's degree in any discipline. Final-year students may apply provided they produce proof of graduation by the specified date."
+    ],
+    [
+     "Age",
+     "21 to 30 years. Standard relaxations apply."
+    ],
+    [
+     "Attempts",
+     "General and EWS candidates get four attempts, OBC seven, SC/ST unlimited within the age limit."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Stage",
+     "Section",
+     "Questions",
+     "Marks",
+     "Time"
+    ],
+    "rows": [
+     [
+      "Prelims",
+      "English Language",
+      "30",
+      "30",
+      "20 min"
+     ],
+     [
+      "Prelims",
+      "Quantitative Aptitude",
+      "35",
+      "35",
+      "20 min"
+     ],
+     [
+      "Prelims",
+      "Reasoning Ability",
+      "35",
+      "35",
+      "20 min"
+     ],
+     [
+      "Mains",
+      "Reasoning and Computer Aptitude",
+      "40",
+      "50",
+      "50 min"
+     ],
+     [
+      "Mains",
+      "Data Analysis and Interpretation",
+      "30",
+      "50",
+      "45 min"
+     ],
+     [
+      "Mains",
+      "General, Economy and Banking Awareness",
+      "60",
+      "60",
+      "45 min"
+     ],
+     [
+      "Mains",
+      "English Language",
+      "40",
+      "40",
+      "40 min"
+     ],
+     [
+      "Mains",
+      "Descriptive — letter and essay",
+      "2",
+      "50",
+      "30 min"
+     ],
+     [
+      "Phase 3",
+      "Group exercise and interview",
+      "—",
+      "50",
+      "—"
+     ]
+    ],
+    "notes": [
+     "Prelims is qualifying only.",
+     "Mains objective is 200 marks plus 50 marks descriptive, for 250 total.",
+     "Final merit: 75% mains, 25% group exercise and interview.",
+     "The Data Analysis section is the hardest part of any mainstream banking exam."
+    ]
+   },
+   "syllabus": [
+    [
+     "Scope",
+     "Same four areas as IBPS PO, but the data analysis and reasoning questions are consistently harder and the descriptive paper carries double the weight."
+    ],
+    [
+     "Data Analysis",
+     "Complex caselets, missing-data DI, arithmetic DI and data sufficiency."
+    ],
+    [
+     "Descriptive",
+     "One formal or informal letter and one essay, usually on a banking, economic or social topic."
+    ]
+   ],
+   "dates": [
+    [
+     "SBI PO 2026 notification",
+     "18 Jun 2026",
+     "done"
+    ],
+    [
+     "Application window",
+     "18 Jun – 8 Jul 2026",
+     "done"
+    ],
+    [
+     "Prelims exam",
+     "To be announced",
+     "upcoming"
+    ],
+    [
+     "Mains exam",
+     "To be announced",
+     "upcoming"
+    ],
+    [
+     "Phase 3 — group exercise and interview",
+     "To be announced",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "1,500 posts in the 2026 cycle.",
+    "head": [
+     "Stage",
+     "Indicative cutoff, General"
+    ],
+    "rows": [
+     [
+      "Prelims (out of 100)",
+      "Around 55 – 65"
+     ],
+     [
+      "Mains (out of 250)",
+      "Around 95 – 115"
+     ]
+    ],
+    "disclaimer": "SBI publishes state-wise and category-wise cutoffs with the result."
+   },
+   "careers": [
+    [
+     "Probationary Officer at SBI",
+     "Two-year probation covering branch banking, credit and operations. Pay and perquisites are the highest among public sector banks."
+    ],
+    [
+     "Fast-track roles",
+     "Strong performers move into credit, treasury, international banking and the bank's analytics functions."
+    ],
+    [
+     "Scale",
+     "SBI's size means more specialised roles and more internal mobility than at smaller public sector banks."
+    ]
+   ],
+   "faqs": [
+    [
+     "Is SBI part of IBPS?",
+     "No. SBI conducts its own recruitment with its own notification and pattern."
+    ],
+    [
+     "How many attempts do I get?",
+     "Four for General and EWS, seven for OBC, unlimited for SC/ST within the age limit."
+    ],
+    [
+     "Is the descriptive paper evaluated for everyone?",
+     "Only for candidates who clear the objective mains cutoff."
+    ]
+   ],
+   "keywords": [
+    "sbi po 2026",
+    "sbi po notification",
+    "sbi po exam date",
+    "sbi po salary",
+    "sbi po vs ibps po"
+   ],
+   "tools": []
+  },
+  {
+   "slug": "cat",
+   "name": "CAT",
+   "fullName": "Common Admission Test",
+   "body": "Indian Institutes of Management, on rotation — IIM Indore for 2026",
+   "category": "management",
+   "level": "national",
+   "state": null,
+   "site": "https://iimcat.ac.in",
+   "mode": "Computer-based test in three slots on a single day",
+   "frequency": "Once a year",
+   "tagline": "One paper, 120 minutes, and the only door to all 22 IIMs.",
+   "summary": "CAT is India's principal MBA entrance test. Scores are accepted by all 22 IIMs and more than 1,300 other business schools including FMS Delhi, and the management departments at IIT Bombay and IIT Delhi. The exam is a single two-hour paper split into three strictly timed 40-minute sections that you cannot move between.",
+   "status": "open-soon",
+   "statusLabel": "Registration opens 3 August",
+   "stage": "Notification released 25 July 2026. Registration runs 3 August to 15 September 2026.",
+   "nextDate": "2026-08-03",
+   "nextEvent": "CAT 2026 registration opens at 10:00 am",
+   "alert": "CAT 2026 will be conducted by IIM Indore on Sunday 29 November 2026. Registration opens 3 August at 10:00 am and closes 15 September at 5:00 pm. The fee has risen to ₹2,700 for General and ₹1,350 for reserved categories.",
+   "eligibility": [
+    [
+     "Qualification",
+     "A bachelor's degree with at least 50% marks, or 45% for SC, ST and PwD candidates."
+    ],
+    [
+     "Final-year students",
+     "Eligible to apply, subject to producing the degree at the time of admission."
+    ],
+    [
+     "Age",
+     "No age limit."
+    ],
+    [
+     "Attempts",
+     "No limit on the number of attempts."
+    ],
+    [
+     "Professional qualifications",
+     "CA, CS and ICWA holders may apply on the basis of those qualifications."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Section",
+     "Questions (approx)",
+     "Time",
+     "Note"
+    ],
+    "rows": [
+     [
+      "Verbal Ability and Reading Comprehension",
+      "24",
+      "40 min",
+      "Reading comprehension dominates"
+     ],
+     [
+      "Data Interpretation and Logical Reasoning",
+      "22",
+      "40 min",
+      "Set-based, usually the hardest section"
+     ],
+     [
+      "Quantitative Ability",
+      "22",
+      "40 min",
+      "Arithmetic-heavy in recent years"
+     ],
+     [
+      "Total",
+      "68",
+      "120 min",
+      "Sections are attempted in a fixed order"
+     ]
+    ],
+    "notes": [
+     "Marking: +3 for a correct answer, −1 for a wrong MCQ. Type-in-the-answer questions carry no negative marking.",
+     "You cannot move between sections. Each section locks after its 40 minutes.",
+     "Results are reported as scaled scores and percentiles, normalised across the three slots.",
+     "Conducted across roughly 170 test cities."
+    ]
+   },
+   "syllabus": [
+    [
+     "Verbal Ability and Reading Comprehension",
+     "Four to five reading comprehension passages · Para jumbles · Para summary · Odd sentence out · Sentence completion. There is no formal grammar or vocabulary section in the current pattern."
+    ],
+    [
+     "Data Interpretation and Logical Reasoning",
+     "Tables, bar and line graphs, caselets · Arrangements and matching · Venn diagrams · Games and tournaments · Binary logic · Quantitative reasoning sets"
+    ],
+    [
+     "Quantitative Ability",
+     "Arithmetic — percentages, ratios, time and work, time speed distance, mixtures, profit and loss · Algebra — equations, inequalities, functions, logarithms · Geometry and mensuration · Number systems · Modern maths — permutations, combinations, probability, sequences"
+    ]
+   ],
+   "dates": [
+    [
+     "CAT 2026 notification",
+     "25 Jul 2026",
+     "done"
+    ],
+    [
+     "Registration opens",
+     "3 Aug 2026, 10:00 am",
+     "next"
+    ],
+    [
+     "Registration closes",
+     "15 Sep 2026, 5:00 pm",
+     "upcoming"
+    ],
+    [
+     "Admit card download",
+     "4 – 29 Nov 2026",
+     "upcoming"
+    ],
+    [
+     "CAT 2026 exam",
+     "29 Nov 2026, three slots",
+     "upcoming"
+    ],
+    [
+     "Answer key and response sheet",
+     "Expected early Dec 2026",
+     "upcoming"
+    ],
+    [
+     "Result",
+     "First week of Jan 2027",
+     "upcoming"
+    ],
+    [
+     "IIM shortlists and interviews",
+     "Jan – Apr 2027",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "IIMs shortlist on percentile, but the final call depends on academic profile, work experience, gender and academic diversity, and the interview.",
+    "head": [
+     "Institute tier",
+     "Indicative percentile for a General category call"
+    ],
+    "rows": [
+     [
+      "IIM Ahmedabad, Bangalore, Calcutta",
+      "99 – 99.5+"
+     ],
+     [
+      "IIM Lucknow, Kozhikode, Indore",
+      "98 – 99"
+     ],
+     [
+      "Newer IIMs",
+      "90 – 96"
+     ],
+     [
+      "FMS Delhi, SPJIMR, MDI",
+      "96 – 99"
+     ],
+     [
+      "Good non-IIM B-schools",
+      "80 – 90"
+     ]
+    ],
+    "disclaimer": "Percentile is only the shortlist filter. Composite scores at the older IIMs weight Class 10 and 12 marks, graduation marks and work experience heavily."
+   },
+   "careers": [
+    [
+     "MBA from a top IIM",
+     "Consulting, investment banking, product management, general management. Average packages at the older IIMs sit in the ₹28–35 LPA range."
+    ],
+    [
+     "MBA from a newer IIM or good private school",
+     "Sales and marketing, operations, analytics, banking and financial services roles, typically ₹12–20 LPA."
+    ],
+    [
+     "Beyond placements",
+     "The alumni network and the two-year signalling value matter as much as the first job for most candidates."
+    ]
+   ],
+   "faqs": [
+    [
+     "Who is conducting CAT 2026?",
+     "IIM Indore, on 29 November 2026."
+    ],
+    [
+     "Can I switch between sections?",
+     "No. Each section is locked to its own 40 minutes and you must attempt them in the given order."
+    ],
+    [
+     "Does a 99 percentile guarantee an IIM seat?",
+     "No. The older IIMs build a composite score that also weights your Class 10 and 12 marks, graduation percentage, gender and academic diversity, and work experience."
+    ],
+    [
+     "How much preparation time do I need?",
+     "Six to eight months of consistent work is typical for a working professional. Full-time candidates often do it in four to five."
+    ]
+   ],
+   "keywords": [
+    "cat 2026 registration",
+    "cat exam date 2026",
+    "cat syllabus",
+    "iim cat notification",
+    "cat percentile",
+    "mba entrance exam"
+   ],
+   "tools": []
+  },
+  {
+   "slug": "clat",
+   "name": "CLAT",
+   "fullName": "Common Law Admission Test",
+   "body": "Consortium of National Law Universities",
+   "category": "law",
+   "level": "national",
+   "state": null,
+   "site": "https://consortiumofnlus.ac.in",
+   "mode": "Offline, pen and paper, single shift",
+   "frequency": "Once a year, in December",
+   "tagline": "Two hours, 120 questions, and a place at one of 27 National Law Universities.",
+   "summary": "CLAT is the common entrance test for the five-year integrated law programmes and the LLM programmes at 27 National Law Universities. The UG paper is entirely comprehension-driven — every section gives you a passage and asks you to reason from it, so reading speed matters more than memorised legal knowledge. Note that NLU Delhi runs its own separate test, AILET.",
+   "status": "open-soon",
+   "statusLabel": "Registration opens 3 August",
+   "stage": "CLAT 2027 notification out 22 July 2026. Registration 3 August to 31 October 2026, exam 6 December 2026.",
+   "nextDate": "2026-08-03",
+   "nextEvent": "CLAT 2027 registration opens",
+   "alert": "CLAT 2027 will be held on Sunday 6 December 2026 from 2:00 pm to 4:00 pm. The Consortium has confirmed there is no change to the syllabus or exam pattern. An Expert Committee report on the exam's format is open for public feedback until 31 August 2026, but any resulting changes would apply from CLAT 2028.",
+   "eligibility": [
+    [
+     "UG qualification",
+     "Passed or appearing in Class 12 with at least 45% marks, or 40% for SC and ST candidates."
+    ],
+    [
+     "PG qualification",
+     "An LLB or equivalent with at least 50% marks, or 45% for SC, ST and PwD candidates."
+    ],
+    [
+     "Age",
+     "No upper age limit for either programme."
+    ],
+    [
+     "Attempts",
+     "No limit."
+    ],
+    [
+     "Results awaited",
+     "Candidates awaiting Class 12 results may apply, but must produce the qualifying certificate at admission."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Section",
+     "Questions (approx)",
+     "Weight"
+    ],
+    "rows": [
+     [
+      "English Language",
+      "22 – 26",
+      "20%"
+     ],
+     [
+      "Current Affairs including General Knowledge",
+      "28 – 32",
+      "25%"
+     ],
+     [
+      "Legal Reasoning",
+      "28 – 32",
+      "25%"
+     ],
+     [
+      "Logical Reasoning",
+      "22 – 26",
+      "20%"
+     ],
+     [
+      "Quantitative Techniques",
+      "10 – 14",
+      "10%"
+     ]
+    ],
+    "notes": [
+     "Total: 120 questions, 120 marks, 120 minutes.",
+     "Marking: +1 for a correct answer, −0.25 for a wrong answer.",
+     "Every section is passage-based. You are given the legal principle or the factual context and must reason from it — no prior legal study is assumed.",
+     "The paper is offline, on OMR. Practise the transfer of answers under time pressure."
+    ]
+   },
+   "syllabus": [
+    [
+     "English Language",
+     "Comprehension passages of 450 words drawn from contemporary and historical writing, tested on inference, main idea, tone, argument and vocabulary in context."
+    ],
+    [
+     "Current Affairs and GK",
+     "News-based passages covering national and international events, arts and culture, historical events of continuing significance, and current affairs from roughly the past twelve months."
+    ],
+    [
+     "Legal Reasoning",
+     "Passages on legal matters, public policy or moral philosophy. You apply the stated rules to new facts. No prior knowledge of law is required."
+    ],
+    [
+     "Logical Reasoning",
+     "Short argumentative passages tested on premise and conclusion identification, analogies, assumptions, inference and argument evaluation."
+    ],
+    [
+     "Quantitative Techniques",
+     "Short data sets — graphs, tables or text — tested on ratios, percentages, averages, mensuration and basic algebra at Class 10 level."
+    ]
+   ],
+   "dates": [
+    [
+     "CLAT 2027 notification",
+     "22 Jul 2026",
+     "done"
+    ],
+    [
+     "Registration opens",
+     "3 Aug 2026",
+     "next"
+    ],
+    [
+     "Registration closes",
+     "31 Oct 2026",
+     "upcoming"
+    ],
+    [
+     "Correction window",
+     "Nov 2026",
+     "upcoming"
+    ],
+    [
+     "Admit card",
+     "Expected last week of Nov 2026",
+     "upcoming"
+    ],
+    [
+     "CLAT 2027 exam",
+     "6 Dec 2026, 2:00 – 4:00 pm",
+     "upcoming"
+    ],
+    [
+     "Provisional answer key",
+     "Expected Dec 2026",
+     "upcoming"
+    ],
+    [
+     "Result",
+     "Expected Dec 2026",
+     "upcoming"
+    ],
+    [
+     "Counselling",
+     "Expected from late Dec 2026",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "Around 88,000 candidates sat CLAT 2026 out of roughly 92,000 registrations across UG and PG.",
+    "head": [
+     "National Law University",
+     "Indicative closing rank, General, All India"
+    ],
+    "rows": [
+     [
+      "NLSIU Bangalore",
+      "Under 120"
+     ],
+     [
+      "NALSAR Hyderabad",
+      "Under 300"
+     ],
+     [
+      "WBNUJS Kolkata, NLU Jodhpur",
+      "Under 700"
+     ],
+     [
+      "GNLU Gandhinagar, NLIU Bhopal",
+      "Under 1,200"
+     ],
+     [
+      "Newer NLUs",
+      "3,000 – 12,000"
+     ]
+    ],
+    "disclaimer": "State domicile categories at individual NLUs close at much higher ranks than the All India category."
+   },
+   "careers": [
+    [
+     "Corporate law firm practice",
+     "Tier-one firms recruit heavily from the top NLUs, with day-zero offers in the ₹16–20 LPA range."
+    ],
+    [
+     "Litigation",
+     "Chamber practice under a senior advocate, then independent practice. Slower to pay off but the route to the bar and eventually the bench."
+    ],
+    [
+     "Judicial services",
+     "State judiciary exams after the LLB, leading to appointment as a Civil Judge."
+    ],
+    [
+     "In-house counsel",
+     "Legal teams at companies, banks and technology firms."
+    ],
+    [
+     "Policy and academia",
+     "Think tanks, legislative research, LLM programmes and teaching."
+    ]
+   ],
+   "faqs": [
+    [
+     "Is NLU Delhi covered by CLAT?",
+     "No. NLU Delhi conducts its own entrance test, AILET, with a separate application and schedule."
+    ],
+    [
+     "Do I need to know law already?",
+     "No. Legal reasoning passages give you the principle and ask you to apply it. Prior legal study confers little advantage."
+    ],
+    [
+     "Is the syllabus changing for 2027?",
+     "No. The Consortium has confirmed the UG and PG syllabus and pattern are unchanged. The Expert Committee report under review would affect CLAT 2028 at the earliest."
+    ],
+    [
+     "How many NLUs participate?",
+     "27 National Law Universities use CLAT for admission."
+    ]
+   ],
+   "keywords": [
+    "clat 2027 registration",
+    "clat exam date",
+    "clat syllabus",
+    "nlu admission",
+    "clat cutoff",
+    "law entrance exam"
+   ],
+   "tools": []
+  },
+  {
+   "slug": "gate",
+   "name": "GATE",
+   "fullName": "Graduate Aptitude Test in Engineering",
+   "body": "IISc Bangalore and the seven older IITs, on rotation",
+   "category": "engineering",
+   "level": "national",
+   "state": null,
+   "site": "https://gate.iitkgp.ac.in",
+   "mode": "Computer-based test",
+   "frequency": "Once a year, across weekends in February",
+   "tagline": "A postgraduate entrance test that doubles as the recruitment filter for most PSUs.",
+   "summary": "GATE tests a full undergraduate engineering or science curriculum in a single three-hour paper. The score serves two purposes: admission to MTech and MS programmes at IITs, IISc, NITs and other institutes with a monthly stipend, and recruitment at public sector undertakings including IOCL, NTPC, BHEL, GAIL and ONGC. The score stays valid for three years.",
+   "status": "open-soon",
+   "statusLabel": "Registration opens 14 August",
+   "stage": "GATE 2027 registration opens 14 August 2026. Exam across six days in February 2027.",
+   "nextDate": "2026-08-14",
+   "nextEvent": "GATE 2027 registration opens",
+   "eligibility": [
+    [
+     "Qualification",
+     "Currently in the third year or higher of any undergraduate degree, or already holding a degree in engineering, technology, architecture, science, commerce or arts."
+    ],
+    [
+     "Age",
+     "No age limit."
+    ],
+    [
+     "Attempts",
+     "No limit."
+    ],
+    [
+     "Papers",
+     "You may appear in up to two papers from the permitted combinations."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Component",
+     "Marks",
+     "Detail"
+    ],
+    "rows": [
+     [
+      "General Aptitude",
+      "15",
+      "Verbal and numerical aptitude, common to all papers"
+     ],
+     [
+      "Subject / Engineering Mathematics",
+      "85",
+      "Paper-specific"
+     ],
+     [
+      "Total",
+      "100",
+      "65 questions, 3 hours"
+     ]
+    ],
+    "notes": [
+     "Question types: multiple choice, multiple select, and numerical answer type.",
+     "MCQs carry negative marking — one-third of the marks for 1-mark questions and two-thirds for 2-mark questions.",
+     "Multiple select and numerical answer questions carry no negative marking.",
+     "Thirty papers are offered. The score is valid for three years from the date of the result."
+    ]
+   },
+   "syllabus": [
+    [
+     "Structure",
+     "Each of the 30 papers has its own syllabus, published on the official GATE site. General Aptitude is common to all."
+    ],
+    [
+     "General Aptitude",
+     "Verbal aptitude — grammar, vocabulary, reading and narrative sequencing. Quantitative aptitude — data interpretation, numerical computation, mensuration and elementary statistics. Analytical and spatial aptitude."
+    ],
+    [
+     "Engineering Mathematics",
+     "Linear algebra, calculus, differential equations, complex variables, probability and statistics, and numerical methods. Present in most engineering papers."
+    ],
+    [
+     "Popular papers",
+     "Computer Science and Information Technology (CS), Mechanical (ME), Electrical (EE), Electronics and Communication (EC), Civil (CE), Instrumentation (IN), Chemical (CH), Data Science and Artificial Intelligence (DA)."
+    ]
+   ],
+   "dates": [
+    [
+     "GATE 2027 registration opens",
+     "14 Aug 2026",
+     "next"
+    ],
+    [
+     "Registration closes",
+     "Expected Sep – Oct 2026",
+     "upcoming"
+    ],
+    [
+     "Admit card",
+     "Expected Jan 2027",
+     "upcoming"
+    ],
+    [
+     "GATE 2027 exam",
+     "6, 7, 13, 14, 20 and 21 Feb 2027",
+     "upcoming"
+    ],
+    [
+     "Answer key",
+     "Expected Feb 2027",
+     "upcoming"
+    ],
+    [
+     "Result",
+     "Expected Mar 2027",
+     "upcoming"
+    ],
+    [
+     "COAP and CCMT counselling",
+     "Expected Mar – Jun 2027",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "Qualifying marks are far lower than the score you need for an IIT MTech seat or a PSU shortlist.",
+    "head": [
+     "Target",
+     "Indicative requirement"
+    ],
+    "rows": [
+     [
+      "Qualifying (General, CS)",
+      "Around 25 – 30 out of 100"
+     ],
+     [
+      "IIT MTech admission",
+      "Score above 700 – 800 on the GATE scale, i.e. AIR in the low hundreds"
+     ],
+     [
+      "NIT MTech admission",
+      "GATE score of roughly 450 – 650"
+     ],
+     [
+      "PSU recruitment",
+      "Usually top 1–2% of the paper — varies sharply by PSU and discipline"
+     ]
+    ],
+    "disclaimer": "PSUs publish their own cutoffs after each recruitment notification and these vary by company and by year."
+   },
+   "careers": [
+    [
+     "MTech or MS at an IIT or IISc",
+     "Two years with an MHRD assistantship — currently ₹12,400 per month for GATE-qualified candidates."
+    ],
+    [
+     "PSU recruitment",
+     "Engineer or Management Trainee roles at IOCL, NTPC, BHEL, GAIL, ONGC, PowerGrid and others. Entry CTC typically ₹12–18 LPA."
+    ],
+    [
+     "Research",
+     "A route into PhD programmes and into national laboratories such as BARC, DRDO and ISRO."
+    ],
+    [
+     "Teaching",
+     "A GATE score plus an MTech is the standard entry into assistant professor roles at engineering colleges."
+    ]
+   ],
+   "faqs": [
+    [
+     "How long is a GATE score valid?",
+     "Three years from the date the result is announced."
+    ],
+    [
+     "Can I appear in two papers?",
+     "Yes, in one cycle you may sit up to two papers, but only from the permitted combinations listed in the brochure."
+    ],
+    [
+     "Do all PSUs recruit through GATE?",
+     "Most major ones do, but each publishes its own separate notification with its own cutoff and selection process. Qualifying GATE does not automatically put you in any PSU pool."
+    ],
+    [
+     "Is negative marking applied to numerical answer questions?",
+     "No. Only multiple choice questions carry negative marking."
+    ]
+   ],
+   "keywords": [
+    "gate 2027 registration",
+    "gate exam date 2027",
+    "gate syllabus",
+    "gate cutoff",
+    "psu recruitment through gate",
+    "mtech admission"
+   ],
+   "tools": []
+  },
+  {
+   "slug": "cuet-ug",
+   "name": "CUET UG",
+   "fullName": "Common University Entrance Test (Undergraduate)",
+   "body": "National Testing Agency (NTA)",
+   "category": "university",
+   "level": "national",
+   "state": null,
+   "site": "https://cuet.nta.nic.in",
+   "mode": "Computer-based test across multiple phases",
+   "frequency": "Once a year",
+   "tagline": "One test for undergraduate admission at 250-plus universities, including Delhi University and BHU.",
+   "summary": "CUET UG replaced board-marks cutoffs at central universities. You pick up to five subjects matched to the courses you want, sit a computer-based test in May or June, and then apply separately to each university's own counselling process. Delhi University runs CSAS, BHU and other universities run their own portals — the test score alone does not get you a seat.",
+   "status": "counselling",
+   "statusLabel": "University counselling underway",
+   "stage": "CUET UG 2026 result out 23 June 2026. Participating universities are running their own counselling rounds.",
+   "nextDate": null,
+   "nextEvent": "University-wise counselling rounds continue",
+   "eligibility": [
+    [
+     "Qualification",
+     "Passed or appearing in Class 12 or an equivalent examination."
+    ],
+    [
+     "Age",
+     "No age limit set by NTA. Individual universities may apply their own criteria."
+    ],
+    [
+     "Subject choice",
+     "Up to five subjects, which must match what your target courses require. Check each university's prospectus before locking your choices."
+    ],
+    [
+     "Attempts",
+     "No limit, but the exam runs only once a year."
+    ]
+   ],
+   "pattern": {
+    "head": [
+     "Component",
+     "Questions",
+     "Time",
+     "Marking"
+    ],
+    "rows": [
+     [
+      "Each chosen subject",
+      "50, all compulsory",
+      "60 minutes",
+      "+5 correct, −1 wrong"
+     ],
+     [
+      "General Test",
+      "50",
+      "60 minutes",
+      "+5 correct, −1 wrong"
+     ]
+    ],
+    "notes": [
+     "You may select up to five subjects in total, drawn from 37 available options.",
+     "Domain subjects follow the NCERT Class 12 syllabus.",
+     "The General Test covers general knowledge, current affairs, reasoning, numerical ability and logical reasoning.",
+     "Scores are normalised across shifts where a subject runs in more than one session."
+    ]
+   },
+   "syllabus": [
+    [
+     "Domain subjects",
+     "Based on the NCERT Class 12 syllabus for each subject. There are 37 to choose from, covering sciences, commerce, humanities, languages and vocational areas."
+    ],
+    [
+     "General Test",
+     "General knowledge · Current affairs · General mental ability · Numerical ability · Quantitative reasoning at Class 8 level · Logical and analytical reasoning"
+    ],
+    [
+     "Languages",
+     "13 languages available as a main language paper, plus 20 more as additional language options."
+    ]
+   ],
+   "dates": [
+    [
+     "CUET UG 2026 exam",
+     "11 – 31 May and 6 – 7 Jun 2026",
+     "done"
+    ],
+    [
+     "Provisional answer key",
+     "9 Jun 2026",
+     "done"
+    ],
+    [
+     "Final answer key",
+     "21 Jun 2026",
+     "done"
+    ],
+    [
+     "Result",
+     "23 Jun 2026",
+     "done"
+    ],
+    [
+     "DU CSAS Round 1 seat allotment",
+     "16 Jul 2026",
+     "done"
+    ],
+    [
+     "University counselling rounds",
+     "Ongoing through Jul – Aug 2026",
+     "live"
+    ],
+    [
+     "CUET UG 2027 registration",
+     "Expected Jan 2027",
+     "upcoming"
+    ],
+    [
+     "CUET UG 2027 exam",
+     "Expected May – Jun 2027",
+     "upcoming"
+    ]
+   ],
+   "cutoff": {
+    "note": "NTA does not publish a CUET cutoff. Each participating university releases its own course-wise and category-wise cutoff after the result.",
+    "head": [
+     "University tier",
+     "Indicative requirement for popular courses"
+    ],
+    "rows": [
+     [
+      "Delhi University — top colleges, Economics/BCom Hons",
+      "Very high normalised scores, close to full marks in the relevant subjects"
+     ],
+     [
+      "Delhi University — other colleges",
+      "Varies widely by college and course"
+     ],
+     [
+      "BHU, JMI, AMU, Allahabad",
+      "Published per course, in four or more rounds"
+     ],
+     [
+      "State and private participating universities",
+      "Generally far more accessible"
+     ]
+    ],
+    "disclaimer": "Because cutoffs are set by each university and not by NTA, check the specific university's admission portal rather than any aggregated list."
+   },
+   "careers": [
+    [
+     "Undergraduate degrees at central universities",
+     "BA, BCom, BSc, BBA and integrated programmes at Delhi University, BHU, JNU, AMU, Jamia and more than 250 participating institutions."
+    ],
+    [
+     "Onward paths",
+     "A central university degree feeds into CAT for management, UPSC and state PSC preparation, CUET PG, and postgraduate study abroad."
+    ]
+   ],
+   "faqs": [
+    [
+     "Does a good CUET score guarantee admission?",
+     "No. You must separately register for each university's counselling — DU's CSAS, BHU's portal and so on. The score is only the qualifying input."
+    ],
+    [
+     "How many subjects should I take?",
+     "Up to five. Choose based on what your target courses actually require, not on what you find easiest — a subject your course does not accept is wasted effort."
+    ],
+    [
+     "Is there negative marking?",
+     "Yes. Each correct answer is +5 and each wrong answer is −1."
+    ],
+    [
+     "Is CUET held more than once a year?",
+     "No. CUET UG runs once annually, usually in May and June."
+    ]
+   ],
+   "keywords": [
+    "cuet ug 2027",
+    "cuet result 2026",
+    "cuet exam date",
+    "du csas admission",
+    "cuet syllabus",
+    "central university admission"
+   ],
+   "tools": []
+  }
+ ],
+ "guides": [
+  {
+   "slug": "ssc-cgl-vs-bank-po",
+   "title": "SSC CGL or Bank PO: which one should you actually pick?",
+   "category": "Choosing an exam",
+   "readTime": "8 min",
+   "updated": "2026-07-29",
+   "excerpt": "Both are graduate-level, both are winnable in a year of honest work, and they pull your life in opposite directions. Here is the comparison that matters.",
+   "related": [
+    "ssc-cgl",
+    "ibps-po",
+    "ibps-clerk",
+    "sbi-po"
+   ],
+   "keywords": [
+    "ssc cgl vs bank po",
+    "ssc cgl or ibps po",
+    "which government job is better",
+    "ssc vs banking"
+   ],
+   "blocks": [
+    {
+     "p": "This is the most common fork for a graduate who wants a government job and does not want to spend four years on UPSC. Both SSC CGL and IBPS PO ask for a bachelor's degree in any subject, both are decided by a computer-based exam, and both are realistically clearable in twelve to eighteen months of serious preparation. The difference is not difficulty. It is what your life looks like five years later."
+    },
+    {
+     "h": "The syllabus overlap is larger than people think"
+    },
+    {
+     "p": "Quantitative aptitude, reasoning and English are common to both. If you have prepared for one, you have covered roughly sixty per cent of the other. The genuinely different parts are the ones that decide your outcome."
+    },
+    {
+     "table": {
+      "head": [
+       "Area",
+       "SSC CGL",
+       "IBPS PO"
+      ],
+      "rows": [
+       [
+        "Maths",
+        "Arithmetic plus algebra, geometry, mensuration and trigonometry",
+        "Arithmetic and heavy data interpretation. No geometry or trigonometry"
+       ],
+       [
+        "Reasoning",
+        "Verbal and non-verbal, mostly single questions",
+        "Puzzles and seating arrangements, mostly long sets"
+       ],
+       [
+        "English",
+        "Grammar and vocabulary heavy",
+        "Comprehension and usage heavy, lighter on rules"
+       ],
+       [
+        "The fourth subject",
+        "General Awareness — static GK, history, polity, science",
+        "Banking and economy awareness plus current affairs"
+       ],
+       [
+        "Speed demanded",
+        "High, and now with 15-minute sectional locks",
+        "Very high. Puzzle sets punish slow readers"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Pay, and how it moves"
+    },
+    {
+     "p": "Bank PO starts higher. SSC CGL's best posts catch up and then depend heavily on which post you get."
+    },
+    {
+     "table": {
+      "head": [
+       "",
+       "SSC CGL",
+       "IBPS PO"
+      ],
+      "rows": [
+       [
+        "Entry basic pay",
+        "₹25,500 (Level 4) to ₹47,600 (Level 8, AAO)",
+        "Around ₹48,480 under the current bipartite settlement"
+       ],
+       [
+        "Approximate gross at entry",
+        "₹45,000 – ₹80,000 depending on post and city",
+        "Around ₹85,000 including allowances"
+       ],
+       [
+        "First promotion",
+        "Departmental, often 4–8 years, varies enormously by department",
+        "Scale I to Scale II typically in 3–5 years, faster with JAIIB and CAIIB"
+       ],
+       [
+        "Ceiling",
+        "Group B gazetted posts can reach Under Secretary and above over a career",
+        "Scale VII and above; General Manager and Executive Director are realistic for strong performers"
+       ]
+      ]
+     }
+    },
+    {
+     "note": "Figures are indicative and change with pay commissions and bipartite settlements. Always check the current notification for exact pay scales."
+    },
+    {
+     "h": "The part nobody tells you: what the day looks like"
+    },
+    {
+     "ul": [
+      "A bank PO spends the first years at a branch. That means customer-facing work, cash and clearing, loan files, targets on deposits and insurance cross-selling, and Saturdays that are working days two weeks a month. Rural and semi-urban postings are near-certain early on.",
+      "An SSC CGL officer's day depends entirely on the post. An Assistant Section Officer in a Delhi ministry pushes files and has predictable hours. An Income Tax Inspector does field verification and survey work. A CBI Sub-Inspector investigates. An Auditor sits with ledgers.",
+      "Transfer risk is the sharpest difference. Bank officers move within a bank's network, often across states. Many SSC CGL posts are effectively static, especially ministry postings in Delhi."
+     ]
+    },
+    {
+     "h": "Competition, honestly compared"
+    },
+    {
+     "p": "SSC CGL 2026 has 12,256 vacancies. IBPS PO 2026 has 7,365. But SSC CGL draws several times the applicants, and its cutoffs sit high because the paper is speed-based rather than difficulty-based. IBPS PO's prelims is easier to clear and its mains is where most candidates fall away. Neither is a soft option."
+    },
+    {
+     "p": "One real structural advantage of banking: there are more shots per year. IBPS PO, IBPS Clerk, IBPS RRB PO, IBPS RRB Clerk, SBI PO, SBI Clerk and RBI Assistant all run on similar syllabus in a single cycle. SSC CGL is once a year, with SSC CHSL and SSC CPO as the nearest siblings."
+    },
+    {
+     "h": "So which one"
+    },
+    {
+     "verdict": [
+      [
+       "Pick SSC CGL if",
+       "you want a posting you can settle into, you are willing to wait for a single annual attempt, you are comfortable with static GK, and a Delhi ministry desk or an Income Tax field role appeals to you more than a branch counter."
+      ],
+      [
+       "Pick Bank PO if",
+       "you want to start earning more sooner, you can handle sales targets and customer-facing pressure, you want multiple attempts within one year of preparation, and you would rather be promoted on merit and internal exams than wait for a departmental vacancy."
+      ],
+      [
+       "Prepare for both if",
+       "you are in your first year of preparation. The overlap is large enough that this costs you perhaps twenty per cent extra effort and roughly doubles your chances of converting something."
+      ]
+     ]
+    },
+    {
+     "h": "A practical sequencing that works"
+    },
+    {
+     "ul": [
+      "Months 1–6: build the shared base — arithmetic, reasoning fundamentals, English grammar and comprehension. Do not specialise yet.",
+      "Months 7–9: add data interpretation for banking and add geometry, mensuration and trigonometry for SSC. Start static GK and banking awareness in parallel, fifteen minutes a day each.",
+      "Months 10 onwards: mock tests only, alternating between the two patterns. The formats are different enough that you must practise both timing structures separately.",
+      "Apply for everything you are eligible for. There is no cost to an extra attempt beyond the fee."
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "careers-and-salary-after-every-exam",
+   "title": "What you actually earn, and where you actually get posted",
+   "category": "Careers",
+   "readTime": "12 min",
+   "updated": "2026-07-29",
+   "excerpt": "Exam by exam: the job you get, the pay you start on, where you are posted, and how the career moves after that.",
+   "related": [
+    "upsc-cse",
+    "ssc-cgl",
+    "ibps-po",
+    "gate",
+    "cat",
+    "clat",
+    "neet-ug"
+   ],
+   "keywords": [
+    "government job salary",
+    "ias salary",
+    "ssc cgl salary",
+    "bank po salary",
+    "career after neet",
+    "career after jee",
+    "job after clearing exam"
+   ],
+   "blocks": [
+    {
+     "p": "Coaching advertisements quote gross figures and ignore postings. Job portals quote basic pay and ignore allowances. What follows is the fuller picture for each major exam — the role you actually take up, what lands in your account, where you are likely to be sent, and what the next fifteen years look like."
+    },
+    {
+     "note": "All pay figures follow the 7th Central Pay Commission matrix for government posts and the current bipartite settlement for banks, and are indicative. Basic pay is fixed; gross pay varies substantially with city classification, dearness allowance revisions and house rent allowance."
+    },
+    {
+     "h": "UPSC Civil Services"
+    },
+    {
+     "table": {
+      "head": [
+       "Service",
+       "Entry post",
+       "Basic pay",
+       "Where you go first"
+      ],
+      "rows": [
+       [
+        "IAS",
+        "Assistant Collector, then SDM",
+        "₹56,100, Level 10",
+        "A sub-division in your allotted cadre state, after training at LBSNAA"
+       ],
+       [
+        "IPS",
+        "Assistant Superintendent of Police",
+        "₹56,100, Level 10",
+        "A district in your cadre state, after training at SVPNPA Hyderabad"
+       ],
+       [
+        "IFS",
+        "Third Secretary",
+        "₹56,100, Level 10",
+        "Ministry of External Affairs, then a mission abroad"
+       ],
+       [
+        "IRS (IT)",
+        "Assistant Commissioner of Income Tax",
+        "₹56,100, Level 10",
+        "A metro or major commercial centre"
+       ],
+       [
+        "IRS (C&IT)",
+        "Assistant Commissioner",
+        "₹56,100, Level 10",
+        "Customs house, port or GST commissionerate"
+       ]
+      ]
+     }
+    },
+    {
+     "ul": [
+      "Gross monthly pay at entry, including dearness allowance and house rent allowance, is roughly ₹1,00,000 to ₹1,15,000 depending on posting city.",
+      "The real value is non-cash: government accommodation, an official vehicle for field postings, medical cover, and a pension under the current scheme.",
+      "IAS officers reach Deputy Secretary at the centre in about nine years and Joint Secretary at around seventeen. The Cabinet Secretary's basic pay is ₹2,50,000.",
+      "IFS officers earn a foreign allowance while posted abroad which can multiply take-home pay several times over, though it is intended to cover the cost of living at the mission."
+     ]
+    },
+    {
+     "h": "SSC CGL"
+    },
+    {
+     "table": {
+      "head": [
+       "Post",
+       "Pay level",
+       "Pay scale",
+       "Nature of work"
+      ],
+      "rows": [
+       [
+        "Assistant Audit Officer / Assistant Accounts Officer",
+        "Level 8, Group B gazetted",
+        "₹47,600 – ₹1,51,100",
+        "Audit of government departments and PSUs under CAG"
+       ],
+       [
+        "Assistant Section Officer (CSS)",
+        "Level 7, Group B",
+        "₹44,900 – ₹1,42,400",
+        "Ministry file work in Delhi"
+       ],
+       [
+        "Income Tax Inspector",
+        "Level 7, Group C",
+        "₹44,900 – ₹1,42,400",
+        "Assessment, survey and investigation under CBDT"
+       ],
+       [
+        "Inspector, Central Excise / GST",
+        "Level 7, Group B",
+        "₹44,900 – ₹1,42,400",
+        "Enforcement and assessment under CBIC"
+       ],
+       [
+        "Sub-Inspector, CBI",
+        "Level 7, Group B",
+        "₹44,900 – ₹1,42,400",
+        "Criminal investigation, transferable"
+       ],
+       [
+        "Auditor / Accountant",
+        "Level 5",
+        "₹29,200 – ₹92,300",
+        "Accounts and audit in departments"
+       ],
+       [
+        "Tax Assistant / Upper Division Clerk",
+        "Level 4",
+        "₹25,500 – ₹81,100",
+        "Clerical and assistance work"
+       ]
+      ]
+     }
+    },
+    {
+     "ul": [
+      "Gross at entry for a Level 7 post in a metro is roughly ₹65,000 to ₹80,000. For Level 4 it is closer to ₹40,000 to ₹48,000.",
+      "Posting location is where SSC CGL differs sharply from other exams. Central Secretariat Service posts are Delhi. Income Tax and GST postings follow the zone you are allotted. CBI is transferable across India.",
+      "Promotion pace is department-dependent and often slow. Departmental examinations are the fastest way up in Income Tax and Customs."
+     ]
+    },
+    {
+     "h": "Banking — IBPS PO, SBI PO and IBPS Clerk"
+    },
+    {
+     "table": {
+      "head": [
+       "Role",
+       "Basic pay",
+       "Approximate gross",
+       "Trajectory"
+      ],
+      "rows": [
+       [
+        "Probationary Officer, JMGS-I",
+        "Around ₹48,480",
+        "Around ₹85,000",
+        "Scale I to II in 3–5 years, then II to III"
+       ],
+       [
+        "SBI Probationary Officer",
+        "Comparable scale, plus SBI-specific allowances",
+        "Typically the highest among public sector banks",
+        "Wider internal mobility given SBI's size"
+       ],
+       [
+        "Customer Service Associate (Clerk)",
+        "Around ₹24,050",
+        "Around ₹40,000",
+        "Promotion to Scale I via internal exam or JAIIB and CAIIB"
+       ]
+      ]
+     }
+    },
+    {
+     "ul": [
+      "Officers are posted anywhere in the bank's network. Early rural and semi-urban postings are the norm, not the exception.",
+      "Clerks apply and compete state by state, so your posting stays within your chosen state.",
+      "JAIIB and CAIIB carry pay increments in addition to accelerating promotion. Most officers clear them within the first three years.",
+      "Exit routes into NBFCs, fintech credit teams and financial services are common after five to seven years of branch and credit experience."
+     ]
+    },
+    {
+     "h": "JEE — engineering degrees"
+    },
+    {
+     "table": {
+      "head": [
+       "Route",
+       "Typical placement outcome"
+      ],
+      "rows": [
+       [
+        "IIT, computer science and allied",
+        "Median ₹25 LPA and above at the older IITs; the top tail is far higher"
+       ],
+       [
+        "IIT, core branches",
+        "₹12–20 LPA, split between core engineering firms and analytics or software roles"
+       ],
+       [
+        "Top NITs and IIITs, CSE",
+        "₹15–25 LPA"
+       ],
+       [
+        "Other NITs and good state colleges",
+        "₹6–12 LPA"
+       ],
+       [
+        "Tier-3 private engineering colleges",
+        "₹3–5 LPA, with placement rates well below 100%"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "The spread inside engineering is wider than the spread between most other career paths. The college and the branch together matter more than the degree itself, which is precisely why the counselling stage deserves as much attention as the exam."
+    },
+    {
+     "h": "NEET — medicine"
+    },
+    {
+     "ul": [
+      "MBBS takes five and a half years including a compulsory rotating internship, during which you receive a stipend that varies by state, typically ₹15,000 to ₹30,000 a month.",
+      "A government MBBS seat costs a few thousand rupees a year in fees. A private or deemed university seat can run to ₹1 crore or more across the course. This gap is the entire reason NEET ranks are fought over so hard.",
+      "After MBBS, a junior resident post pays roughly ₹60,000 to ₹90,000 a month in government hospitals. Most graduates then prepare for NEET PG.",
+      "Post-MD or MS, a senior resident earns roughly ₹85,000 to ₹1,20,000 in government service. Private and corporate hospital pay varies enormously by specialty and city.",
+      "Many states enforce a bond requiring one to two years of rural service after MBBS, with a substantial penalty for breaking it. Read your state's bond terms before counselling, not after."
+     ]
+    },
+    {
+     "h": "GATE — postgraduate study and PSUs"
+    },
+    {
+     "ul": [
+      "MTech at an IIT or IISc carries an MHRD assistantship of ₹12,400 a month for GATE-qualified candidates, so the degree is close to cost-neutral.",
+      "PSU recruitment through GATE — IOCL, NTPC, BHEL, GAIL, ONGC, PowerGrid — starts at roughly ₹12–18 LPA CTC, with government-grade job security, quarters and medical cover.",
+      "PSU cutoffs are far above the GATE qualifying mark. Being in the top one or two per cent of your paper is the realistic bar.",
+      "A GATE score is valid for three years, so one good attempt covers three recruitment cycles."
+     ]
+    },
+    {
+     "h": "CAT — management"
+    },
+    {
+     "table": {
+      "head": [
+       "Institute tier",
+       "Average package",
+       "Typical roles"
+      ],
+      "rows": [
+       [
+        "IIM Ahmedabad, Bangalore, Calcutta",
+        "₹32–35 LPA",
+        "Consulting, investment banking, product management"
+       ],
+       [
+        "IIM Lucknow, Kozhikode, Indore, FMS, XLRI",
+        "₹25–32 LPA",
+        "Consulting, general management, marketing, finance"
+       ],
+       [
+        "Newer IIMs and strong private schools",
+        "₹12–20 LPA",
+        "Sales, operations, analytics, BFSI"
+       ],
+       [
+        "Other B-schools",
+        "₹5–10 LPA",
+        "Varies widely; verify audited placement reports"
+       ]
+      ]
+     }
+    },
+    {
+     "note": "Advertised averages hide a wide distribution and often include international offers converted at favourable rates. Ask for the median and the bottom quartile, not the average."
+    },
+    {
+     "h": "CLAT — law"
+    },
+    {
+     "ul": [
+      "Tier-one corporate law firms recruit from the top National Law Universities with day-zero offers around ₹16–20 LPA. The hours are correspondingly brutal.",
+      "Litigation starts far lower — a junior in a senior advocate's chamber may earn ₹15,000 to ₹40,000 a month for the first years — but it is the route to independent practice and eventually the bench.",
+      "Judicial services after an LLB lead to appointment as a Civil Judge, with pay under the Second National Judicial Pay Commission that is competitive with Group A central services.",
+      "In-house counsel roles at companies and banks offer better hours than firm practice at somewhat lower pay."
+     ]
+    },
+    {
+     "h": "How to use these numbers"
+    },
+    {
+     "p": "Compare gross with gross and basic with basic — mixing them is the single most common mistake in exam forums. Then adjust for three things the numbers do not show: how transferable the post is, how predictable the hours are, and how fast the next promotion comes. A job that pays fifteen per cent less but keeps you in one city with fixed hours is not obviously the worse choice, and for many people it is plainly the better one."
+    }
+   ]
+  },
+  {
+   "slug": "neet-all-india-quota-vs-state-quota",
+   "title": "NEET counselling: All India Quota or state quota?",
+   "category": "Counselling",
+   "readTime": "7 min",
+   "updated": "2026-07-29",
+   "excerpt": "Two separate registrations, two separate seat pools, two different strategies. Getting this wrong costs people seats every single year.",
+   "related": [
+    "neet-ug"
+   ],
+   "keywords": [
+    "neet aiq vs state quota",
+    "mcc counselling",
+    "neet state counselling",
+    "15 percent all india quota",
+    "neet counselling process"
+   ],
+   "blocks": [
+    {
+     "p": "Qualifying NEET puts you in the pool. It does not put you in a college. Getting to a college means navigating two parallel counselling systems that run on different portals, different schedules and different rules — and you are expected to participate in both."
+    },
+    {
+     "h": "What each pool actually contains"
+    },
+    {
+     "table": {
+      "head": [
+       "",
+       "All India Quota (MCC)",
+       "State Quota"
+      ],
+      "rows": [
+       [
+        "Who runs it",
+        "Medical Counselling Committee, at mcc.nic.in",
+        "Each state's own counselling authority"
+       ],
+       [
+        "Seats covered",
+        "15% of government medical and dental college seats, plus 100% of AIIMS, JIPMER, BHU, AMU, ESIC and deemed university seats",
+        "The remaining 85% of government college seats in that state, plus state private colleges"
+       ],
+       [
+        "Who can apply",
+        "Any NEET-qualified Indian candidate, regardless of home state",
+        "Almost always requires domicile in that state"
+       ],
+       [
+        "Rounds",
+        "Round 1, Round 2, Mop-Up, Stray Vacancy",
+        "Usually three to four rounds, varying by state"
+       ],
+       [
+        "Registration",
+        "Separate MCC registration is compulsory",
+        "Separate state registration is compulsory"
+       ]
+      ]
+     }
+    },
+    {
+     "note": "Your NEET application does not carry over to either. Both counselling registrations are new, separate processes with their own fees and their own deadlines."
+    },
+    {
+     "h": "The strategic difference"
+    },
+    {
+     "ul": [
+      "AIQ is a national merit list. You compete with every qualified candidate in India, so the ranks required are higher, but you can be allotted a seat in any state.",
+      "State quota is a state merit list. In states with fewer high scorers, the same rank goes considerably further than it would nationally. In states with many, the reverse is true.",
+      "A rank that is mid-table nationally may be near the top of a smaller state's list. Candidates from states with lower average scores often do better in their own state quota than in AIQ, and vice versa.",
+      "Deemed universities sit inside MCC counselling but charge private fees. A deemed seat is not a government seat, whatever the portal it comes through."
+     ]
+    },
+    {
+     "h": "Free exit, exit with forfeiture, and why it matters"
+    },
+    {
+     "p": "MCC rules on what happens when you decline an allotted seat change by round, and misreading them is the most expensive mistake in the whole process."
+    },
+    {
+     "ul": [
+      "In Round 1, if you are allotted a seat and do not report, the consequences depend on whether you had opted for the free-exit provision. Read the current information bulletin — this rule has changed between years.",
+      "After Round 2, declining an allotted seat typically forfeits your security deposit and can bar you from later rounds.",
+      "If you accept and report to a Round 1 seat, you may still be upgraded in Round 2 if you opted for upgradation. If you do not opt in, your seat is frozen.",
+      "The mop-up round is open to candidates who did not get a seat, and to those whose seats fell vacant. Stray vacancy is the last round and is generally not open to fresh registration."
+     ]
+    },
+    {
+     "h": "How to actually plan it"
+    },
+    {
+     "ul": [
+      "Register for both AIQ and your state counselling. There is no reason not to; the fees are modest and skipping one halves your options.",
+      "Build your choice list on last year's closing ranks for your category and quota, not on college reputation alone. The predictor on this site uses the MCC allotment data for exactly this.",
+      "Put reach colleges above safe ones. Allotment runs strictly down your list, so a safe option placed above a reach option will simply take the seat.",
+      "Keep every original document ready in two or three self-attested sets from the day the result is out. Reporting windows are short and are not extended for missing paperwork.",
+      "Watch both portals daily during the counselling window. Schedules shift, and notices go up with very little warning."
+     ]
+    },
+    {
+     "h": "Documents you will need at verification"
+    },
+    {
+     "ul": [
+      "NEET UG admit card and scorecard or rank letter",
+      "Class 10 and Class 12 marksheets and passing certificates",
+      "Birth certificate, or the Class 10 certificate as proof of date of birth",
+      "A valid government photo identity document",
+      "Category certificate in the prescribed central or state format, where applicable",
+      "PwD certificate from a designated centre, where applicable",
+      "Domicile certificate for state quota",
+      "Passport-size photographs, and the provisional allotment letter"
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "jee-main-vs-mht-cet-maharashtra",
+   "title": "JEE Main or MHT CET: what Maharashtra students should do",
+   "category": "Choosing an exam",
+   "readTime": "6 min",
+   "updated": "2026-07-29",
+   "excerpt": "You do not have to choose. But you do have to understand how the two feed into the same CAP process, and where each one actually helps.",
+   "related": [
+    "jee-main",
+    "mht-cet",
+    "jee-advanced"
+   ],
+   "keywords": [
+    "jee main vs mht cet",
+    "mht cet or jee",
+    "maharashtra engineering admission",
+    "cap round jee main",
+    "mht cet percentile"
+   ],
+   "blocks": [
+    {
+     "p": "Every year Maharashtra students ask whether to prepare for JEE Main or MHT CET. Framed that way the question has no good answer, because the two exams feed different seat pools that both sit inside the same Centralised Admission Process. The useful question is how to divide your effort."
+    },
+    {
+     "h": "How the two exams differ where it counts"
+    },
+    {
+     "table": {
+      "head": [
+       "",
+       "JEE Main",
+       "MHT CET"
+      ],
+      "rows": [
+       [
+        "Syllabus base",
+        "NCERT, national",
+        "Maharashtra State Board, roughly 20% Class 11 and 80% Class 12"
+       ],
+       [
+        "Negative marking",
+        "Yes, −1 on MCQs",
+        "None"
+       ],
+       [
+        "Difficulty",
+        "Higher; questions chain multiple concepts",
+        "Lower per question, but the time pressure is severe"
+       ],
+       [
+        "Time per question",
+        "Roughly 2.4 minutes",
+        "Roughly 0.9 minutes"
+       ],
+       [
+        "What it wins you",
+        "NITs, IIITs, GFTIs nationally, plus the All India seat pool inside Maharashtra CAP",
+        "The state quota seat pool in Maharashtra CAP"
+       ],
+       [
+        "Attempts per year",
+        "Two sessions, best score counts",
+        "Two sessions, best percentile counts"
+       ]
+      ]
+     }
+    },
+    {
+     "note": "The single biggest practical difference is speed. MHT CET gives you under a minute per question with no negative marking, which rewards fast recall and aggressive attempting. JEE Main gives you more than twice the time per question but punishes guessing."
+    },
+    {
+     "h": "The point most students miss"
+    },
+    {
+     "p": "Maharashtra CAP allots seats from more than one pool. State-quota seats go on the MHT CET merit number. A share of seats is filled from All India candidates on JEE Main merit. If you have both a strong percentile and a decent JEE Main score, you are eligible in more places than a candidate with only one of them — and you can compare which pool gets you the better college before locking your choice list."
+    },
+    {
+     "h": "How to split your effort"
+    },
+    {
+     "verdict": [
+      [
+       "If you are targeting IITs or top NITs",
+       "JEE Main and Advanced come first. MHT CET then needs perhaps three to four weeks of dedicated work, mostly on Maharashtra Board Class 11 topics that JEE does not stress and on raw speed. Your JEE preparation already covers the concepts."
+      ],
+      [
+       "If you are targeting COEP, VJTI or a top Pune or Mumbai college",
+       "MHT CET is the primary exam. Write JEE Main anyway — it costs one weekend and opens the All India pool as a second route into the same colleges."
+      ],
+      [
+       "If you are unsure in Class 11",
+       "Prepare from NCERT and the state board together. The overlap is around eighty per cent, and you keep both doors open until you see your Class 12 mock scores."
+      ]
+     ]
+    },
+    {
+     "h": "Things that catch Maharashtra students out"
+    },
+    {
+     "ul": [
+      "MHT CET has no negative marking, so leaving questions blank is pure loss. Practise attempting all 150 questions, guessing where necessary.",
+      "In PCM, Mathematics carries two marks per question and is therefore half the paper. A weak maths section cannot be compensated by strong physics and chemistry.",
+      "Class 11 topics carry about twenty per cent weight. Students who revise only Class 12 lose those marks entirely.",
+      "The CAP choice list matters as much as the percentile. Allotment runs strictly down your preferences, so ordering errors cost seats that your merit number would otherwise have won.",
+      "Home University, Other Than Home University and State Level are three different seat types with different cutoffs at the same college. Check all three before deciding a college is out of reach."
+     ]
+    },
+    {
+     "h": "Next step"
+    },
+    {
+     "p": "Once your percentile is out, run it through the MHT CET College Predictor on this site. It works off the full 2025 CAP Round I to III closing merit numbers across all seat types, which is a far better guide to what you can realistically get than any percentile-to-college chart."
+    }
+   ]
+  },
+  {
+   "slug": "which-exam-after-12th",
+   "title": "Which competitive exam should you write after Class 12?",
+   "category": "Choosing an exam",
+   "readTime": "9 min",
+   "updated": "2026-07-29",
+   "excerpt": "A decision map for students finishing school — by stream, by timeline, and by what you are actually willing to spend the next few years doing.",
+   "related": [
+    "jee-main",
+    "neet-ug",
+    "cuet-ug",
+    "clat",
+    "mht-cet"
+   ],
+   "keywords": [
+    "which exam after 12th",
+    "entrance exams after 12th",
+    "career options after 12th",
+    "exams after 12th science commerce arts"
+   ],
+   "blocks": [
+    {
+     "p": "The exam you write after Class 12 sets a direction for the next four to six years, and most students choose it by inheriting whatever their school or their neighbours assumed. Here is the actual map, by stream."
+    },
+    {
+     "h": "If you are in Science with Maths (PCM)"
+    },
+    {
+     "table": {
+      "head": [
+       "Exam",
+       "Leads to",
+       "When",
+       "Worth writing if"
+      ],
+      "rows": [
+       [
+        "JEE Main",
+        "NITs, IIITs, GFTIs and state college seats",
+        "January and April",
+        "You want engineering and are willing to compete nationally"
+       ],
+       [
+        "JEE Advanced",
+        "The 23 IITs",
+        "May",
+        "You clear the JEE Main percentile cutoff"
+       ],
+       [
+        "State CET — MHT CET, KCET, WBJEE, etc.",
+        "State engineering and pharmacy colleges",
+        "April–May",
+        "Always. It is a second, easier route to good state colleges"
+       ],
+       [
+        "CUET UG",
+        "BSc, BTech and integrated programmes at central universities",
+        "May–June",
+        "You want a science degree rather than engineering, or want a backup"
+       ],
+       [
+        "NDA",
+        "Army, Navy and Air Force officer training",
+        "April and September",
+        "You want a defence career; PCM is required for Air Force and Navy"
+       ],
+       [
+        "CLAT",
+        "Five-year integrated law at NLUs",
+        "December",
+        "Law appeals to you — no science background is needed"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "If you are in Science with Biology (PCB)"
+    },
+    {
+     "ul": [
+      "NEET UG is the only route to MBBS, BDS, AYUSH, veterinary and most nursing seats. There is no alternative national medical entrance.",
+      "If medicine is not certain, CUET UG opens BSc programmes at central universities including strong life sciences departments.",
+      "State CETs cover pharmacy and agriculture programmes on a PCB basis, which are meaningful alternatives that get dismissed too quickly.",
+      "If you took PCB with Maths, you retain the engineering options above as well."
+     ]
+    },
+    {
+     "h": "If you are in Commerce"
+    },
+    {
+     "table": {
+      "head": [
+       "Exam",
+       "Leads to",
+       "When"
+      ],
+      "rows": [
+       [
+        "CUET UG",
+        "BCom, BCom Hons, BBA and Economics at central universities",
+        "May–June"
+       ],
+       [
+        "CA Foundation",
+        "The Chartered Accountancy route",
+        "Multiple attempts a year"
+       ],
+       [
+        "CS Executive Entrance",
+        "Company Secretary route",
+        "Multiple attempts a year"
+       ],
+       [
+        "IPMAT and equivalent",
+        "Five-year integrated management at IIM Indore, IIM Rohtak and others",
+        "May–June"
+       ],
+       [
+        "CLAT",
+        "Five-year integrated law",
+        "December"
+       ],
+       [
+        "NDA",
+        "Defence services",
+        "April and September"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "If you are in Arts or Humanities"
+    },
+    {
+     "ul": [
+      "CUET UG is the main gateway — BA and BA Hons programmes at Delhi University, BHU, JNU, Jamia and 250-plus other universities.",
+      "CLAT is fully open to humanities students and arguably suits them: the paper rewards reading speed and argument analysis, not subject knowledge.",
+      "NDA is open to any stream for Army wing entry.",
+      "A humanities degree at a good central university is the standard base for UPSC preparation later, since the GS syllabus overlaps heavily with history, polity, geography and sociology."
+     ]
+    },
+    {
+     "h": "The exams you can start preparing for now but write later"
+    },
+    {
+     "ul": [
+      "UPSC Civil Services needs a bachelor's degree, so the earliest you can sit Prelims is the year you graduate. But the newspaper habit and NCERT base are best built in Class 11 and 12.",
+      "CAT and other MBA entrances need a degree. Most candidates write them in their final year or after some work experience.",
+      "SSC CGL, IBPS PO and IBPS Clerk all need a degree. SSC CHSL, however, only needs Class 12 and is available to you immediately.",
+      "GATE requires you to be in the third year of a degree or beyond."
+     ]
+    },
+    {
+     "h": "Three questions worth answering honestly"
+    },
+    {
+     "verdict": [
+      [
+       "How many years am I willing to spend before earning?",
+       "Medicine is five and a half years plus specialisation. Engineering is four. A CUET degree is three. SSC CHSL can have you employed within a year of Class 12. There is no wrong answer here, but pretending the timeline does not matter is a mistake."
+      ],
+      [
+       "Do I want depth in one subject or breadth across many?",
+       "JEE and NEET reward deep, narrow mastery. UPSC, CLAT and CAT reward breadth, reading and reasoning. People often pick the wrong side of this and struggle for years."
+      ],
+      [
+       "What can my family realistically fund?",
+       "A private engineering seat, a deemed medical seat and a two-year MBA all carry very different price tags. Government seats through competitive exams are the cheapest education in the country by a wide margin, which is exactly why the competition is what it is."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "upsc-vs-state-psc",
+   "title": "UPSC or State PSC: the trade-off nobody spells out",
+   "category": "Choosing an exam",
+   "readTime": "6 min",
+   "updated": "2026-07-29",
+   "excerpt": "Same syllabus base, wildly different odds, and a genuinely different life at the end. How to think about running both.",
+   "related": [
+    "upsc-cse"
+   ],
+   "keywords": [
+    "upsc vs state psc",
+    "mpsc vs upsc",
+    "state pcs exam",
+    "which is better upsc or pcs"
+   ],
+   "blocks": [
+    {
+     "p": "Most serious civil services aspirants end up preparing for both. The syllabuses overlap enough that this is efficient, but the two exams reward different things and lead to very different careers, and treating the state exam as a mere consolation prize is a mistake worth examining."
+    },
+    {
+     "h": "Odds, plainly"
+    },
+    {
+     "table": {
+      "head": [
+       "",
+       "UPSC CSE",
+       "A typical State PSC"
+      ],
+      "rows": [
+       [
+        "Applicants",
+        "Around 10 lakh",
+        "Typically 2–5 lakh"
+       ],
+       [
+        "Posts",
+        "Around 900–1,000",
+        "Varies widely; often several hundred to a few thousand"
+       ],
+       [
+        "Rough success rate",
+        "Around 0.1%",
+        "Usually several times better"
+       ],
+       [
+        "Cycle length",
+        "12–14 months",
+        "Often longer, and less predictable"
+       ]
+      ]
+     }
+    },
+    {
+     "note": "State PSC schedules are considerably less reliable than UPSC's. Delays, litigation and postponements are common, and a cycle can stretch across two or three years. Factor this into your planning rather than assuming a fixed annual calendar."
+    },
+    {
+     "h": "What the syllabus difference actually is"
+    },
+    {
+     "ul": [
+      "The GS core — polity, economy, geography, environment, science — is largely shared. Preparation transfers directly.",
+      "State PSCs add substantial state-specific content: the state's history, geography, culture, administrative structure, current schemes and local current affairs. This is genuinely additional work, not a subset.",
+      "Many state exams retain an optional subject at Mains where UPSC's weight on the optional has stayed constant. Some have moved to a purely GS format. Check the current pattern for your state rather than assuming.",
+      "Language papers matter more in several states, and are sometimes not merely qualifying."
+     ]
+    },
+    {
+     "h": "The career difference"
+    },
+    {
+     "ul": [
+      "A UPSC-selected IAS or IPS officer is a member of an All India Service, allotted to a state cadre but eligible for central deputation and for the senior-most administrative positions in the country.",
+      "A State PSC officer enters the state civil service — Deputy Collector, Deputy SP or equivalent. Career progression is within the state, and promotion into the IAS through the state civil service quota is possible but slow and limited.",
+      "Postings stay within one state, which for many people is the point rather than the drawback. Family proximity, language familiarity and a known administrative culture are real benefits.",
+      "Entry pay for a state civil service officer is lower than Level 10, though the gap narrows with promotion, and state allowances vary."
+     ]
+    },
+    {
+     "h": "How to run both without wrecking either"
+    },
+    {
+     "verdict": [
+      [
+       "Primary UPSC, secondary state",
+       "Build the GS base for UPSC standards, which is higher. Add state-specific content in the two to three months before the state prelims. This works if the state exam calendar is reasonably predictable."
+      ],
+      [
+       "Primary state, secondary UPSC",
+       "Reasonable if your state's post count is high relative to applicants and you would genuinely be content in the state service. Write UPSC anyway — the attempts are limited and there is no reason to waste them."
+      ],
+      [
+       "Both, seriously, from the start",
+       "Only if you can commit to the state-specific material as a permanent part of your daily schedule rather than a last-minute addition. Half-prepared state content is what causes people to miss state prelims by two marks."
+      ]
+     ]
+    },
+    {
+     "h": "One honest observation"
+    },
+    {
+     "p": "The candidates who do worst are the ones who prepare for UPSC for four years, exhaust their attempts, and only then look at state exams — by which point they have neither the state-specific base nor, in some cases, the age eligibility. If a state service is an outcome you would accept, prepare for it as a real target from year one, not as a fallback you turn to when the attempts run out."
+    }
+   ]
+  },
+  {
+   "slug": "how-to-read-a-cutoff-list",
+   "title": "How to read a cutoff list without fooling yourself",
+   "category": "Counselling",
+   "readTime": "7 min",
+   "updated": "2026-07-29",
+   "excerpt": "Closing ranks, opening ranks, seat types, rounds and quotas. The five ways students misread cutoff data and lose seats they could have had.",
+   "related": [
+    "mht-cet",
+    "neet-ug",
+    "jee-main"
+   ],
+   "keywords": [
+    "how to read cutoff list",
+    "closing rank meaning",
+    "opening rank",
+    "cap round cutoff",
+    "college predictor how to use"
+   ],
+   "blocks": [
+    {
+     "p": "A cutoff list is a record of what happened last year, not a promise about this year. Used properly it is the single most useful document in counselling. Used carelessly it produces confident, wrong choice lists. Here are the five mistakes that cost seats."
+    },
+    {
+     "h": "1. Confusing the closing rank with the requirement"
+    },
+    {
+     "p": "The closing rank is the rank of the last candidate who was allotted that seat in that round, under that category and seat type. It is an outcome, not a threshold. It moves every year with the number of applicants, the seat matrix, the difficulty of the paper and where the strong candidates chose to go."
+    },
+    {
+     "ul": [
+      "Treat last year's closing rank as the centre of a band, not a line. A reasonable working band is roughly ten per cent either side.",
+      "If your rank is inside that band, list the college. If it is well outside on the wrong side, listing it costs you nothing but it will not convert.",
+      "Look at three years of closing ranks where you can. A single year can be distorted by a one-off event."
+     ]
+    },
+    {
+     "h": "2. Reading the wrong round"
+    },
+    {
+     "p": "Cutoffs almost always loosen across rounds as candidates upgrade, withdraw or fail to report. A Round 3 closing rank is usually higher — that is, more forgiving — than a Round 1 closing rank for the same seat."
+    },
+    {
+     "ul": [
+      "For your Round 1 choice list, compare against last year's Round 1 data.",
+      "Do not comfort yourself with a Round 3 number when planning Round 1. That seat was not available at that rank in the first round.",
+      "Equally, do not despair at a tight Round 1 number if you are planning for later rounds."
+     ]
+    },
+    {
+     "h": "3. Ignoring seat type and quota"
+    },
+    {
+     "p": "The same college and the same branch will show several very different closing ranks in the same list, because they are different seats."
+    },
+    {
+     "table": {
+      "head": [
+       "System",
+       "Seat dimensions that change the cutoff"
+      ],
+      "rows": [
+       [
+        "MHT CET CAP",
+        "Home University, Other Than Home University, State Level. Then category — OPEN, OBC, SC, ST, SEBC, VJ, NT, EWS, TFWS. Then General or Ladies pool."
+       ],
+       [
+        "NEET MCC",
+        "All India Quota, deemed university, ESIC, AMU/BHU internal, and several others. Then category, and PwD status."
+       ],
+       [
+        "JoSAA",
+        "Home State and Other State for state-funded institutes, plus category, gender-neutral versus female-only pool."
+       ]
+      ]
+     }
+    },
+    {
+     "note": "Students routinely conclude a college is out of reach after checking only the OPEN State Level number, when their own Home University seat in the same branch closed at a far more accessible merit number."
+    },
+    {
+     "h": "4. Comparing percentile against rank"
+    },
+    {
+     "p": "Percentile and merit number are not the same and do not convert cleanly between years. MHT CET publishes closing merit numbers; the percentile shown alongside is reference information only. NEET publishes All India Ranks. JEE Main publishes percentile from which a rank is derived. Compare like with like — your rank against a rank, your percentile against a percentile from the same year."
+    },
+    {
+     "h": "5. Building the choice list in the wrong order"
+    },
+    {
+     "p": "Allotment engines run down your preference list in order and stop at the first seat you are eligible for. This has one consequence that people learn too late."
+    },
+    {
+     "ul": [
+      "Put your genuine first preference first, even if you think it is out of reach. If it is out of reach you lose nothing; if the cutoff moved in your favour you gain a seat you would otherwise have missed.",
+      "Never place a safe option above a preferred one. The safe option will take the seat and the preferred one will never be considered.",
+      "List far more options than you think you need. There is no penalty for a long list, and short lists are the most common cause of going unallotted in Round 1.",
+      "Include the same college at several seat types and categories where the system allows it."
+     ]
+    },
+    {
+     "h": "Use the data, not the folklore"
+    },
+    {
+     "p": "Forum advice about which college 'usually goes at' which rank is compressed, second-hand and often several years stale. The predictors on this site run your actual number against the official cutoff data — the MHT CET CAP Rounds I to III closing merit numbers, and the MCC NEET UG allotment lists — and show you every seat that falls inside a realistic band, split into safe, moderate and reach. Start there, then build the choice list by hand."
+    }
+   ]
+  }
+ ],
+ "tools": [
+  {
+   "slug": "mht-cet-college-predictor",
+   "name": "MHT CET College Predictor",
+   "short": "MHT CET Predictor",
+   "exam": "mht-cet",
+   "price": 49,
+   "blurb": "Enter your Maharashtra State General Merit Number and see every college and branch that closed at or near it, across CAP Rounds I, II and III.",
+   "dataNote": "MHT CET 2025 CAP Rounds I, II & III cut-off lists, Maharashtra State CET Cell",
+   "keywords": [
+    "mht cet college predictor",
+    "mht cet cutoff 2025",
+    "cap round college predictor",
+    "mht cet merit number",
+    "maharashtra engineering college predictor"
+   ]
+  },
+  {
+   "slug": "neet-college-predictor",
+   "name": "NEET College Predictor",
+   "short": "NEET Predictor",
+   "exam": "neet-ug",
+   "price": 49,
+   "blurb": "Enter your NEET All India Rank and category to see the MBBS, BDS and BSc Nursing seats that closed at or near it in MCC counselling.",
+   "dataNote": "MCC NEET UG All India Quota counselling allotment lists, Rounds 1–3",
+   "keywords": [
+    "neet college predictor",
+    "neet rank vs college",
+    "mcc counselling cutoff",
+    "mbbs college predictor",
+    "neet closing rank"
+   ]
+  }
+ ],
+ "extraEvents": [
+  [
+   "2026-08-14",
+   "GATE 2027 registration opens",
+   "engineering",
+   "GATE",
+   "open",
+   "/exams/gate.html"
+  ],
+  [
+   "2026-09-13",
+   "MHT CET 2026 institute-level admissions close",
+   "engineering",
+   "MHT CET",
+   "upcoming",
+   "/exams/mht-cet.html"
+  ],
+  [
+   "2026-09-15",
+   "CAT 2026 registration closes",
+   "management",
+   "CAT",
+   "upcoming",
+   "/exams/cat.html"
+  ],
+  [
+   "2026-10-04",
+   "IBPS PO 2026 Mains",
+   "banking",
+   "IBPS PO",
+   "upcoming",
+   "/exams/ibps-po.html"
+  ],
+  [
+   "2026-10-10",
+   "IBPS Clerk 2026 Prelims",
+   "banking",
+   "IBPS Clerk",
+   "upcoming",
+   "/exams/ibps-clerk.html"
+  ],
+  [
+   "2026-10-31",
+   "CLAT 2027 registration closes",
+   "law",
+   "CLAT",
+   "upcoming",
+   "/exams/clat.html"
+  ],
+  [
+   "2026-11-21",
+   "IBPS RRB PO 2026 Prelims",
+   "banking",
+   "IBPS RRB",
+   "upcoming",
+   "/exams/ibps-po.html"
+  ],
+  [
+   "2026-11-29",
+   "CAT 2026 exam day",
+   "management",
+   "CAT",
+   "upcoming",
+   "/exams/cat.html"
+  ],
+  [
+   "2026-12-06",
+   "CLAT 2027 exam day, 2:00–4:00 pm",
+   "law",
+   "CLAT",
+   "upcoming",
+   "/exams/clat.html"
+  ],
+  [
+   "2026-12-06",
+   "IBPS RRB Clerk 2026 Prelims begin",
+   "banking",
+   "IBPS RRB",
+   "upcoming",
+   "/exams/ibps-clerk.html"
+  ],
+  [
+   "2026-12-27",
+   "IBPS Clerk 2026 Mains",
+   "banking",
+   "IBPS Clerk",
+   "upcoming",
+   "/exams/ibps-clerk.html"
+  ],
+  [
+   "2027-01-13",
+   "UPSC CSE 2027 notification",
+   "civil-services",
+   "UPSC CSE",
+   "upcoming",
+   "/exams/upsc-cse.html"
+  ],
+  [
+   "2027-02-06",
+   "GATE 2027 exam begins",
+   "engineering",
+   "GATE",
+   "upcoming",
+   "/exams/gate.html"
+  ],
+  [
+   "2027-05-23",
+   "UPSC CSE 2027 Prelims",
+   "civil-services",
+   "UPSC CSE",
+   "upcoming",
+   "/exams/upsc-cse.html"
+  ]
+ ],
+ "boardOrder": [
+  "mht-cet",
+  "neet-ug",
+  "upsc-cse",
+  "cat",
+  "clat",
+  "ibps-po",
+  "ssc-cgl",
+  "gate",
+  "cuet-ug",
+  "ibps-clerk"
+ ],
+ "generated": "2026-07-29"
+}
