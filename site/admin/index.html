@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin · College Helper</title>
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/site.css">
+<style>
+  body{background:var(--paper-2)}
+  .adm{display:grid;min-height:100vh}
+  @media(min-width:980px){.adm{grid-template-columns:250px 1fr}}
+  .side{background:var(--ink);color:var(--ink-text);padding:1.2rem 1rem;display:flex;flex-direction:column;gap:.2rem}
+  @media(min-width:980px){.side{position:sticky;top:0;height:100vh;overflow-y:auto}}
+  .side .brand{margin-bottom:1.2rem}
+  .side button.tab{display:flex;justify-content:space-between;align-items:center;gap:.5rem;width:100%;text-align:left;background:transparent;border:0;color:var(--ink-muted);padding:.6rem .7rem;border-radius:8px;cursor:pointer;font:inherit;font-size:.92rem}
+  .side button.tab:hover{background:var(--ink-2);color:#fff}
+  .side button.tab[aria-selected=true]{background:var(--ink-2);color:var(--live);font-weight:600}
+  .side .n{font-family:'JetBrains',monospace;font-size:.7rem;background:var(--ink-3);padding:.1rem .4rem;border-radius:4px;color:var(--ink-muted)}
+  .side .sep{margin-top:auto;padding-top:1rem;border-top:1px solid var(--ink-3);font-size:.75rem;color:var(--ink-muted)}
+  .main{padding:1.4rem clamp(1rem,3vw,2rem) 4rem;max-width:1000px}
+  .panel{display:none}.panel.on{display:block}
+  .bar{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;justify-content:space-between;margin-bottom:1.3rem;padding-bottom:1rem;border-bottom:1px solid var(--line)}
+  .bar h1{margin:0;font-size:1.5rem}
+  .box{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.1rem;margin-bottom:1.1rem}
+  .box>h3{margin-top:0}
+  .row2{display:grid;gap:.8rem}
+  @media(min-width:680px){.row2{grid-template-columns:1fr 1fr}.row2.thirds{grid-template-columns:repeat(3,1fr)}}
+  .rep{border:1px solid var(--line);border-radius:var(--r);padding:.7rem;margin-bottom:.55rem;background:var(--paper-2)}
+  .rep .rr{display:grid;gap:.5rem;align-items:start}
+  @media(min-width:680px){.rep .rr{grid-template-columns:200px 1fr auto}.rep .rr.trip{grid-template-columns:1fr 180px 130px auto}}
+  .mini{padding:.35rem .55rem;font-size:.8rem;border-radius:6px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font:inherit;font-size:.8rem;color:var(--text-2)}
+  .mini:hover{border-color:var(--alert);color:var(--alert)}
+  .mini.add{border-style:dashed;color:var(--accent);border-color:var(--accent);width:100%;padding:.5rem;margin-top:.3rem}
+  .mini.add:hover{background:#EFF3FE;color:var(--accent)}
+  .list-item{display:grid;grid-template-columns:3px 1fr auto;gap:0 .8rem;align-items:center;padding:.7rem .9rem;border:1px solid var(--line);border-radius:var(--r);background:var(--paper);margin-bottom:.45rem}
+  .list-item h4{margin:0;font-size:.98rem}
+  .list-item p{margin:.15rem 0 0;font-size:.8rem;color:var(--text-2)}
+  .dirty{position:fixed;bottom:0;left:0;right:0;background:var(--ink);color:#fff;padding:.75rem 1rem;display:none;align-items:center;gap:1rem;justify-content:space-between;z-index:80;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.2)}
+  .dirty.on{display:flex}
+  .dirty span{font-size:.87rem}
+  .gate{max-width:400px;margin:14vh auto;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.6rem}
+  .warn{background:#FDF8E7;border:1px solid #EBD79A;border-left:3px solid var(--live);border-radius:var(--r);padding:.9rem 1rem;font-size:.87rem;color:#5C4708;margin-bottom:1.1rem}
+  .ok{background:#E6F5EF;border:1px solid #B4E0CE;border-left:3px solid var(--open);border-radius:var(--r);padding:.9rem 1rem;font-size:.87rem;color:#0B6A49;margin-bottom:1.1rem}
+  .bad{background:#FCEBEA;border:1px solid #F2C3C0;border-left:3px solid var(--alert);border-radius:var(--r);padding:.9rem 1rem;font-size:.87rem;color:#9E2A24;margin-bottom:1.1rem}
+  textarea{min-height:90px;resize:vertical;font-size:.92rem;line-height:1.55}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:.4rem 1rem;font-size:.88rem}
+  .kv dt{color:var(--text-2)}
+  .kv dd{margin:0;font-family:'JetBrains',monospace}
+  code{font-family:'JetBrains',monospace;font-size:.85em;background:var(--paper-2);padding:.1rem .3rem;border-radius:4px;border:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<!-- ============================== PASSCODE GATE ======================== -->
+<div id="gate" class="gate">
+  <h2 style="margin-top:0">College Helper admin</h2>
+  <div class="warn"><strong>This passcode only hides the screen.</strong> It is client-side and
+  offers no real protection. Put Cloudflare Access in front of <code>/admin/*</code> — the setup
+  guide in the README takes about three minutes and is genuinely secure.</div>
+  <label for="pc">Passcode</label>
+  <input type="password" id="pc" autocomplete="current-password" placeholder="Default: changeme">
+  <p id="gate-err" class="hint" style="color:var(--alert)"></p>
+  <button class="btn" id="gate-go" type="button" style="width:100%;justify-content:center;margin-top:.6rem">Unlock</button>
+  <p class="hint" style="margin-top:.9rem">Change it in Settings once you are in.</p>
+</div>
+
+<!-- ============================== APP ================================== -->
+<div class="adm" id="app" hidden>
+  <nav class="side">
+    <a class="brand" href="/" style="color:#fff;text-decoration:none">
+      <svg class="brand-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="24" height="24" rx="6" fill="#141E36" stroke="#26314F"/>
+        <rect x="5" y="6.5" width="2" height="13" rx="1" fill="#E4B429"/>
+        <rect x="9.5" y="7" width="11" height="2" rx="1" fill="#E7ECF6"/>
+        <rect x="9.5" y="12" width="8" height="2" rx="1" fill="#8D9AB8"/>
+        <rect x="9.5" y="17" width="10" height="2" rx="1" fill="#8D9AB8"/>
+      </svg>College<em style="font-style:normal;color:#E4B429">Helper</em></a>
+    <button class="tab" data-panel="dash" aria-selected="true">Dashboard</button>
+    <button class="tab" data-panel="exams" aria-selected="false">Exams <span class="n" id="n-exams">0</span></button>
+    <button class="tab" data-panel="guides" aria-selected="false">Guides <span class="n" id="n-guides">0</span></button>
+    <button class="tab" data-panel="cal" aria-selected="false">Calendar <span class="n" id="n-cal">0</span></button>
+    <button class="tab" data-panel="board" aria-selected="false">Homepage board</button>
+    <button class="tab" data-panel="settings" aria-selected="false">Settings</button>
+    <button class="tab" data-panel="publish" aria-selected="false">Publish</button>
+    <div class="sep">
+      <p style="margin:0 0 .4rem">Draft saved in this browser.<br>Publish to make it live.</p>
+      <a href="/" style="color:var(--live)">View site ↗</a>
+    </div>
+  </nav>
+
+  <div class="main">
+    <!-- DASHBOARD -->
+    <section class="panel on" id="p-dash">
+      <div class="bar"><h1>Dashboard</h1>
+        <span class="chip" id="loaded-from"></span></div>
+      <div id="dash-body"></div>
+    </section>
+
+    <!-- EXAMS -->
+    <section class="panel" id="p-exams">
+      <div class="bar"><h1>Exams</h1>
+        <div style="display:flex;gap:.5rem"><button class="btn sm" id="add-exam" type="button">+ New exam</button></div>
+      </div>
+      <div id="exam-list-view">
+        <div class="search-box" style="margin-bottom:1rem">
+          <input type="search" id="exam-search" placeholder="Filter exams…" style="padding-left:.85rem">
+        </div>
+        <div id="exam-list"></div>
+      </div>
+      <div id="exam-edit" hidden></div>
+    </section>
+
+    <!-- GUIDES -->
+    <section class="panel" id="p-guides">
+      <div class="bar"><h1>Guides</h1>
+        <button class="btn sm" id="add-guide" type="button">+ New guide</button></div>
+      <div id="guide-list-view"><div id="guide-list"></div></div>
+      <div id="guide-edit" hidden></div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section class="panel" id="p-cal">
+      <div class="bar"><h1>Calendar entries</h1></div>
+      <div class="box">
+        <p class="hint" style="margin-top:0">Dates inside an exam's own "Important dates" list are
+        picked up automatically. Use this screen only for extra entries that do not belong to a
+        tracked exam, or that you want to appear separately.</p>
+        <div id="cal-list"></div>
+      </div>
+    </section>
+
+    <!-- BOARD -->
+    <section class="panel" id="p-board">
+      <div class="bar"><h1>Homepage status board</h1></div>
+      <div class="box">
+        <p class="hint" style="margin-top:0">These exams appear on the homepage board, in this
+        order. Everything else is still reachable from the exams page.</p>
+        <div id="board-list"></div>
+        <div id="board-add"></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="panel" id="p-settings">
+      <div class="bar"><h1>Settings</h1></div>
+      <div class="box"><h3>Site</h3><div id="settings-form"></div></div>
+      <div class="box"><h3>Admin passcode</h3>
+        <p class="hint" style="margin-top:0">Stored in this browser only. It hides the screen; it
+        does not secure it. Use Cloudflare Access for that.</p>
+        <label for="newpc">New passcode</label>
+        <input type="password" id="newpc" placeholder="Leave blank to keep the current one">
+        <div class="form-actions"><button class="btn sm" id="save-pc" type="button">Update passcode</button></div>
+      </div>
+    </section>
+
+    <!-- PUBLISH -->
+    <section class="panel" id="p-publish">
+      <div class="bar"><h1>Publish</h1></div>
+
+      <div class="box">
+        <h3>1 · Publish straight to GitHub</h3>
+        <p class="hint" style="margin-top:0">This writes <code>src/data/overrides.json</code> to your
+        repository. Cloudflare Pages sees the commit, reruns the build and your changes go live in
+        about a minute.</p>
+        <div class="row2">
+          <div><label for="gh-repo">Repository</label>
+            <input type="text" id="gh-repo" placeholder="yourusername/collegehelper"></div>
+          <div><label for="gh-branch">Branch</label>
+            <input type="text" id="gh-branch" placeholder="main"></div>
+        </div>
+        <div style="margin-top:.8rem">
+          <label for="gh-token">GitHub personal access token</label>
+          <input type="password" id="gh-token" placeholder="github_pat_…">
+          <p class="hint">Needs <strong>Contents: Read and write</strong> on this one repository.
+          Stored in this browser only, never sent anywhere except github.com.</p>
+        </div>
+        <div style="margin-top:.8rem">
+          <label for="gh-msg">Commit message</label>
+          <input type="text" id="gh-msg" placeholder="Update exam content">
+        </div>
+        <div class="form-actions">
+          <button class="btn" id="gh-publish" type="button">Publish to GitHub</button>
+          <button class="btn ghost sm" id="gh-test" type="button">Test connection</button>
+        </div>
+        <div id="gh-status"></div>
+      </div>
+
+      <div class="box">
+        <h3>2 · Or download and commit it yourself</h3>
+        <p class="hint" style="margin-top:0">Download the file and drop it into
+        <code>src/data/overrides.json</code> in your repo, then push. Same result, more steps.</p>
+        <div class="form-actions">
+          <button class="btn ghost sm" id="dl-json" type="button">Download overrides.json</button>
+          <button class="btn ghost sm" id="dl-backup" type="button">Download a full backup</button>
+        </div>
+      </div>
+
+      <div class="box">
+        <h3>Restore from a backup</h3>
+        <p class="hint" style="margin-top:0">Load a previously downloaded file. This replaces your
+        current draft.</p>
+        <input type="file" id="up-json" accept="application/json">
+        <div class="form-actions">
+          <button class="btn ghost sm" id="reset-draft" type="button"
+            style="color:var(--alert);border-color:#F2C3C0">Discard draft and reload from the live site</button>
+        </div>
+      </div>
+
+      <div class="box">
+        <h3>What is in this draft</h3>
+        <div id="publish-summary"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="dirty" id="dirtybar">
+  <span id="dirty-text">Unsaved changes in this draft.</span>
+  <span style="display:flex;gap:.5rem">
+    <button class="btn sm on-dark" type="button" onclick="document.querySelector('[data-panel=publish]').click()">Go to Publish</button>
+  </span>
+</div>
+
+<script>
+(function () {
+'use strict';
+
+/* ------------------------------------------------------------------ util -- */
+var $ = function (s, r) { return (r || document).querySelector(s); };
+var LS = {
+  get: function (k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } },
+  set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+  del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
+};
+function el(tag, attrs, kids) {
+  var n = document.createElement(tag);
+  if (attrs) Object.keys(attrs).forEach(function (k) {
+    if (k === 'class') n.className = attrs[k];
+    else if (k === 'html') n.innerHTML = attrs[k];
+    else if (k === 'text') n.textContent = attrs[k];
+    else if (k.slice(0, 2) === 'on') n.addEventListener(k.slice(2), attrs[k]);
+    else n.setAttribute(k, attrs[k]);
+  });
+  (kids || []).forEach(function (c) { if (c) n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+  return n;
+}
+function slugify(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+}
+function download(name, text, type) {
+  var b = new Blob([text], { type: type || 'application/json' });
+  var a = el('a', { href: URL.createObjectURL(b), download: name });
+  document.body.appendChild(a); a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+}
+
+/* ------------------------------------------------------------------ gate -- */
+var PC_KEY = 'ch:admin:pc';
+if (!LS.get(PC_KEY)) LS.set(PC_KEY, 'changeme');
+$('#gate-go').addEventListener('click', tryUnlock);
+$('#pc').addEventListener('keydown', function (e) { if (e.key === 'Enter') tryUnlock(); });
+function tryUnlock() {
+  if ($('#pc').value === LS.get(PC_KEY)) {
+    sessionStorage.setItem('ch:admin:in', '1');
+    $('#gate').hidden = true; $('#app').hidden = false; boot();
+  } else {
+    $('#gate-err').textContent = 'That passcode is not right.';
+  }
+}
+if (sessionStorage.getItem('ch:admin:in') === '1') {
+  $('#gate').hidden = true; $('#app').hidden = false;
+}
+
+/* ----------------------------------------------------------------- state -- */
+var DRAFT_KEY = 'ch:admin:draft';
+var S = null, dirty = false, source = '';
+
+var BLANK_EXAM = {
+  slug: '', name: '', fullName: '', body: '', category: 'engineering', level: 'national',
+  state: null, site: '', mode: '', frequency: '', tagline: '', summary: '',
+  status: 'upcoming', statusLabel: '', stage: '', nextDate: null, nextEvent: '', alert: '',
+  eligibility: [], pattern: { head: ['Stage', 'Detail'], rows: [], notes: [] },
+  syllabus: [], dates: [],
+  cutoff: { note: '', head: ['Category', 'Cutoff'], rows: [], disclaimer: '' },
+  careers: [], faqs: [], keywords: [], tools: []
+};
+
+function markDirty() {
+  dirty = true;
+  LS.set(DRAFT_KEY, S);
+  $('#dirtybar').classList.add('on');
+  refreshCounts();
+}
+
+function boot() {
+  var draft = LS.get(DRAFT_KEY, null);
+  if (draft && draft.exams) {
+    S = draft; source = 'draft in this browser';
+    $('#dirtybar').classList.add('on');
+    start();
+  } else {
+    fetch('/assets/data/site-content.json')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        S = {
+          site: d.site, exams: d.exams, guides: d.guides,
+          extraEvents: d.extraEvents || [], boardOrder: d.boardOrder || [],
+          categories: d.categories, tools: d.tools,
+          deletedExams: [], deletedGuides: []
+        };
+        source = 'live site content';
+        start();
+      })
+      .catch(function () {
+        $('#dash-body').innerHTML = '<div class="bad">Could not load site content. ' +
+          'Make sure <code>/assets/data/site-content.json</code> exists — it is written by the build.</div>';
+      });
+  }
+}
+
+function start() {
+  $('#loaded-from').textContent = 'Loaded from ' + source;
+  refreshCounts();
+  renderDash(); renderExamList(); renderGuideList(); renderCal();
+  renderBoard(); renderSettings(); renderPublish();
+}
+
+function refreshCounts() {
+  if (!S) return;
+  $('#n-exams').textContent = S.exams.length;
+  $('#n-guides').textContent = S.guides.length;
+  $('#n-cal').textContent = S.extraEvents.length;
+}
+
+/* ------------------------------------------------------------------ tabs -- */
+document.querySelectorAll('.tab').forEach(function (t) {
+  t.addEventListener('click', function () {
+    document.querySelectorAll('.tab').forEach(function (o) { o.setAttribute('aria-selected', 'false'); });
+    t.setAttribute('aria-selected', 'true');
+    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('on'); });
+    $('#p-' + t.getAttribute('data-panel')).classList.add('on');
+    if (t.getAttribute('data-panel') === 'publish') renderPublish();
+    if (t.getAttribute('data-panel') === 'dash') renderDash();
+    window.scrollTo(0, 0);
+  });
+});
+
+/* ------------------------------------------------------- generic editors -- */
+function textField(label, value, onChange, opts) {
+  opts = opts || {};
+  var input = opts.area
+    ? el('textarea', { oninput: function () { onChange(input.value); } })
+    : el('input', { type: opts.type || 'text', oninput: function () { onChange(input.value); } });
+  input.value = value == null ? '' : value;
+  if (opts.placeholder) input.placeholder = opts.placeholder;
+  var w = el('div', {}, [el('label', { text: label }), input]);
+  if (opts.hint) w.appendChild(el('p', { class: 'hint', text: opts.hint }));
+  return w;
+}
+function selectField(label, value, list, onChange, hint) {
+  var s = el('select', { onchange: function () { onChange(s.value); } });
+  list.forEach(function (o) {
+    var v = Array.isArray(o) ? o[0] : o, t = Array.isArray(o) ? o[1] : o;
+    var op = el('option', { value: v, text: t });
+    if (v === value) op.selected = true;
+    s.appendChild(op);
+  });
+  var w = el('div', {}, [el('label', { text: label }), s]);
+  if (hint) w.appendChild(el('p', { class: 'hint', text: hint }));
+  return w;
+}
+
+/* Repeating list of N-column rows. cols = [{label, area?, width?}] */
+function repeater(title, rows, cols, onChange, hint) {
+  var box = el('div', { class: 'box' });
+  box.appendChild(el('h3', { text: title }));
+  if (hint) box.appendChild(el('p', { class: 'hint', style: 'margin-top:-.4rem', text: hint }));
+  var host = el('div');
+  box.appendChild(host);
+
+  function draw() {
+    host.innerHTML = '';
+    rows.forEach(function (r, i) {
+      var wrap = el('div', { class: 'rep' });
+      var line = el('div', { class: 'rr' + (cols.length > 2 ? ' trip' : '') });
+      cols.forEach(function (c, ci) {
+        var input = c.area
+          ? el('textarea', { style: 'min-height:70px' })
+          : (c.options
+            ? el('select')
+            : el('input', { type: 'text' }));
+        if (c.options) {
+          c.options.forEach(function (o) {
+            var op = el('option', { value: o, text: o });
+            if (r[ci] === o) op.selected = true;
+            input.appendChild(op);
+          });
+        } else {
+          input.value = r[ci] == null ? '' : r[ci];
+        }
+        input.placeholder = c.label;
+        input.addEventListener(c.options ? 'change' : 'input', function () {
+          r[ci] = input.value; onChange();
+        });
+        line.appendChild(input);
+      });
+      line.appendChild(el('button', {
+        class: 'mini', type: 'button', text: 'Remove',
+        onclick: function () { rows.splice(i, 1); draw(); onChange(); }
+      }));
+      wrap.appendChild(line);
+      host.appendChild(wrap);
+    });
+    host.appendChild(el('button', {
+      class: 'mini add', type: 'button', text: '+ Add ' + title.toLowerCase().replace(/s$/, ''),
+      onclick: function () { rows.push(cols.map(function (c) { return c.options ? c.options[0] : ''; })); draw(); onChange(); }
+    }));
+  }
+  draw();
+  return box;
+}
+
+/* Table editor for pattern / cutoff */
+function tableEditor(title, obj, onChange, extras) {
+  var box = el('div', { class: 'box' });
+  box.appendChild(el('h3', { text: title }));
+  (extras || []).forEach(function (f) { box.appendChild(f); });
+
+  box.appendChild(textField('Column headings (comma separated)', obj.head.join(', '), function (v) {
+    obj.head = v.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    onChange(); draw();
+  }));
+
+  var host = el('div', { style: 'margin-top:.8rem' });
+  box.appendChild(host);
+
+  function draw() {
+    host.innerHTML = '';
+    obj.rows.forEach(function (r, i) {
+      var wrap = el('div', { class: 'rep' });
+      var line = el('div', { style: 'display:grid;gap:.4rem;grid-template-columns:repeat(' + Math.max(obj.head.length, 1) + ',1fr) auto' });
+      obj.head.forEach(function (h, ci) {
+        var input = el('input', { type: 'text', placeholder: h });
+        input.value = r[ci] == null ? '' : r[ci];
+        input.addEventListener('input', function () { r[ci] = input.value; onChange(); });
+        line.appendChild(input);
+      });
+      line.appendChild(el('button', {
+        class: 'mini', type: 'button', text: '×',
+        onclick: function () { obj.rows.splice(i, 1); draw(); onChange(); }
+      }));
+      wrap.appendChild(line);
+      host.appendChild(wrap);
+    });
+    host.appendChild(el('button', {
+      class: 'mini add', type: 'button', text: '+ Add row',
+      onclick: function () { obj.rows.push(obj.head.map(function () { return ''; })); draw(); onChange(); }
+    }));
+  }
+  draw();
+  return box;
+}
+
+/* -------------------------------------------------------------- dashboard */
+function renderDash() {
+  if (!S) return;
+  var host = $('#dash-body'); host.innerHTML = '';
+
+  var live = S.exams.filter(function (x) { return x.alert; });
+  var today = new Date().toISOString().slice(0, 10);
+  var upcoming = S.exams.filter(function (x) { return x.nextDate && x.nextDate >= today; })
+    .sort(function (a, b) { return a.nextDate < b.nextDate ? -1 : 1; }).slice(0, 8);
+
+  var stats = el('div', { class: 'stats', style: 'margin-bottom:1.2rem' });
+  [[S.exams.length, 'exams'], [S.guides.length, 'guides'],
+   [live.length, 'live alerts'], [S.extraEvents.length, 'extra dates']].forEach(function (s) {
+    stats.appendChild(el('div', { class: 'stat' }, [
+      el('span', { class: 'n mono', text: s[0] }), el('span', { class: 'l', text: s[1] })]));
+  });
+  host.appendChild(stats);
+
+  var b1 = el('div', { class: 'box' });
+  b1.appendChild(el('h3', { text: 'Next milestones' }));
+  if (!upcoming.length) {
+    b1.appendChild(el('p', { class: 'hint', text: 'No exam has a future "next date" set. Open an exam and fill in Next date.' }));
+  }
+  upcoming.forEach(function (x) {
+    var d = Math.round((new Date(x.nextDate) - new Date(today)) / 86400000);
+    b1.appendChild(el('div', { class: 'list-item' }, [
+      el('span', { class: 'rail live' }),
+      el('div', {}, [el('h4', { text: x.name + ' — ' + (x.nextEvent || '') }),
+                     el('p', { text: x.nextDate })]),
+      el('span', { class: 'chip live', text: d === 0 ? 'today' : 'in ' + d + ' days' })
+    ]));
+  });
+  host.appendChild(b1);
+
+  var b2 = el('div', { class: 'box' });
+  b2.appendChild(el('h3', { text: 'Needs attention' }));
+  var issues = [];
+  S.exams.forEach(function (x) {
+    if (!x.nextDate) issues.push(x.name + ' has no next date set');
+    if (!x.stage) issues.push(x.name + ' has no current stage text');
+    if (x.nextDate && x.nextDate < today) issues.push(x.name + ' — next date has passed (' + x.nextDate + ')');
+    if (!x.keywords || !x.keywords.length) issues.push(x.name + ' has no SEO keywords');
+  });
+  if (!issues.length) b2.appendChild(el('div', { class: 'ok', text: 'Everything looks current.' }));
+  issues.slice(0, 15).forEach(function (t) {
+    b2.appendChild(el('p', { class: 'hint', style: 'margin:.25rem 0', text: '• ' + t }));
+  });
+  if (issues.length > 15) b2.appendChild(el('p', { class: 'hint', text: '…and ' + (issues.length - 15) + ' more.' }));
+  host.appendChild(b2);
+
+  var b3 = el('div', { class: 'box' });
+  b3.appendChild(el('h3', { text: 'How publishing works' }));
+  b3.appendChild(el('p', { class: 'hint', html:
+    'Edits here are stored in this browser as a draft. Nothing is live until you go to ' +
+    '<strong>Publish</strong>. Publishing writes <code>src/data/overrides.json</code> to your ' +
+    'GitHub repository; Cloudflare Pages rebuilds automatically and the site updates in about a minute.' }));
+  host.appendChild(b3);
+}
+
+/* ------------------------------------------------------------------ exams */
+function renderExamList() {
+  var host = $('#exam-list'); host.innerHTML = '';
+  var q = ($('#exam-search').value || '').toLowerCase();
+  S.exams.forEach(function (x, i) {
+    if (q && (x.name + ' ' + x.category + ' ' + (x.fullName || '')).toLowerCase().indexOf(q) === -1) return;
+    var cls = { live: 'live', counselling: 'live', open: 'open', 'open-soon': 'open',
+                'in-progress': 'next', upcoming: 'next' }[x.status] || '';
+    host.appendChild(el('div', { class: 'list-item' }, [
+      el('span', { class: 'rail ' + cls }),
+      el('div', {}, [
+        el('h4', { text: x.name }),
+        el('p', { text: (x.statusLabel || x.status) + ' · ' + x.category + ' · /exams/' + x.slug + '.html' })
+      ]),
+      el('div', { style: 'display:flex;gap:.4rem' }, [
+        el('button', { class: 'mini', type: 'button', text: 'Edit', style: 'color:var(--accent);border-color:var(--accent)',
+          onclick: function () { editExam(i); } }),
+        el('button', { class: 'mini', type: 'button', text: 'Delete',
+          onclick: function () {
+            if (!confirm('Delete ' + x.name + '? This removes the page on the next publish.')) return;
+            S.deletedExams = S.deletedExams || [];
+            S.deletedExams.push(x.slug);
+            S.exams.splice(i, 1);
+            markDirty(); renderExamList();
+          } })
+      ])
+    ]));
+  });
+  if (!host.children.length) host.appendChild(el('p', { class: 'hint', text: 'No exam matches that filter.' }));
+}
+$('#exam-search').addEventListener('input', renderExamList);
+$('#add-exam').addEventListener('click', function () {
+  S.exams.push(JSON.parse(JSON.stringify(BLANK_EXAM)));
+  markDirty(); editExam(S.exams.length - 1);
+});
+
+function editExam(i) {
+  var x = S.exams[i];
+  var host = $('#exam-edit');
+  $('#exam-list-view').hidden = true; host.hidden = false; host.innerHTML = '';
+  var ch = function () { markDirty(); };
+
+  host.appendChild(el('div', { class: 'bar' }, [
+    el('h1', { text: x.name || 'New exam' }),
+    el('button', { class: 'btn ghost sm', type: 'button', text: '← Back to all exams',
+      onclick: function () { host.hidden = true; $('#exam-list-view').hidden = false; renderExamList(); } })
+  ]));
+
+  /* identity */
+  var b = el('div', { class: 'box' });
+  b.appendChild(el('h3', { text: 'Identity' }));
+  var g = el('div', { class: 'row2' });
+  g.appendChild(textField('Short name', x.name, function (v) {
+    x.name = v; if (!x.slug) x.slug = slugify(v); ch();
+  }, { placeholder: 'JEE Main' }));
+  g.appendChild(textField('URL slug', x.slug, function (v) { x.slug = slugify(v); ch(); },
+    { hint: 'Page will be /exams/<slug>.html' }));
+  b.appendChild(g);
+  b.appendChild(textField('Full name', x.fullName, function (v) { x.fullName = v; ch(); },
+    { placeholder: 'Joint Entrance Examination (Main)' }));
+  var g2 = el('div', { class: 'row2' });
+  g2.appendChild(textField('Conducted by', x.body, function (v) { x.body = v; ch(); }));
+  g2.appendChild(textField('Official website', x.site, function (v) { x.site = v; ch(); },
+    { type: 'url', placeholder: 'https://…' }));
+  b.appendChild(g2);
+  var g3 = el('div', { class: 'row2 thirds' });
+  g3.appendChild(selectField('Category', x.category,
+    Object.keys(S.categories || {}), function (v) { x.category = v; ch(); }));
+  g3.appendChild(selectField('Level', x.level, ['national', 'state'], function (v) { x.level = v; ch(); }));
+  g3.appendChild(textField('State (if state-level)', x.state, function (v) { x.state = v || null; ch(); },
+    { placeholder: 'Maharashtra' }));
+  b.appendChild(g3);
+  var g4 = el('div', { class: 'row2' });
+  g4.appendChild(textField('Mode', x.mode, function (v) { x.mode = v; ch(); }));
+  g4.appendChild(textField('Frequency', x.frequency, function (v) { x.frequency = v; ch(); }));
+  b.appendChild(g4);
+  b.appendChild(textField('Tagline', x.tagline, function (v) { x.tagline = v; ch(); },
+    { hint: 'One line, shown on cards and in listings.' }));
+  b.appendChild(textField('Summary', x.summary, function (v) { x.summary = v; ch(); },
+    { area: true, hint: 'Opening paragraph on the exam page.' }));
+  host.appendChild(b);
+
+  /* status */
+  var sb = el('div', { class: 'box' });
+  sb.appendChild(el('h3', { text: 'Current status' }));
+  var sg = el('div', { class: 'row2' });
+  sg.appendChild(selectField('Status', x.status,
+    ['live', 'counselling', 'open', 'open-soon', 'in-progress', 'upcoming', 'watch', 'cycle-closed'],
+    function (v) { x.status = v; ch(); },
+    'Drives the colour rail and the tag on the board.'));
+  sg.appendChild(textField('Status label', x.statusLabel, function (v) { x.statusLabel = v; ch(); },
+    { placeholder: 'CAP Round 1 live' }));
+  sb.appendChild(sg);
+  sb.appendChild(textField('Current stage', x.stage, function (v) { x.stage = v; ch(); },
+    { area: true, hint: 'Shown on the homepage board and at the top of the exam page.' }));
+  var sg2 = el('div', { class: 'row2' });
+  sg2.appendChild(textField('Next date', x.nextDate, function (v) { x.nextDate = v || null; ch(); },
+    { type: 'date', hint: 'Drives the countdown.' }));
+  sg2.appendChild(textField('Next event', x.nextEvent, function (v) { x.nextEvent = v; ch(); }));
+  sb.appendChild(sg2);
+  sb.appendChild(textField('Alert banner (optional)', x.alert, function (v) { x.alert = v; ch(); },
+    { area: true, hint: 'Amber box at the top of the page. Leave blank for none. Exams with an alert also appear in the homepage "happening now" row.' }));
+  host.appendChild(sb);
+
+  host.appendChild(repeater('Eligibility', x.eligibility || (x.eligibility = []),
+    [{ label: 'Criterion' }, { label: 'Detail', area: true }], ch));
+
+  host.appendChild(tableEditor('Exam pattern', x.pattern, ch, [
+    (function () {
+      var w = el('div');
+      w.appendChild(el('label', { text: 'Notes below the table (one per line)' }));
+      var ta = el('textarea', { style: 'min-height:80px' });
+      ta.value = (x.pattern.notes || []).join('\n');
+      ta.addEventListener('input', function () {
+        x.pattern.notes = ta.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+        ch();
+      });
+      w.appendChild(ta);
+      return w;
+    })()
+  ]));
+
+  host.appendChild(repeater('Syllabus', x.syllabus || (x.syllabus = []),
+    [{ label: 'Subject' }, { label: 'Topics', area: true }], ch,
+    'Each row becomes a collapsible section.'));
+
+  host.appendChild(repeater('Important dates', x.dates || (x.dates = []),
+    [{ label: 'Event' }, { label: 'Date as text' },
+     { label: 'Status', options: ['done', 'live', 'next', 'upcoming', 'cancelled'] }], ch,
+    'Write dates like "21 Aug 2026" or "Aug – Sep 2026". Anything with a recognisable date is picked up by the calendar automatically.'));
+
+  host.appendChild(tableEditor('Cutoff trends', x.cutoff, ch, [
+    textField('Intro note', x.cutoff.note, function (v) { x.cutoff.note = v; ch(); }),
+    textField('Disclaimer', x.cutoff.disclaimer, function (v) { x.cutoff.disclaimer = v; ch(); })
+  ]));
+
+  host.appendChild(repeater('Careers', x.careers || (x.careers = []),
+    [{ label: 'Role' }, { label: 'Detail', area: true }], ch));
+
+  host.appendChild(repeater('FAQs', x.faqs || (x.faqs = []),
+    [{ label: 'Question' }, { label: 'Answer', area: true }], ch,
+    'These are marked up as FAQ structured data, which is what produces the expandable results in Google.'));
+
+  var kb = el('div', { class: 'box' });
+  kb.appendChild(el('h3', { text: 'SEO and tools' }));
+  kb.appendChild(textField('Keywords (comma separated)', (x.keywords || []).join(', '), function (v) {
+    x.keywords = v.split(',').map(function (s) { return s.trim(); }).filter(Boolean); ch();
+  }, { hint: 'Used for your own reference and to shape the page description.' }));
+  kb.appendChild(textField('Linked tools (comma separated slugs)', (x.tools || []).join(', '), function (v) {
+    x.tools = v.split(',').map(function (s) { return s.trim(); }).filter(Boolean); ch();
+  }, { hint: 'Available: ' + (S.tools || []).map(function (t) { return t.slug; }).join(', ') }));
+  host.appendChild(kb);
+
+  host.appendChild(el('div', { class: 'form-actions' }, [
+    el('button', { class: 'btn', type: 'button', text: 'Done',
+      onclick: function () { host.hidden = true; $('#exam-list-view').hidden = false; renderExamList(); window.scrollTo(0, 0); } })
+  ]));
+  window.scrollTo(0, 0);
+}
+
+/* ----------------------------------------------------------------- guides */
+function renderGuideList() {
+  var host = $('#guide-list'); host.innerHTML = '';
+  S.guides.forEach(function (g, i) {
+    host.appendChild(el('div', { class: 'list-item' }, [
+      el('span', { class: 'rail next' }),
+      el('div', {}, [el('h4', { text: g.title }),
+                     el('p', { text: (g.category || '') + ' · ' + (g.readTime || '') + ' · /guides/' + g.slug + '.html' })]),
+      el('div', { style: 'display:flex;gap:.4rem' }, [
+        el('button', { class: 'mini', type: 'button', text: 'Edit', style: 'color:var(--accent);border-color:var(--accent)',
+          onclick: function () { editGuide(i); } }),
+        el('button', { class: 'mini', type: 'button', text: 'Delete',
+          onclick: function () {
+            if (!confirm('Delete this guide?')) return;
+            S.deletedGuides = S.deletedGuides || [];
+            S.deletedGuides.push(g.slug);
+            S.guides.splice(i, 1); markDirty(); renderGuideList();
+          } })
+      ])
+    ]));
+  });
+  if (!host.children.length) host.appendChild(el('p', { class: 'hint', text: 'No guides yet.' }));
+}
+$('#add-guide').addEventListener('click', function () {
+  S.guides.push({ slug: '', title: '', category: 'Choosing an exam', readTime: '6 min',
+                  updated: new Date().toISOString().slice(0, 10), excerpt: '',
+                  related: [], keywords: [], blocks: [] });
+  markDirty(); editGuide(S.guides.length - 1);
+});
+
+var BLOCK_TYPES = [['h', 'Heading'], ['p', 'Paragraph'], ['ul', 'Bullet list'],
+                   ['note', 'Callout box'], ['table', 'Table'], ['verdict', 'Decision block']];
+
+function editGuide(i) {
+  var g = S.guides[i];
+  var host = $('#guide-edit');
+  $('#guide-list-view').hidden = true; host.hidden = false; host.innerHTML = '';
+  var ch = function () { markDirty(); };
+
+  host.appendChild(el('div', { class: 'bar' }, [
+    el('h1', { text: g.title || 'New guide' }),
+    el('button', { class: 'btn ghost sm', type: 'button', text: '← Back to all guides',
+      onclick: function () { host.hidden = true; $('#guide-list-view').hidden = false; renderGuideList(); } })
+  ]));
+
+  var b = el('div', { class: 'box' });
+  b.appendChild(el('h3', { text: 'Basics' }));
+  b.appendChild(textField('Title', g.title, function (v) {
+    g.title = v; if (!g.slug) g.slug = slugify(v); ch();
+  }));
+  var r = el('div', { class: 'row2 thirds' });
+  r.appendChild(textField('Slug', g.slug, function (v) { g.slug = slugify(v); ch(); }));
+  r.appendChild(textField('Category', g.category, function (v) { g.category = v; ch(); }));
+  r.appendChild(textField('Read time', g.readTime, function (v) { g.readTime = v; ch(); }));
+  b.appendChild(r);
+  b.appendChild(textField('Excerpt', g.excerpt, function (v) { g.excerpt = v; ch(); },
+    { area: true, hint: 'Used as the meta description and on listing cards.' }));
+  var r2 = el('div', { class: 'row2' });
+  r2.appendChild(textField('Updated', g.updated, function (v) { g.updated = v; ch(); }, { type: 'date' }));
+  r2.appendChild(textField('Related exam slugs (comma separated)', (g.related || []).join(', '),
+    function (v) { g.related = v.split(',').map(function (s) { return s.trim(); }).filter(Boolean); ch(); }));
+  b.appendChild(r2);
+  b.appendChild(textField('Keywords (comma separated)', (g.keywords || []).join(', '),
+    function (v) { g.keywords = v.split(',').map(function (s) { return s.trim(); }).filter(Boolean); ch(); }));
+  host.appendChild(b);
+
+  /* block editor */
+  var bb = el('div', { class: 'box' });
+  bb.appendChild(el('h3', { text: 'Content' }));
+  bb.appendChild(el('p', { class: 'hint', style: 'margin-top:-.4rem',
+    text: 'Blocks render in this order. Headings become the section structure of the article.' }));
+  var blocksHost = el('div');
+  bb.appendChild(blocksHost);
+
+  g.blocks = g.blocks || [];
+  function drawBlocks() {
+    blocksHost.innerHTML = '';
+    g.blocks.forEach(function (blk, bi) {
+      var type = Object.keys(blk)[0];
+      var wrap = el('div', { class: 'rep' });
+      var head = el('div', { style: 'display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;gap:.5rem' });
+      head.appendChild(el('span', { class: 'chip', text: (BLOCK_TYPES.find(function (t) { return t[0] === type; }) || [, type])[1] }));
+      var ctrls = el('div', { style: 'display:flex;gap:.3rem' });
+      ['↑', '↓', '×'].forEach(function (sym, si) {
+        ctrls.appendChild(el('button', { class: 'mini', type: 'button', text: sym,
+          onclick: function () {
+            if (si === 2) { g.blocks.splice(bi, 1); }
+            else {
+              var j = bi + (si === 0 ? -1 : 1);
+              if (j < 0 || j >= g.blocks.length) return;
+              var t = g.blocks[bi]; g.blocks[bi] = g.blocks[j]; g.blocks[j] = t;
+            }
+            drawBlocks(); ch();
+          } }));
+      });
+      head.appendChild(ctrls);
+      wrap.appendChild(head);
+
+      if (type === 'h' || type === 'p' || type === 'note') {
+        var ta = el('textarea', { style: type === 'h' ? 'min-height:44px' : 'min-height:80px' });
+        ta.value = blk[type];
+        ta.addEventListener('input', function () { blk[type] = ta.value; ch(); });
+        wrap.appendChild(ta);
+      } else if (type === 'ul') {
+        var ta2 = el('textarea', { style: 'min-height:100px' });
+        ta2.value = blk.ul.join('\n');
+        ta2.addEventListener('input', function () {
+          blk.ul = ta2.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean); ch();
+        });
+        wrap.appendChild(el('p', { class: 'hint', style: 'margin:0 0 .3rem', text: 'One bullet per line' }));
+        wrap.appendChild(ta2);
+      } else if (type === 'table') {
+        wrap.appendChild(tableEditor('Table', blk.table, ch));
+      } else if (type === 'verdict') {
+        wrap.appendChild(repeater('Options', blk.verdict,
+          [{ label: 'Pick this if…' }, { label: 'Because…', area: true }], ch));
+      }
+      blocksHost.appendChild(wrap);
+    });
+
+    var adder = el('div', { style: 'display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem' });
+    BLOCK_TYPES.forEach(function (t) {
+      adder.appendChild(el('button', { class: 'mini', type: 'button', text: '+ ' + t[1],
+        style: 'color:var(--accent);border-color:var(--accent);border-style:dashed',
+        onclick: function () {
+          var nb = {};
+          if (t[0] === 'ul') nb.ul = [''];
+          else if (t[0] === 'table') nb.table = { head: ['Column A', 'Column B'], rows: [['', '']] };
+          else if (t[0] === 'verdict') nb.verdict = [['', '']];
+          else nb[t[0]] = '';
+          g.blocks.push(nb); drawBlocks(); ch();
+        } }));
+    });
+    blocksHost.appendChild(adder);
+  }
+  drawBlocks();
+  host.appendChild(bb);
+
+  host.appendChild(el('div', { class: 'form-actions' }, [
+    el('button', { class: 'btn', type: 'button', text: 'Done',
+      onclick: function () { host.hidden = true; $('#guide-list-view').hidden = false; renderGuideList(); window.scrollTo(0, 0); } })
+  ]));
+  window.scrollTo(0, 0);
+}
+
+/* --------------------------------------------------------------- calendar */
+function renderCal() {
+  var host = $('#cal-list'); host.innerHTML = '';
+  host.appendChild(repeater('Calendar entries', S.extraEvents,
+    [{ label: 'YYYY-MM-DD' }, { label: 'What happens' }, { label: 'Category' },
+     { label: 'Exam name' }, { label: 'Status' }, { label: 'Link' }],
+    function () { markDirty(); }));
+}
+
+/* ------------------------------------------------------------------ board */
+function renderBoard() {
+  var host = $('#board-list'); host.innerHTML = '';
+  S.boardOrder.forEach(function (slug, i) {
+    var x = S.exams.find(function (e) { return e.slug === slug; });
+    host.appendChild(el('div', { class: 'list-item' }, [
+      el('span', { class: 'rail live' }),
+      el('div', {}, [el('h4', { text: (x ? x.name : slug + ' (missing)') }),
+                     el('p', { text: x ? (x.statusLabel || x.status) : 'This exam no longer exists' })]),
+      el('div', { style: 'display:flex;gap:.3rem' }, [
+        el('button', { class: 'mini', type: 'button', text: '↑', onclick: function () {
+          if (i === 0) return;
+          var t = S.boardOrder[i]; S.boardOrder[i] = S.boardOrder[i - 1]; S.boardOrder[i - 1] = t;
+          markDirty(); renderBoard();
+        } }),
+        el('button', { class: 'mini', type: 'button', text: '↓', onclick: function () {
+          if (i >= S.boardOrder.length - 1) return;
+          var t = S.boardOrder[i]; S.boardOrder[i] = S.boardOrder[i + 1]; S.boardOrder[i + 1] = t;
+          markDirty(); renderBoard();
+        } }),
+        el('button', { class: 'mini', type: 'button', text: 'Remove', onclick: function () {
+          S.boardOrder.splice(i, 1); markDirty(); renderBoard();
+        } })
+      ])
+    ]));
+  });
+
+  var addHost = $('#board-add'); addHost.innerHTML = '';
+  var avail = S.exams.filter(function (x) { return S.boardOrder.indexOf(x.slug) === -1; });
+  if (avail.length) {
+    var sel = el('select');
+    avail.forEach(function (x) { sel.appendChild(el('option', { value: x.slug, text: x.name })); });
+    addHost.appendChild(el('div', { style: 'display:flex;gap:.5rem;margin-top:.8rem;align-items:flex-end' }, [
+      el('div', { style: 'flex:1' }, [el('label', { text: 'Add an exam to the board' }), sel]),
+      el('button', { class: 'btn sm', type: 'button', text: 'Add', onclick: function () {
+        S.boardOrder.push(sel.value); markDirty(); renderBoard();
+      } })
+    ]));
+  }
+}
+
+/* --------------------------------------------------------------- settings */
+function renderSettings() {
+  var host = $('#settings-form'); host.innerHTML = '';
+  var ch = function () { markDirty(); };
+  var fields = [
+    ['name', 'Site name'], ['domain', 'Domain'], ['url', 'Full URL (no trailing slash)'],
+    ['tagline', 'Tagline'], ['email', 'Contact email'], ['twitter', 'Twitter handle'],
+    ['built', 'Build date (YYYY-MM-DD)'], ['repo', 'GitHub repo (user/name)'], ['branch', 'Branch']
+  ];
+  var g = el('div', { class: 'row2' });
+  fields.forEach(function (f) {
+    g.appendChild(textField(f[1], S.site[f[0]], function (v) { S.site[f[0]] = v; ch(); }));
+  });
+  host.appendChild(g);
+  host.appendChild(textField('Site description (meta)', S.site.description,
+    function (v) { S.site.description = v; ch(); }, { area: true }));
+}
+$('#save-pc').addEventListener('click', function () {
+  var v = $('#newpc').value;
+  if (!v) return;
+  LS.set(PC_KEY, v); $('#newpc').value = '';
+  alert('Passcode updated on this device.');
+});
+
+/* ---------------------------------------------------------------- publish */
+function buildOverrides() {
+  return {
+    _note: 'Written by the College Helper admin panel. Edited here, not by hand.',
+    _generated: new Date().toISOString(),
+    site: S.site,
+    exams: S.exams,
+    guides: S.guides,
+    deletedExams: S.deletedExams || [],
+    deletedGuides: S.deletedGuides || [],
+    extraEvents: S.extraEvents,
+    boardOrder: S.boardOrder
+  };
+}
+
+function renderPublish() {
+  if (!S) return;
+  $('#gh-repo').value = $('#gh-repo').value || LS.get('ch:gh:repo', S.site.repo || '');
+  $('#gh-branch').value = $('#gh-branch').value || LS.get('ch:gh:branch', S.site.branch || 'main');
+  $('#gh-token').value = $('#gh-token').value || LS.get('ch:gh:token', '');
+  if (!$('#gh-msg').value) $('#gh-msg').value = 'Update exam content — ' + new Date().toISOString().slice(0, 10);
+
+  var sum = $('#publish-summary'); sum.innerHTML = '';
+  var json = JSON.stringify(buildOverrides(), null, 1);
+  var dl = el('dl', { class: 'kv' });
+  [['Exams', S.exams.length], ['Guides', S.guides.length],
+   ['Extra calendar entries', S.extraEvents.length],
+   ['Board rows', S.boardOrder.length],
+   ['Deleted exams', (S.deletedExams || []).length],
+   ['File size', Math.round(json.length / 1024) + ' KB']].forEach(function (r) {
+    dl.appendChild(el('dt', { text: r[0] }));
+    dl.appendChild(el('dd', { text: String(r[1]) }));
+  });
+  sum.appendChild(dl);
+}
+
+['repo', 'branch', 'token'].forEach(function (k) {
+  $('#gh-' + k).addEventListener('change', function () {
+    LS.set('ch:gh:' + k, $('#gh-' + k).value.trim());
+  });
+});
+
+function ghHeaders() {
+  return {
+    'Authorization': 'Bearer ' + $('#gh-token').value.trim(),
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28'
+  };
+}
+function status(kind, msg) {
+  $('#gh-status').innerHTML = '';
+  $('#gh-status').appendChild(el('div', { class: kind, html: msg }));
+}
+function b64(str) {
+  var bytes = new TextEncoder().encode(str), bin = '';
+  for (var i = 0; i < bytes.length; i += 0x8000) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  }
+  return btoa(bin);
+}
+
+$('#gh-test').addEventListener('click', function () {
+  var repo = $('#gh-repo').value.trim();
+  if (!repo || !$('#gh-token').value.trim()) {
+    return status('bad', 'Fill in the repository and the token first.');
+  }
+  status('warn', 'Checking…');
+  fetch('https://api.github.com/repos/' + repo, { headers: ghHeaders() })
+    .then(function (r) {
+      if (r.status === 404) throw new Error('Repository not found, or the token cannot see it.');
+      if (r.status === 401) throw new Error('The token was rejected. Check it has not expired.');
+      if (!r.ok) throw new Error('GitHub returned ' + r.status + '.');
+      return r.json();
+    })
+    .then(function (d) {
+      status('ok', 'Connected to <strong>' + d.full_name + '</strong>' +
+        (d.private ? ' (private)' : '') + '. Default branch: <code>' + d.default_branch + '</code>.');
+    })
+    .catch(function (e) { status('bad', e.message); });
+});
+
+$('#gh-publish').addEventListener('click', function () {
+  var repo = $('#gh-repo').value.trim();
+  var branch = $('#gh-branch').value.trim() || 'main';
+  var token = $('#gh-token').value.trim();
+  var msg = $('#gh-msg').value.trim() || 'Update exam content';
+  var path = 'src/data/overrides.json';
+
+  if (!repo || !token) return status('bad', 'Fill in the repository and the token first.');
+
+  var content = JSON.stringify(buildOverrides(), null, 1);
+  var api = 'https://api.github.com/repos/' + repo + '/contents/' + path;
+  status('warn', 'Publishing…');
+
+  fetch(api + '?ref=' + encodeURIComponent(branch), { headers: ghHeaders() })
+    .then(function (r) { return r.status === 404 ? null : r.json(); })
+    .then(function (existing) {
+      var body = { message: msg, content: b64(content), branch: branch };
+      if (existing && existing.sha) body.sha = existing.sha;
+      return fetch(api, { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+    })
+    .then(function (r) {
+      return r.json().then(function (d) {
+        if (!r.ok) throw new Error(d.message || ('GitHub returned ' + r.status));
+        return d;
+      });
+    })
+    .then(function (d) {
+      dirty = false;
+      $('#dirtybar').classList.remove('on');
+      status('ok', 'Published. Commit <code>' + d.commit.sha.slice(0, 7) + '</code> is on ' +
+        '<code>' + branch + '</code>. Cloudflare Pages will rebuild automatically — give it about a minute, ' +
+        'then <a href="/" target="_blank">check the site</a>.');
+    })
+    .catch(function (e) {
+      status('bad', 'Could not publish: ' + e.message +
+        '<br>Check the token has <strong>Contents: Read and write</strong> permission on this repository.');
+    });
+});
+
+$('#dl-json').addEventListener('click', function () {
+  download('overrides.json', JSON.stringify(buildOverrides(), null, 1));
+});
+$('#dl-backup').addEventListener('click', function () {
+  download('collegehelper-backup-' + new Date().toISOString().slice(0, 10) + '.json',
+           JSON.stringify(S, null, 1));
+});
+$('#up-json').addEventListener('change', function (ev) {
+  var f = ev.target.files[0];
+  if (!f) return;
+  var fr = new FileReader();
+  fr.onload = function () {
+    try {
+      var d = JSON.parse(fr.result);
+      if (!d.exams) throw new Error('That file does not contain exam data.');
+      S = {
+        site: d.site, exams: d.exams, guides: d.guides || [],
+        extraEvents: d.extraEvents || [], boardOrder: d.boardOrder || [],
+        categories: S.categories, tools: S.tools,
+        deletedExams: d.deletedExams || [], deletedGuides: d.deletedGuides || []
+      };
+      markDirty(); start();
+      alert('Backup loaded into your draft.');
+    } catch (e) { alert('Could not read that file: ' + e.message); }
+  };
+  fr.readAsText(f);
+});
+$('#reset-draft').addEventListener('click', function () {
+  if (!confirm('Discard your draft and reload the live site content? This cannot be undone.')) return;
+  LS.del(DRAFT_KEY);
+  dirty = false;
+  $('#dirtybar').classList.remove('on');
+  boot();
+});
+
+window.addEventListener('beforeunload', function (e) {
+  if (dirty) { e.preventDefault(); e.returnValue = ''; }
+});
+
+if (sessionStorage.getItem('ch:admin:in') === '1') boot();
+})();
+</script>
+</body>
+</html>
