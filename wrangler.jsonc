@@ -12,7 +12,7 @@
     "not_found_handling": "404-page",
     // Only these paths invoke the Worker. Everything else is served as a
     // static file at no cost.
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": ["/api/*", "/admin", "/admin/*"]
   },
 
   // PASTE YOUR KV NAMESPACE ID BELOW (Storage & Databases -> KV -> your namespace).
