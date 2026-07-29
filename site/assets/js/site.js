@@ -36,13 +36,7 @@
     if (d >= 0) el.textContent = d;
   });
 
-  /* --------------------------------------------- staggered board reveal -- */
-  var rows = document.querySelectorAll('.board .row');
-  if (rows.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    rows.forEach(function (r, i) { r.style.animationDelay = Math.min(i * 45, 500) + 'ms'; });
-  } else {
-    rows.forEach(function (r) { r.style.animation = 'none'; });
-  }
+  /* No entrance animation: the list is reference information, not a reveal. */
 
   /* ------------------------------------------------- exam search + filter -- */
   var q = document.getElementById('q');
