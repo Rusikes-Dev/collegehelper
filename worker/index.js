@@ -113,6 +113,37 @@ function adminGuard(request, env) {
   return null;
 }
 
+function basicAuthPrompt() {
+  return new Response('Authentication required.', {
+    status: 401,
+    headers: { 'WWW-Authenticate': 'Basic realm="College Helper Admin", charset="UTF-8"' }
+  });
+}
+
+function timingSafeEqual(a, b) {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+async function guardAdminPage(request, env) {
+  if (!env.ADMIN_SECRET) {
+    return json({ error: 'ADMIN_SECRET is not set.' }, 503);
+  }
+  const auth = request.headers.get('Authorization') || '';
+  if (!auth.startsWith('Basic ')) return basicAuthPrompt();
+
+  let decoded;
+  try { decoded = atob(auth.slice(6)); } catch { return basicAuthPrompt(); }
+  const sep = decoded.indexOf(':');
+  const user = sep === -1 ? decoded : decoded.slice(0, sep);
+  const pass = sep === -1 ? '' : decoded.slice(sep + 1);
+
+  if (user !== 'admin' || !timingSafeEqual(pass, env.ADMIN_SECRET)) return basicAuthPrompt();
+  return null;
+}
+
 async function uploadData(request, env, url) {
   const bad = adminGuard(request, env);
   if (bad) return bad;
@@ -136,6 +167,12 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
     const method = request.method;
+
+    if (path === '/admin' || path.startsWith('/admin/')) {
+      const denied = await guardAdminPage(request, env);
+      if (denied) return denied;
+      return env.ASSETS.fetch(request);
+    }
 
     if (!path.startsWith('/api/')) return env.ASSETS.fetch(request);
 
