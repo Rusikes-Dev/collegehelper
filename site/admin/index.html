@@ -78,6 +78,7 @@
         <rect x="10" y="17" width="9.5" height="2" rx="1" fill="#8A93A3"/>
       </svg>College<em style="font-style:normal;color:#15509E">Helper</em></a>
     <button class="tab" data-panel="dash" aria-selected="true">Dashboard</button>
+    <button class="tab" data-panel="sales" aria-selected="false">Sales <span class="n" id="n-sales">–</span></button>
     <button class="tab" data-panel="exams" aria-selected="false">Exams <span class="n" id="n-exams">0</span></button>
     <button class="tab" data-panel="guides" aria-selected="false">Guides <span class="n" id="n-guides">0</span></button>
     <button class="tab" data-panel="cal" aria-selected="false">Calendar <span class="n" id="n-cal">0</span></button>
@@ -96,6 +97,23 @@
       <div class="bar"><h1>Dashboard</h1>
         <span class="chip" id="loaded-from"></span></div>
       <div id="dash-body"></div>
+    </section>
+
+    <!-- SALES -->
+    <section class="panel" id="p-sales">
+      <div class="bar"><h1>Sales</h1>
+        <button class="btn sm" id="sales-refresh" type="button">Refresh</button></div>
+      <div class="box">
+        <p class="hint" style="margin-top:0">Every verified purchase, read straight from storage.
+        Payments themselves live in your Razorpay dashboard — this is the record the site keeps so
+        buyers can restore access.</p>
+        <label for="sales-secret">Admin secret</label>
+        <input type="password" id="sales-secret" placeholder="The ADMIN_SECRET set in Cloudflare">
+        <div class="form-actions"><button class="btn sm" id="sales-load" type="button">Load sales</button>
+          <button class="btn ghost sm" id="sales-csv" type="button">Export CSV</button></div>
+        <div id="sales-status"></div>
+      </div>
+      <div id="sales-body"></div>
     </section>
 
     <!-- EXAMS -->
@@ -342,6 +360,10 @@ document.querySelectorAll('.tab').forEach(function (t) {
     document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('on'); });
     $('#p-' + t.getAttribute('data-panel')).classList.add('on');
     if (t.getAttribute('data-panel') === 'publish') renderPublish();
+    if (t.getAttribute('data-panel') === 'sales') {
+      if (!$('#sales-secret').value) $('#sales-secret').value = LS.get('ch:admin:secret', '');
+      if (!SALES.length) loadSales();
+    }
     if (t.getAttribute('data-panel') === 'dash') renderDash();
     window.scrollTo(0, 0);
   });
@@ -512,6 +534,14 @@ function renderDash() {
   });
   if (issues.length > 15) b2.appendChild(el('p', { class: 'hint', text: '…and ' + (issues.length - 15) + ' more.' }));
   host.appendChild(b2);
+
+  var bS = el('div', { class: 'box' });
+  bS.appendChild(el('h3', { text: 'Sales' }));
+  bS.appendChild(el('p', { class: 'hint', style: 'margin-top:0',
+    text: 'Predictor purchases and revenue are on the Sales tab, read live from storage.' }));
+  bS.appendChild(el('button', { class: 'btn sm', type: 'button', text: 'Open Sales',
+    onclick: function () { document.querySelector('[data-panel=sales]').click(); } }));
+  host.appendChild(bS);
 
   var b3 = el('div', { class: 'box' });
   b3.appendChild(el('h3', { text: 'How publishing works' }));
@@ -899,6 +929,114 @@ $('#save-pc').addEventListener('click', function () {
   if (!v) return;
   LS.set(PC_KEY, v); $('#newpc').value = '';
   alert('Passcode updated on this device.');
+});
+
+/* ------------------------------------------------------------------ sales */
+var SALES = [];
+
+function salesMsg(cls, msg) {
+  var h = $('#sales-status'); h.innerHTML = '';
+  h.appendChild(el('div', { class: cls, html: msg }));
+}
+
+function money(n) { return '\u20B9' + Number(n || 0).toLocaleString('en-IN'); }
+
+function loadSales() {
+  var sec = $('#sales-secret').value.trim();
+  if (sec) LS.set('ch:admin:secret', sec);
+  salesMsg('warn', 'Loading\u2026');
+  fetch('/api/sales', { headers: sec ? { 'x-admin-secret': sec } : {} })
+    .then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) {
+        if (!r.ok) throw new Error(d.error || ('Request failed (' + r.status + ')'));
+        return d;
+      });
+    })
+    .then(function (d) {
+      SALES = d.sales || [];
+      renderSales(d);
+      salesMsg('ok', 'Loaded ' + SALES.length + ' purchase' + (SALES.length === 1 ? '' : 's') + '.');
+    })
+    .catch(function (e) {
+      salesMsg('bad', e.message + '<br>If this says the secret is wrong, check ADMIN_SECRET under ' +
+        'Settings &rarr; Variables and secrets in Cloudflare. This page only works on the deployed site.');
+    });
+}
+
+function renderSales(d) {
+  var host = $('#sales-body'); host.innerHTML = '';
+  var t = d.totals || { count: 0, revenue: 0, byTool: {} };
+  $('#n-sales').textContent = t.count;
+
+  var stats = el('div', { class: 'stats', style: 'margin-bottom:1rem' });
+  [[t.count, 'purchases'], [money(t.revenue), 'revenue'],
+   [(t.byTool.cet || {}).count || 0, 'MHT CET'],
+   [(t.byTool.neet || {}).count || 0, 'NEET']].forEach(function (r) {
+    stats.appendChild(el('div', { class: 'stat' }, [
+      el('span', { class: 'n mono', text: String(r[0]) }),
+      el('span', { class: 'l', text: r[1] })]));
+  });
+  host.appendChild(stats);
+
+  var byTool = el('div', { class: 'box' });
+  byTool.appendChild(el('h3', { text: 'By tool' }));
+  var bt = el('div', { class: 'tw' });
+  var bTable = el('table');
+  bTable.innerHTML = '<thead><tr><th>Tool</th><th>Purchases</th><th>Revenue</th></tr></thead>';
+  var bBody = el('tbody');
+  Object.keys(t.byTool).forEach(function (k) {
+    var v = t.byTool[k];
+    bBody.appendChild(el('tr', {}, [
+      el('td', { text: k === 'cet' ? 'MHT CET Predictor' : (k === 'neet' ? 'NEET Predictor' : k) }),
+      el('td', { class: 'mono', text: String(v.count) }),
+      el('td', { class: 'mono', text: money(v.revenue) })]));
+  });
+  if (!Object.keys(t.byTool).length) {
+    bBody.appendChild(el('tr', {}, [el('td', { colspan: '3', text: 'No purchases yet.' })]));
+  }
+  bTable.appendChild(bBody); bt.appendChild(bTable); byTool.appendChild(bt);
+  host.appendChild(byTool);
+
+  var box = el('div', { class: 'box' });
+  box.appendChild(el('h3', { text: 'All purchases' }));
+  var tw = el('div', { class: 'tw' });
+  var tbl = el('table');
+  tbl.innerHTML = '<thead><tr><th>Date</th><th>Tool</th><th>Amount</th><th>Payment ID</th></tr></thead>';
+  var tb = el('tbody');
+  SALES.forEach(function (r) {
+    tb.appendChild(el('tr', {}, [
+      el('td', { class: 'mono', text: r.ts ? new Date(r.ts).toLocaleString('en-IN') : '\u2014' }),
+      el('td', { text: r.tool === 'cet' ? 'MHT CET' : (r.tool === 'neet' ? 'NEET' : r.tool) }),
+      el('td', { class: 'mono', text: r.amount == null ? '\u2014' : money(r.amount) }),
+      el('td', { class: 'mono', text: r.paymentId })]));
+  });
+  if (!SALES.length) {
+    tb.appendChild(el('tr', {}, [el('td', { colspan: '4',
+      text: 'No purchases recorded yet. Once someone completes a payment it appears here.' })]));
+  }
+  tbl.appendChild(tb); tw.appendChild(tbl); box.appendChild(tw);
+  box.appendChild(el('p', { class: 'hint',
+    text: 'A payment ID is what a buyer uses to restore access on another device. ' +
+          'For refunds or disputes, look the same ID up in your Razorpay dashboard.' }));
+  host.appendChild(box);
+}
+
+$('#sales-load').addEventListener('click', loadSales);
+$('#sales-refresh').addEventListener('click', loadSales);
+$('#sales-secret').addEventListener('keydown', function (e) { if (e.key === 'Enter') loadSales(); });
+$('#sales-csv').addEventListener('click', function () {
+  if (!SALES.length) return alert('Load the sales list first.');
+  var rows = [['Date', 'Tool', 'Amount (INR)', 'Payment ID']];
+  SALES.forEach(function (r) {
+    rows.push([r.ts ? new Date(r.ts).toISOString() : '', r.tool, r.amount == null ? '' : r.amount, r.paymentId]);
+  });
+  download('collegehelper-sales-' + new Date().toISOString().slice(0, 10) + '.csv',
+    rows.map(function (r) {
+      return r.map(function (c) {
+        var v = String(c == null ? '' : c);
+        return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+      }).join(',');
+    }).join('\n'), 'text/csv');
 });
 
 /* ---------------------------------------------------------------- publish */
