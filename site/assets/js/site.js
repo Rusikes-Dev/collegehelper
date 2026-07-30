@@ -149,8 +149,11 @@
   var tool = document.querySelector('[data-tool]');
   if (tool) {
     var name = tool.getAttribute('data-tool');
+    // Reuse this file's own ?v= hash so the predictor script is cache-busted too.
+    var self = document.querySelector('script[src*="/assets/js/site.js"]');
+    var v = self && self.src.indexOf('?v=') !== -1 ? self.src.split('?v=')[1] : '';
     var s = document.createElement('script');
-    s.src = '/assets/js/predictor-' + name + '.js';
+    s.src = '/assets/js/predictor-' + name + '.js' + (v ? '?v=' + v : '');
     s.defer = true;
     s.onerror = function () {
       tool.innerHTML = '<p class="empty">The predictor failed to load. ' +
