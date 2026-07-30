@@ -3,18 +3,26 @@
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  Cache-Control: public, max-age=0, must-revalidate
+
+# CSS and JS are requested with a ?v=<content hash>, so a changed file is a
+# changed URL. That makes it safe to cache them hard and still ship updates
+# instantly — no more clearing the browser cache on a phone.
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
 
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
-/assets/css/*
-  Cache-Control: public, max-age=604800
-
-/assets/js/*
+/assets/img/*
   Cache-Control: public, max-age=604800
 
 /assets/data/*
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=300, must-revalidate
 
 /admin/*
   X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
