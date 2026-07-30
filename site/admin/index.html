@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <title>Admin · College Helper</title>
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/site.css?v=92d84b9491">
 <style>
   body{background:var(--paper-2)}
   .adm{display:grid;min-height:100vh}
@@ -319,7 +319,7 @@ function boot() {
     $('#dirtybar').classList.add('on');
     start();
   } else {
-    fetch('/assets/data/site-content.json')
+    fetch('/assets/data/site-content.json?t=' + Date.now(), { cache: 'no-store' })
       .then(function (r) { return r.json(); })
       .then(function (d) {
         S = {
