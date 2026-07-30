@@ -70,9 +70,11 @@ async function verifyPayment(request, env) {
   const expected = await hmacHex(env.RZP_KEY_SECRET, b.orderId + '|' + b.paymentId);
   if (expected !== b.signature) return json({ error: 'Payment could not be verified.' }, 400);
 
+  const ts = Date.now();
+  const amount = prices(env)[b.tool] || 0;
   const token = crypto.randomUUID().replace(/-/g, '') + crypto.randomUUID().replace(/-/g, '');
-  await env.CH_KV.put('tok:' + token, JSON.stringify({ tool: b.tool, paymentId: b.paymentId, ts: Date.now() }));
-  await env.CH_KV.put('pay:' + b.paymentId, JSON.stringify({ token, tool: b.tool }));
+  await env.CH_KV.put('tok:' + token, JSON.stringify({ tool: b.tool, paymentId: b.paymentId, ts }));
+  await env.CH_KV.put('pay:' + b.paymentId, JSON.stringify({ token, tool: b.tool, ts, amount }));
   return json({ token, paymentId: b.paymentId });
 }
 
@@ -108,11 +110,74 @@ async function serveData(request, env, tool) {
 
 function adminGuard(request, env) {
   if (!env.ADMIN_SECRET) return json({ error: 'ADMIN_SECRET is not set in the Worker environment variables.' }, 503);
-  if ((request.headers.get('x-admin-secret') || '') !== env.ADMIN_SECRET) return json({ error: 'Wrong admin secret.' }, 401);
+  let ok = (request.headers.get('x-admin-secret') || '') === env.ADMIN_SECRET;
+  if (!ok) {
+    // The /admin/ pages are already behind Basic Auth; accept those credentials too.
+    const auth = request.headers.get('Authorization') || '';
+    if (auth.startsWith('Basic ')) {
+      try {
+        const d = atob(auth.slice(6));
+        const i = d.indexOf(':');
+        ok = i !== -1 && d.slice(0, i) === 'admin' && timingSafeEqual(d.slice(i + 1), env.ADMIN_SECRET);
+      } catch { /* malformed header */ }
+    }
+  }
+  if (!ok) return json({ error: 'Wrong admin secret.' }, 401);
   if (!env.CH_KV) return json({ error: 'The KV namespace binding CH_KV is missing.' }, 503);
   return null;
 }
 
+/* ------------------------------------------------------------- sales -----
+   Lists every verified purchase from KV so the admin panel can show sales
+   and revenue. Read-only; nothing here can alter a payment record. */
+async function listSales(request, env) {
+  const bad = adminGuard(request, env);
+  if (bad) return bad;
+
+  const sales = [];
+  let cursor;
+  for (let page = 0; page < 10; page++) {          // up to 10k purchases
+    const res = await env.CH_KV.list({ prefix: 'pay:', limit: 1000, cursor });
+    for (const k of res.keys) sales.push(k.name.slice(4));
+    if (res.list_complete) break;
+    cursor = res.cursor;
+    if (!cursor) break;
+  }
+
+  const rows = [];
+  const CHUNK = 40;                                 // stay well inside subrequest limits
+  for (let i = 0; i < sales.length; i += CHUNK) {
+    const part = sales.slice(i, i + CHUNK);
+    const got = await Promise.all(part.map(id => env.CH_KV.get('pay:' + id, 'json')));
+    got.forEach((rec, j) => {
+      if (!rec) return;
+      rows.push({
+        paymentId: part[j],
+        tool: rec.tool || 'unknown',
+        ts: rec.ts || null,
+        amount: typeof rec.amount === 'number' ? rec.amount : null
+      });
+    });
+  }
+  rows.sort((a, b) => (b.ts || 0) - (a.ts || 0));
+
+  const totals = { count: rows.length, revenue: 0, byTool: {} };
+  for (const r of rows) {
+    const amt = r.amount == null ? (prices(env)[r.tool] || 0) : r.amount;
+    totals.revenue += amt;
+    if (!totals.byTool[r.tool]) totals.byTool[r.tool] = { count: 0, revenue: 0 };
+    totals.byTool[r.tool].count++;
+    totals.byTool[r.tool].revenue += amt;
+  }
+  return json({ totals, sales: rows, prices: prices(env) });
+}
+
+/* ------------------------------------------------------- /admin/* gate --
+   Real server-side password protection for the admin panel, using the
+   browser's native HTTP Basic Auth prompt. Substitutes for Cloudflare
+   Access (which requires a card on file even on the free plan) — this
+   needs neither a card nor any extra Cloudflare product.
+   Username is always "admin"; the password is your ADMIN_SECRET. */
 function basicAuthPrompt() {
   return new Response('Authentication required.', {
     status: 401,
@@ -129,7 +194,7 @@ function timingSafeEqual(a, b) {
 
 async function guardAdminPage(request, env) {
   if (!env.ADMIN_SECRET) {
-    return json({ error: 'ADMIN_SECRET is not set.' }, 503);
+    return json({ error: 'The admin panel is not protected yet: ADMIN_SECRET is not set in the Worker environment variables. Add it under Settings -> Variables and secrets before using /admin/.' }, 503);
   }
   const auth = request.headers.get('Authorization') || '';
   if (!auth.startsWith('Basic ')) return basicAuthPrompt();
@@ -141,7 +206,7 @@ async function guardAdminPage(request, env) {
   const pass = sep === -1 ? '' : decoded.slice(sep + 1);
 
   if (user !== 'admin' || !timingSafeEqual(pass, env.ADMIN_SECRET)) return basicAuthPrompt();
-  return null;
+  return null; // authorized
 }
 
 async function uploadData(request, env, url) {
@@ -187,6 +252,7 @@ export default {
     if (path === '/api/upload-data' && (method === 'GET' || method === 'PUT')) {
       return uploadData(request, env, url);
     }
+    if (path === '/api/sales' && method === 'GET') return listSales(request, env);
     return json({ error: 'Not found' }, 404);
   }
 };
