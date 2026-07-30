@@ -8,6 +8,7 @@ host will serve, which is what makes free Cloudflare Pages hosting work.
 
     python3 src/build.py
 """
+import hashlib
 import html
 import json
 import os
@@ -74,6 +75,24 @@ EXAM_BY_SLUG = {x["slug"]: x for x in EXAMS}
 TODAY = date.fromisoformat(CFG["built"])
 
 e = html.escape
+
+
+def asset_v(rel):
+    """Short content hash appended to CSS/JS URLs.
+
+    Without this, a phone that cached the old stylesheet keeps using it until the
+    max-age expires — which is exactly the 'I had to clear my browser cache'
+    problem. A new hash is a new URL, so updates are picked up immediately while
+    the files themselves stay cacheable for a year."""
+    try:
+        with open(os.path.join(SITE, rel.lstrip("/")), "rb") as f:
+            return hashlib.sha1(f.read()).hexdigest()[:10]
+    except OSError:
+        return CFG["built"].replace("-", "")
+
+
+CSS_V = asset_v("/assets/css/site.css")
+JS_V = asset_v("/assets/js/site.js")
 
 
 def attr(s):
@@ -178,7 +197,7 @@ def head(title, desc, path, *, extra="", jsonld=None, og_type="website"):
 <link rel="apple-touch-icon" href="/assets/img/icon-180.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="preload" href="/assets/fonts/InstrumentSans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/site.css?v={CSS_V}">
 {ld}{extra}
 </head>
 <body>
@@ -256,7 +275,7 @@ official website of the conducting body before acting on it.</p></div></div>
 </div>
 </div>
 </footer>
-<script src="/assets/js/site.js" defer></script>
+<script src="/assets/js/site.js?v={JS_V}" defer></script>
 </body>
 </html>"""
 
@@ -1104,6 +1123,20 @@ not responsible for it.</p>""")
 
 
 # ================================================================ manifests ==
+def version_admin_assets():
+    """The admin pages are hand-written, not generated, so stamp the current
+    asset hash into their CSS link as well. Idempotent — safe to re-run."""
+    import glob
+    for f in glob.glob(os.path.join(SITE, "admin", "*.html")):
+        with open(f, encoding="utf-8") as fh:
+            txt = fh.read()
+        new_txt = re.sub(r'/assets/css/site\.css(\?v=[a-f0-9]+)?',
+                         f'/assets/css/site.css?v={CSS_V}', txt)
+        if new_txt != txt:
+            with open(f, "w", encoding="utf-8") as fh:
+                fh.write(new_txt)
+
+
 def build_meta():
     # sitemap
     urls = ""
@@ -1143,21 +1176,29 @@ Sitemap: {CFG['url']}/sitemap.xml
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  Cache-Control: public, max-age=0, must-revalidate
+
+# CSS and JS are requested with a ?v=<content hash>, so a changed file is a
+# changed URL. That makes it safe to cache them hard and still ship updates
+# instantly — no more clearing the browser cache on a phone.
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
 
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
-/assets/css/*
-  Cache-Control: public, max-age=604800
-
-/assets/js/*
+/assets/img/*
   Cache-Control: public, max-age=604800
 
 /assets/data/*
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=300, must-revalidate
 
 /admin/*
   X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
 """)
 
     write("/_redirects", """# Trailing-slash and legacy tidy-ups
@@ -1200,6 +1241,7 @@ def main():
     build_cet_tool()
     build_neet_tool()
     build_static()
+    version_admin_assets()
     build_meta()
 
     print(f"  {len(PAGES)} pages · {len(EXAMS)} exams · {len(GUIDES)} guides · {len(TOOLS)} tools")
