@@ -94,6 +94,39 @@ ICON_ALERT = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
               'aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v5M10 14h.01"/></svg>')
 
 
+def _ic(paths):
+    return ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths + '</svg>')
+
+# One icon per exam category. Colour and icon together let a student navigate
+# by sight instead of reading every label.
+CAT_ICONS = {
+  "engineering": _ic('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1'
+                     'M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>'),
+  "medical": _ic('<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>'),
+  "civil-services": _ic('<path d="M3 21h18M5 21V10M9 21V10M15 21V10M19 21V10M3 10l9-6 9 6"/>'),
+  "ssc": _ic('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>'
+             '<path d="M14 3v5h5"/><path d="M9 14l2 2 4-4"/>'),
+  "banking": _ic('<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>'
+                 '<path d="M6 12h.01M18 12h.01"/>'),
+  "management": _ic('<rect x="2" y="7" width="20" height="13" rx="2"/>'
+                    '<path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M2 12h20"/>'),
+  "law": _ic('<path d="M12 4v16M8 20h8M4 8h16M4 8l-2 5h4zM20 8l-2 5h4z"/>'),
+  "university": _ic('<path d="M22 9 12 4 2 9l10 5 10-5z"/>'
+                    '<path d="M6 11.5V17c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5"/>'),
+}
+
+NAV_ICONS = {
+  "exams": _ic('<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>'),
+  "calendar": _ic('<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/>'),
+  "tools": _ic('<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01'
+               'M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h8"/>'),
+  "guides": _ic('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>'
+                '<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'),
+}
+ARROW = '<span class="ar" aria-hidden="true">→</span>'
+
+
 def status_of(exam):
     cls, label = STATUS_META.get(exam.get("status", ""), ("", "Tracking"))
     return cls, exam.get("statusLabel") or label
@@ -173,13 +206,29 @@ def header(path):
 </header>"""
 
 
-def footer():
+def mobile_bar(path):
+    """Fixed bottom navigation on phones. Four destinations, always one tap away,
+    which is what keeps someone moving through the site instead of bouncing."""
+    items = [("Exams", "/exams/", "exams"), ("Calendar", "/calendar.html", "calendar"),
+             ("Tools", "/tools/", "tools"), ("Guides", "/guides/", "guides")]
+    out = ""
+    for label, href, ico in items:
+        cur = ' aria-current="page"' if path and path.startswith(href.rstrip("/")) and href != "/" else ""
+        out += f'<a href="{attr(href)}"{cur}>{NAV_ICONS[ico]}<span>{e(label)}</span></a>'
+    return f'<nav class="mobile-bar" aria-label="Quick navigation">{out}</nav>'
+
+
+def footer(path=None):
     cats = "".join(
         f'<li><a href="/exams/?c={k}">{e(v["label"])}</a></li>' for k, v in CATEGORIES.items())
     tools = "".join(f'<li><a href="/tools/{t["slug"]}.html">{e(t["short"])}</a></li>' for t in TOOLS)
     guides = "".join(f'<li><a href="/guides/{g["slug"]}.html">{e(g["title"][:38])}…</a></li>'
                      for g in GUIDES[:4])
     return f"""</main>
+{mobile_bar(path)}
+<button class="to-top" type="button" id="totop" aria-label="Back to top">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+ stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <div class="disclaimer"><div class="wrap"><p><strong>Please verify before you act.</strong>
 College Helper compiles dates, syllabus and cutoff information from official notifications and
 established education sources. Schedules change, notices get revised, and errors are possible.
@@ -261,6 +310,7 @@ def board_row(exam):
   <span class="row-tag {cls}">{e(label)}</span>
   {cd}
 </span>
+<span class="row-go" aria-hidden="true">›</span>
 <span class="row-stage">{e(exam.get('stage',''))}</span>
 </a>"""
 
@@ -275,7 +325,7 @@ def exam_card(exam):
                 else f'<span class="chip">{e(fmt_date(d))}</span>')
     st = e(CATEGORIES.get(exam["category"], {}).get("label", exam["category"]))
     lvl = f'<span class="chip">{e(exam["state"])}</span>' if exam.get("state") else ""
-    return f"""<a class="card" href="/exams/{attr(exam['slug'])}.html"
+    return f"""<a class="card cat-{attr(exam['category'])}" href="/exams/{attr(exam['slug'])}.html"
    data-name="{attr(exam['name'].lower()+' '+exam['fullName'].lower()+' '+exam['body'].lower())}"
    data-cat="{attr(exam['category'])}" data-level="{attr(exam['level'])}"
    data-state="{attr(exam.get('state') or '')}">
@@ -284,7 +334,7 @@ def exam_card(exam):
 <h3>{e(exam['name'])}</h3>
 <p>{e(exam['tagline'])}</p>
 <span class="card-meta"><span class="chip {cls}">{e(label)}</span>
-<span class="chip">{st}</span>{lvl}{when}</span>
+<span class="chip cat">{st}</span>{lvl}{when}</span>
 </span></a>"""
 
 
@@ -306,40 +356,50 @@ def table(t):
 
 # ================================================================= homepage ==
 def build_home():
-    board = "".join(board_row(EXAM_BY_SLUG[s]) for s in BOARD_ORDER if s in EXAM_BY_SLUG)
+    board = "".join(board_row(EXAM_BY_SLUG[sl]) for sl in BOARD_ORDER if sl in EXAM_BY_SLUG)
+
     live = [x for x in EXAMS if x.get("alert")][:3]
     alerts = ""
     for x in live:
-        alerts += f"""<a class="card" href="/exams/{attr(x['slug'])}.html">
-<span class="card-rail live" aria-hidden="true"></span><span class="card-body">
-<h3>{e(x['name'])}</h3><p>{e(x['alert'][:165])}{'…' if len(x['alert'])>165 else ''}</p>
+        cls, lab = status_of(x)
+        alerts += f"""<a class="card cat-{attr(x['category'])}" href="/exams/{attr(x['slug'])}.html">
+<span class="card-rail {cls}" aria-hidden="true"></span><span class="card-body">
+<h3>{e(x['name'])}</h3><p>{e(x['alert'][:150])}{'…' if len(x['alert'])>150 else ''}</p>
+<span class="card-meta"><span class="chip {cls}">{e(lab)}</span></span>
 </span></a>"""
 
     cats = ""
     for k, v in CATEGORIES.items():
         n = len([x for x in EXAMS if x["category"] == k])
-        cats += (f'<a class="card" href="/exams/?c={attr(k)}"><span class="card-body" style="padding-left:0">'
-                 f'<h3>{e(v["label"])}</h3><p>{e(v["blurb"])}</p>'
-                 f'<span class="card-meta"><span class="chip">{n} exam{"s" if n!=1 else ""}</span></span>'
-                 f'</span></a>')
+        cats += (f'<a class="card cat-{attr(k)}" href="/exams/?c={attr(k)}">'
+                 f'<span class="cat-card">'
+                 f'<span class="cat-ico">{CAT_ICONS.get(k, "")}</span>'
+                 f'<span><h3>{e(v["label"])}</h3><p>{e(v["blurb"])}</p>'
+                 f'<span class="card-meta"><span class="chip cat">{n} exam{"s" if n != 1 else ""}</span></span>'
+                 f'</span></span></a>')
 
     tools = ""
     for t in TOOLS:
-        tools += f"""<a class="card" href="/tools/{attr(t['slug'])}.html"><span class="card-body" style="padding-left:0">
+        x = EXAM_BY_SLUG.get(t["exam"])
+        cc = f'cat-{x["category"]}' if x else ""
+        tools += f"""<a class="card {cc}" href="/tools/{attr(t['slug'])}.html"><span class="card-body" style="padding-left:0">
 <h3>{e(t['name'])}</h3><p>{e(t['blurb'])}</p>
-<span class="card-meta"><span class="chip open">₹{t['price']} one-time</span><span class="chip">Official data</span></span>
+<span class="card-meta"><span class="chip open">₹{t['price']} one-time</span>
+<span class="chip">Official cutoff data</span><span class="chip">Safe / moderate / reach</span></span>
 </span></a>"""
 
     guides = "".join(
         f"""<a class="card" href="/guides/{attr(g['slug'])}.html"><span class="card-body" style="padding-left:0">
 <h3>{e(g['title'])}</h3><p>{e(g['excerpt'])}</p>
-<span class="card-meta"><span class="chip">{e(g['category'])}</span><span class="chip">{e(g['readTime'])}</span></span>
+<span class="card-meta"><span class="chip next">{e(g['category'])}</span>
+<span class="chip">{e(g['readTime'])}</span></span>
 </span></a>""" for g in GUIDES[:4])
+
+    nlive = len([x for x in EXAMS if x.get("status") in ("live", "counselling", "open", "open-soon")])
 
     ld = [
         {"@context": "https://schema.org", "@type": "WebSite", "name": CFG["name"],
-         "url": CFG["url"], "description": CFG["description"],
-         "inLanguage": "en-IN",
+         "url": CFG["url"], "description": CFG["description"], "inLanguage": "en-IN",
          "potentialAction": {"@type": "SearchAction",
                              "target": {"@type": "EntryPoint",
                                         "urlTemplate": CFG["url"] + "/exams/?q={search_term_string}"},
@@ -355,72 +415,112 @@ def build_home():
 
 <section class="board-wrap">
   <div class="board-head">
-    <p class="eyebrow">Updated {e(fmt_date(CFG["built"]))}</p>
-    <h1>Exam dates, syllabus and cutoffs — in one place</h1>
-    <p class="lede">Dates, syllabus, eligibility, cutoffs and college predictors — for
-    JEE, NEET, UPSC, SSC, banking, CAT, CLAT, GATE, CUET and MHT CET. Every exam page is free, no sign-up needed.</p>
+    <p class="eyebrow">Updated {e(fmt_date(CFG['built']))}</p>
+    <h1>Exam dates, syllabus and <mark>cutoffs</mark> — in one place</h1>
+    <p class="lede">Everything you need for {len(EXAMS)} Indian competitive exams: what is happening
+    right now, what closes this week, and which colleges your score actually reaches.</p>
+
+    <form class="hero-search" action="/exams/" method="get" role="search">
+      {ICON_SEARCH}
+      <label class="sr" for="heroq">Search exams</label>
+      <input type="search" id="heroq" name="q" placeholder="Search an exam — JEE, NEET, UPSC…" autocomplete="off">
+    </form>
+
+    <div class="hero-actions">
+      <a class="btn lg" href="/exams/">Browse all exams {ARROW}</a>
+      <a class="btn lg ghost" href="/tools/">Check my college chances</a>
+    </div>
+
+    <div class="hero-stats">
+      <span><b>{len(EXAMS)}</b> exams tracked</span>
+      <span><b>{nlive}</b> open right now</span>
+      <span><b>{len(GUIDES)}</b> guides</span>
+      <span><b>2</b> college predictors</span>
+    </div>
   </div>
+
   <div class="board">
-    <div class="board-title"><span><span class="dot"></span>What is happening now</span>
-      <span>Next date</span></div>
-    {board}
-    <div class="board-foot">
-      <a href="/exams/">All {len(EXAMS)} exams</a>
-      <a href="/calendar.html">Full calendar</a>
-      
+    <div class="board-inner">
+      <div class="board-title"><span><span class="dot"></span>What is happening now</span>
+        <span>Next date</span></div>
+      {board}
+      <div class="board-foot">
+        <a class="btn sm ghost" href="/exams/">All {len(EXAMS)} exams</a>
+        <a class="btn sm ghost" href="/calendar.html">Full calendar</a>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="section">
-  <div class="wrap">
-    <div class="sec-head"><p class="eyebrow">Happening now</p>
-      <h2>Deadlines that close this month</h2>
-      <p>The three things most likely to affect you right now.</p></div>
-    <div class="grid g3">{alerts}</div>
+  <div class="wrap reveal">
+    <div class="sec-head"><p class="eyebrow">Start here</p>
+      <h2>Three steps, whatever exam you are writing</h2></div>
+    <div class="steps">
+      <div class="step"><h3>Find your exam</h3>
+        <p>Search or filter by category, level and state. Every exam has its own page with
+        dates, pattern, full syllabus and eligibility.</p></div>
+      <div class="step"><h3>Track what is next</h3>
+        <p>Each page shows the current stage and a live countdown to the next deadline, so you
+        never miss a form or a fee date.</p></div>
+      <div class="step"><h3>Predict your college</h3>
+        <p>Put your rank or merit number into a predictor and see exactly which colleges closed
+        at or near it last year.</p></div>
+    </div>
   </div>
 </section>
 
 <section class="section alt">
-  <div class="wrap">
-    <div class="sec-head"><p class="eyebrow">Predictor tools</p>
-      <h2>Find out which colleges your score actually reaches</h2>
-      <p>One-time unlock per tool. The calculation still runs in your browser against the
-      official cutoff data — your rank and merit number are never uploaded.</p></div>
-    <div class="grid g2">{tools}</div>
+  <div class="wrap reveal">
+    <div class="sec-head"><p class="eyebrow">Closing soon</p>
+      <h2>Deadlines you should not miss</h2>
+      <p>The three things most likely to affect you this week.</p></div>
+    <div class="grid g3">{alerts}</div>
   </div>
 </section>
 
 <section class="section">
-  <div class="wrap">
-    <div class="sec-head"><p class="eyebrow">Browse</p><h2>By exam category</h2></div>
+  <div class="wrap reveal">
+    <div class="sec-head-row"><div class="sec-head"><p class="eyebrow">Browse</p>
+      <h2>Pick your category</h2>
+      <p>Every exam we track, grouped by the kind of career it leads to.</p></div>
+      <a class="btn ghost" href="/exams/">See all {ARROW}</a></div>
     <div class="grid g4">{cats}</div>
   </div>
 </section>
 
 <section class="section alt">
-  <div class="wrap">
-    <div class="sec-head-row"><div class="sec-head"><p class="eyebrow">Guides</p>
-      <h2>Choosing between exams, and what happens after</h2>
-      <p>Comparisons, career paths and the counselling advice that actually changes outcomes.</p></div>
-      <a class="btn ghost" href="/guides/">All guides</a></div>
-    <div class="grid g2">{guides}</div>
+  <div class="wrap reveal">
+    <div class="sec-head"><p class="eyebrow">Predictor tools</p>
+      <h2>Find out which colleges your score reaches</h2>
+      <p>Built on the official cutoff lists. The calculation runs in your browser — your rank
+      is never uploaded anywhere.</p></div>
+    <div class="grid g2">{tools}</div>
   </div>
 </section>
 
 <section class="section">
+  <div class="wrap reveal">
+    <div class="sec-head-row"><div class="sec-head"><p class="eyebrow">Guides</p>
+      <h2>Choosing between exams, and what comes after</h2>
+      <p>Comparisons, salary and posting breakdowns, and the counselling advice that changes outcomes.</p></div>
+      <a class="btn ghost" href="/guides/">All guides {ARROW}</a></div>
+    <div class="grid g2">{guides}</div>
+  </div>
+</section>
+
+<section class="section alt">
   <div class="wrap">
-    <div class="cta-strip">
+    <div class="cta-strip reveal">
       <div><h2>Every exam page is free</h2>
-      <p>No account, no ads, no email capture. The two college predictors are one-time paid
-      unlocks — the only thing that funds the site. If something is out of date,
-      tell us and it gets fixed.</p></div>
-      <div class="btns"><a class="btn" href="/calendar.html">Open the calendar</a>
+      <p>No account, no ads, no email capture. Start with the calendar and work backwards from
+      your next deadline.</p></div>
+      <div class="btns"><a class="btn" href="/calendar.html">Open the calendar {ARROW}</a>
       <a class="btn ghost" href="/contact.html">Report a correction</a></div>
     </div>
   </div>
 </section>
-{footer()}"""
+{footer("/")}"""
     page("/index.html", body, "1.0", "daily")
 
 
@@ -520,6 +620,7 @@ def build_exam(x):
             f"Exam pattern, full syllabus, eligibility, important dates and cutoff trends.")[:300]
 
     out = f"""{head(title, desc, f"/exams/{x['slug']}.html", jsonld=[cld, faqld], og_type="article")}
+<div class="cat-{attr(x['category'])}">
 <section class="exam-hero"><div class="wrap">
 <p class="crumb">{cb}</p>
 <h1>{e(x['name'])} {TODAY.year}</h1>
@@ -539,7 +640,8 @@ def build_exam(x):
 </div>
 <aside class="toc"><p class="eyebrow">On this page</p>{toc}</aside>
 </div></div>
-{footer()}"""
+</div>
+{footer("/exams/")}"""
     page(f"/exams/{x['slug']}.html", out, "0.9", "weekly")
 
 
@@ -593,7 +695,7 @@ def build_exam_index():
 <p class="empty" id="empty" hidden>No exam matches that. Try a shorter search term, or
 <button class="btn ghost sm" type="button" id="clear">clear the filters</button>.</p>
 </div></div>
-{footer()}"""
+{footer("/exams/")}"""
     page("/exams/index.html", out, "0.9", "weekly")
 
 
@@ -664,7 +766,7 @@ in one running list. Past dates stay visible so you can see where a cycle curren
 </div>
 <div id="calendar">{body}</div>
 </div></div>
-{footer()}"""
+{footer("/calendar.html")}"""
     page("/calendar.html", out, "0.9", "daily")
 
 
@@ -741,7 +843,7 @@ def build_guide(g):
 {f'<h2 style="margin-top:2.5rem">Exams covered here</h2><div class="prose-links">{rel}</div>' if rel else ''}
 <h2 style="margin-top:2.5rem">More guides</h2><div class="prose-links">{others}</div>
 </div></div>
-{footer()}"""
+{footer("/guides/")}"""
     page(f"/guides/{g['slug']}.html", out, "0.8", "monthly")
 
 
@@ -761,7 +863,7 @@ def build_guide_index():
 that cost people seats every year.</p>
 </div></section>
 <div class="section"><div class="wrap"><div class="grid g2">{cards}</div></div></div>
-{footer()}"""
+{footer("/guides/")}"""
     page("/guides/index.html", out, "0.8", "monthly")
 
 
@@ -792,7 +894,7 @@ Read <a href="/guides/how-to-read-a-cutoff-list.html">how to read a cutoff list<
 build your choice list — the ordering mistakes described there cost more seats than a low
 score does.</p></div>
 </div></div>
-{footer()}"""
+{footer("/tools/")}"""
     page("/tools/index.html", out, "0.9", "monthly")
 
 
@@ -828,7 +930,7 @@ Read <a href="/guides/how-to-read-a-cutoff-list.html">how to read a cutoff list<
 lock your choices, and see the <a href="/exams/mht-cet.html">MHT CET exam page</a> for the current
 CAP schedule.</p></div>
 </div></div>
-{footer()}"""
+{footer("/tools/")}"""
     page(f"/tools/{t['slug']}.html", out, "0.9", "monthly")
 
 
@@ -863,7 +965,7 @@ Read <a href="/guides/neet-all-india-quota-vs-state-quota.html">AIQ versus state
 you plan, and check the <a href="/exams/neet-ug.html">NEET UG page</a> for the current
 counselling schedule.</p></div>
 </div></div>
-{footer()}"""
+{footer("/tools/")}"""
     page(f"/tools/{t['slug']}.html", out, "0.9", "monthly")
 
 
