@@ -36,7 +36,35 @@
     if (d >= 0) el.textContent = d;
   });
 
-  /* No entrance animation: the list is reference information, not a reveal. */
+  /* ------------------------------------------------- scroll reveal ------- */
+  var reveals = document.querySelectorAll('.reveal');
+  if (reveals.length) {
+    if (!('IntersectionObserver' in window) ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      reveals.forEach(function (r) { r.classList.add('in'); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+      reveals.forEach(function (r) { io.observe(r); });
+    }
+  }
+
+  /* ---------------------------------------------------- back to top ----- */
+  var totop = document.getElementById('totop');
+  if (totop) {
+    var onScroll = function () {
+      totop.classList.toggle('show', window.scrollY > 700);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    totop.addEventListener('click', function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  }
 
   /* ------------------------------------------------- exam search + filter -- */
   var q = document.getElementById('q');
