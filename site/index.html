@@ -41,20 +41,41 @@
 <section class="board-wrap">
   <div class="board-head">
     <p class="eyebrow">Updated 29 Jul 2026</p>
-    <h1>Exam dates, syllabus and cutoffs — in one place</h1>
-    <p class="lede">Dates, syllabus, eligibility, cutoffs and college predictors — for
-    JEE, NEET, UPSC, SSC, banking, CAT, CLAT, GATE, CUET and MHT CET. Every exam page is free, no sign-up needed.</p>
+    <h1>Exam dates, syllabus and <mark>cutoffs</mark> — in one place</h1>
+    <p class="lede">Everything you need for 14 Indian competitive exams: what is happening
+    right now, what closes this week, and which colleges your score actually reaches.</p>
+
+    <form class="hero-search" action="/exams/" method="get" role="search">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 4 4"/></svg>
+      <label class="sr" for="heroq">Search exams</label>
+      <input type="search" id="heroq" name="q" placeholder="Search an exam — JEE, NEET, UPSC…" autocomplete="off">
+    </form>
+
+    <div class="hero-actions">
+      <a class="btn lg" href="/exams/">Browse all exams <span class="ar" aria-hidden="true">→</span></a>
+      <a class="btn lg ghost" href="/tools/">Check my college chances</a>
+    </div>
+
+    <div class="hero-stats">
+      <span><b>14</b> exams tracked</span>
+      <span><b>6</b> open right now</span>
+      <span><b>7</b> guides</span>
+      <span><b>2</b> college predictors</span>
+    </div>
   </div>
+
   <div class="board">
-    <div class="board-title"><span><span class="dot"></span>What is happening now</span>
-      <span>Next date</span></div>
-    <a class="row" href="/exams/mht-cet.html">
+    <div class="board-inner">
+      <div class="board-title"><span><span class="dot"></span>What is happening now</span>
+        <span>Next date</span></div>
+      <a class="row" href="/exams/mht-cet.html">
 <span class="rail live" aria-hidden="true"></span>
 <span class="row-main">
   <span class="row-name">MHT CET</span>
   <span class="row-tag live">CAP Round 1 live</span>
   <span class="row-count mono" data-countdown="2026-07-30">Tomorrow</span>
 </span>
+<span class="row-go" aria-hidden="true">›</span>
 <span class="row-stage">Final merit list out 27 July 2026. CAP Round 1 option entry open 28–30 July 2026.</span>
 </a><a class="row" href="/exams/neet-ug.html">
 <span class="rail live" aria-hidden="true"></span>
@@ -63,6 +84,7 @@
   <span class="row-tag live">Result out · counselling next</span>
   <span class="row-count mono" data-countdown="2026-08-05">in 7 days</span>
 </span>
+<span class="row-go" aria-hidden="true">›</span>
 <span class="row-stage">Re-NEET result declared 16 July 2026. MCC counselling schedule awaited at mcc.nic.in.</span>
 </a><a class="row" href="/exams/upsc-cse.html">
 <span class="rail next" aria-hidden="true"></span>
@@ -71,6 +93,7 @@
   <span class="row-tag next">Mains in 3 weeks</span>
   <span class="row-count mono" data-countdown="2026-08-21">in 23 days</span>
 </span>
+<span class="row-go" aria-hidden="true">›</span>
 <span class="row-stage">Prelims 2026 result out 15 June. Mains 2026 begins 21 August.</span>
 </a><a class="row" href="/exams/cat.html">
 <span class="rail open" aria-hidden="true"></span>
@@ -79,6 +102,7 @@
   <span class="row-tag open">Registration opens 3 August</span>
   <span class="row-count mono" data-countdown="2026-08-03">in 5 days</span>
 </span>
+<span class="row-go" aria-hidden="true">›</span>
 <span class="row-stage">Notification released 25 July 2026. Registration runs 3 August to 15 September 2026.</span>
 </a><a class="row" href="/exams/clat.html">
 <span class="rail open" aria-hidden="true"></span>
@@ -87,6 +111,7 @@
   <span class="row-tag open">Registration opens 3 August</span>
   <span class="row-count mono" data-countdown="2026-08-03">in 5 days</span>
 </span>
+<span class="row-go" aria-hidden="true">›</span>
 <span class="row-stage">CLAT 2027 notification out 22 July 2026. Registration 3 August to 31 October 2026, exam 6 December 2026.</span>
 </a><a class="row" href="/exams/ibps-po.html">
 <span class="rail next" aria-hidden="true"></span>
@@ -95,6 +120,7 @@
   <span class="row-tag next">Prelims next month</span>
   <span class="row-count mono" data-countdown="2026-08-22">in 24 days</span>
 </span>
+<span class="row-go" aria-hidden="true">›</span>
 <span class="row-stage">Notification out 1 July 2026. Prelims on 22 and 23 August 2026.</span>
 </a><a class="row" href="/exams/ssc-cgl.html">
 <span class="rail next" aria-hidden="true"></span>
@@ -103,6 +129,7 @@
   <span class="row-tag next">Tier 1 next month</span>
   <span class="row-count mono" data-countdown="2026-08-15">in 17 days</span>
 </span>
+<span class="row-go" aria-hidden="true">›</span>
 <span class="row-stage">Applications closed. Tier 1 scheduled for August–September 2026.</span>
 </a><a class="row" href="/exams/gate.html">
 <span class="rail open" aria-hidden="true"></span>
@@ -111,6 +138,7 @@
   <span class="row-tag open">Registration opens 14 August</span>
   <span class="row-count mono" data-countdown="2026-08-14">in 16 days</span>
 </span>
+<span class="row-go" aria-hidden="true">›</span>
 <span class="row-stage">GATE 2027 registration opens 14 August 2026. Exam across six days in February 2027.</span>
 </a><a class="row" href="/exams/cuet-ug.html">
 <span class="rail live" aria-hidden="true"></span>
@@ -119,6 +147,7 @@
   <span class="row-tag live">University counselling underway</span>
   
 </span>
+<span class="row-go" aria-hidden="true">›</span>
 <span class="row-stage">CUET UG 2026 result out 23 June 2026. Participating universities are running their own counselling rounds.</span>
 </a><a class="row" href="/exams/ibps-clerk.html">
 <span class="rail next" aria-hidden="true"></span>
@@ -127,92 +156,126 @@
   <span class="row-tag next">Prelims in October</span>
   <span class="row-count mono" data-countdown="2026-10-10">in 73 days</span>
 </span>
+<span class="row-go" aria-hidden="true">›</span>
 <span class="row-stage">Prelims scheduled for 10 and 11 October 2026, mains on 27 December 2026.</span>
 </a>
-    <div class="board-foot">
-      <a href="/exams/">All 14 exams</a>
-      <a href="/calendar.html">Full calendar</a>
-      
+      <div class="board-foot">
+        <a class="btn sm ghost" href="/exams/">All 14 exams</a>
+        <a class="btn sm ghost" href="/calendar.html">Full calendar</a>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="section">
-  <div class="wrap">
-    <div class="sec-head"><p class="eyebrow">Happening now</p>
-      <h2>Deadlines that close this month</h2>
-      <p>The three things most likely to affect you right now.</p></div>
-    <div class="grid g3"><a class="card" href="/exams/neet-ug.html">
-<span class="card-rail live" aria-hidden="true"></span><span class="card-body">
-<h3>NEET UG</h3><p>The NEET UG 2026 paper scheduled for 3 May was cancelled after a paper leak. A re-examination was held on 21 June 2026 and the result was declared on 16 July 2026. A…</p>
-</span></a><a class="card" href="/exams/mht-cet.html">
-<span class="card-rail live" aria-hidden="true"></span><span class="card-body">
-<h3>MHT CET</h3><p>CAP Round 1 option entry for MHT CET 2026 is open from 28 to 30 July 2026. Fill and lock your choice list carefully — a badly ordered list costs more seats than a lo…</p>
-</span></a><a class="card" href="/exams/upsc-cse.html">
-<span class="card-rail live" aria-hidden="true"></span><span class="card-body">
-<h3>UPSC CSE</h3><p>UPSC CSE Mains 2026 runs on 21, 22, 23, 29 and 30 August 2026, in two sessions each day — 9:00 am to 12:00 noon and 2:30 pm to 5:30 pm.</p>
-</span></a></div>
+  <div class="wrap reveal">
+    <div class="sec-head"><p class="eyebrow">Start here</p>
+      <h2>Three steps, whatever exam you are writing</h2></div>
+    <div class="steps">
+      <div class="step"><h3>Find your exam</h3>
+        <p>Search or filter by category, level and state. Every exam has its own page with
+        dates, pattern, full syllabus and eligibility.</p></div>
+      <div class="step"><h3>Track what is next</h3>
+        <p>Each page shows the current stage and a live countdown to the next deadline, so you
+        never miss a form or a fee date.</p></div>
+      <div class="step"><h3>Predict your college</h3>
+        <p>Put your rank or merit number into a predictor and see exactly which colleges closed
+        at or near it last year.</p></div>
+    </div>
   </div>
 </section>
 
 <section class="section alt">
-  <div class="wrap">
-    <div class="sec-head"><p class="eyebrow">Predictor tools</p>
-      <h2>Find out which colleges your score actually reaches</h2>
-      <p>One-time unlock per tool. The calculation still runs in your browser against the
-      official cutoff data — your rank and merit number are never uploaded.</p></div>
-    <div class="grid g2"><a class="card" href="/tools/mht-cet-college-predictor.html"><span class="card-body" style="padding-left:0">
-<h3>MHT CET College Predictor</h3><p>Enter your Maharashtra State General Merit Number and see every college and branch that closed at or near it, across CAP Rounds I, II and III.</p>
-<span class="card-meta"><span class="chip open">₹49 one-time</span><span class="chip">Official data</span></span>
-</span></a><a class="card" href="/tools/neet-college-predictor.html"><span class="card-body" style="padding-left:0">
-<h3>NEET College Predictor</h3><p>Enter your NEET All India Rank and category to see the MBBS, BDS and BSc Nursing seats that closed at or near it in MCC counselling.</p>
-<span class="card-meta"><span class="chip open">₹49 one-time</span><span class="chip">Official data</span></span>
+  <div class="wrap reveal">
+    <div class="sec-head"><p class="eyebrow">Closing soon</p>
+      <h2>Deadlines you should not miss</h2>
+      <p>The three things most likely to affect you this week.</p></div>
+    <div class="grid g3"><a class="card cat-medical" href="/exams/neet-ug.html">
+<span class="card-rail live" aria-hidden="true"></span><span class="card-body">
+<h3>NEET UG</h3><p>The NEET UG 2026 paper scheduled for 3 May was cancelled after a paper leak. A re-examination was held on 21 June 2026 and the result was declared on …</p>
+<span class="card-meta"><span class="chip live">Result out · counselling next</span></span>
+</span></a><a class="card cat-engineering" href="/exams/mht-cet.html">
+<span class="card-rail live" aria-hidden="true"></span><span class="card-body">
+<h3>MHT CET</h3><p>CAP Round 1 option entry for MHT CET 2026 is open from 28 to 30 July 2026. Fill and lock your choice list carefully — a badly ordered list costs more …</p>
+<span class="card-meta"><span class="chip live">CAP Round 1 live</span></span>
+</span></a><a class="card cat-civil-services" href="/exams/upsc-cse.html">
+<span class="card-rail next" aria-hidden="true"></span><span class="card-body">
+<h3>UPSC CSE</h3><p>UPSC CSE Mains 2026 runs on 21, 22, 23, 29 and 30 August 2026, in two sessions each day — 9:00 am to 12:00 noon and 2:30 pm to 5:30 pm.</p>
+<span class="card-meta"><span class="chip next">Mains in 3 weeks</span></span>
 </span></a></div>
   </div>
 </section>
 
 <section class="section">
-  <div class="wrap">
-    <div class="sec-head"><p class="eyebrow">Browse</p><h2>By exam category</h2></div>
-    <div class="grid g4"><a class="card" href="/exams/?c=engineering"><span class="card-body" style="padding-left:0"><h3>Engineering</h3><p>JEE, GATE and state engineering entrance tests</p><span class="card-meta"><span class="chip">4 exams</span></span></span></a><a class="card" href="/exams/?c=medical"><span class="card-body" style="padding-left:0"><h3>Medical</h3><p>NEET UG and medical admission counselling</p><span class="card-meta"><span class="chip">1 exam</span></span></span></a><a class="card" href="/exams/?c=civil-services"><span class="card-body" style="padding-left:0"><h3>Civil Services</h3><p>UPSC and state public service commissions</p><span class="card-meta"><span class="chip">1 exam</span></span></span></a><a class="card" href="/exams/?c=ssc"><span class="card-body" style="padding-left:0"><h3>SSC</h3><p>Staff Selection Commission recruitment</p><span class="card-meta"><span class="chip">2 exams</span></span></span></a><a class="card" href="/exams/?c=banking"><span class="card-body" style="padding-left:0"><h3>Banking</h3><p>IBPS, SBI and RBI recruitment</p><span class="card-meta"><span class="chip">3 exams</span></span></span></a><a class="card" href="/exams/?c=management"><span class="card-body" style="padding-left:0"><h3>Management</h3><p>MBA entrance tests</p><span class="card-meta"><span class="chip">1 exam</span></span></span></a><a class="card" href="/exams/?c=law"><span class="card-body" style="padding-left:0"><h3>Law</h3><p>CLAT and law school admissions</p><span class="card-meta"><span class="chip">1 exam</span></span></span></a><a class="card" href="/exams/?c=university"><span class="card-body" style="padding-left:0"><h3>University</h3><p>Central and state university admission tests</p><span class="card-meta"><span class="chip">1 exam</span></span></span></a></div>
+  <div class="wrap reveal">
+    <div class="sec-head-row"><div class="sec-head"><p class="eyebrow">Browse</p>
+      <h2>Pick your category</h2>
+      <p>Every exam we track, grouped by the kind of career it leads to.</p></div>
+      <a class="btn ghost" href="/exams/">See all <span class="ar" aria-hidden="true">→</span></a></div>
+    <div class="grid g4"><a class="card cat-engineering" href="/exams/?c=engineering"><span class="cat-card"><span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></span><span><h3>Engineering</h3><p>JEE, GATE and state engineering entrance tests</p><span class="card-meta"><span class="chip cat">4 exams</span></span></span></span></a><a class="card cat-medical" href="/exams/?c=medical"><span class="cat-card"><span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></span><span><h3>Medical</h3><p>NEET UG and medical admission counselling</p><span class="card-meta"><span class="chip cat">1 exam</span></span></span></span></a><a class="card cat-civil-services" href="/exams/?c=civil-services"><span class="cat-card"><span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10M9 21V10M15 21V10M19 21V10M3 10l9-6 9 6"/></svg></span><span><h3>Civil Services</h3><p>UPSC and state public service commissions</p><span class="card-meta"><span class="chip cat">1 exam</span></span></span></span></a><a class="card cat-ssc" href="/exams/?c=ssc"><span class="cat-card"><span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 14l2 2 4-4"/></svg></span><span><h3>SSC</h3><p>Staff Selection Commission recruitment</p><span class="card-meta"><span class="chip cat">2 exams</span></span></span></span></a><a class="card cat-banking" href="/exams/?c=banking"><span class="cat-card"><span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg></span><span><h3>Banking</h3><p>IBPS, SBI and RBI recruitment</p><span class="card-meta"><span class="chip cat">3 exams</span></span></span></span></a><a class="card cat-management" href="/exams/?c=management"><span class="cat-card"><span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M2 12h20"/></svg></span><span><h3>Management</h3><p>MBA entrance tests</p><span class="card-meta"><span class="chip cat">1 exam</span></span></span></span></a><a class="card cat-law" href="/exams/?c=law"><span class="cat-card"><span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M8 20h8M4 8h16M4 8l-2 5h4zM20 8l-2 5h4z"/></svg></span><span><h3>Law</h3><p>CLAT and law school admissions</p><span class="card-meta"><span class="chip cat">1 exam</span></span></span></span></a><a class="card cat-university" href="/exams/?c=university"><span class="cat-card"><span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 9 12 4 2 9l10 5 10-5z"/><path d="M6 11.5V17c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5"/></svg></span><span><h3>University</h3><p>Central and state university admission tests</p><span class="card-meta"><span class="chip cat">1 exam</span></span></span></span></a></div>
   </div>
 </section>
 
 <section class="section alt">
-  <div class="wrap">
+  <div class="wrap reveal">
+    <div class="sec-head"><p class="eyebrow">Predictor tools</p>
+      <h2>Find out which colleges your score reaches</h2>
+      <p>Built on the official cutoff lists. The calculation runs in your browser — your rank
+      is never uploaded anywhere.</p></div>
+    <div class="grid g2"><a class="card cat-engineering" href="/tools/mht-cet-college-predictor.html"><span class="card-body" style="padding-left:0">
+<h3>MHT CET College Predictor</h3><p>Enter your Maharashtra State General Merit Number and see every college and branch that closed at or near it, across CAP Rounds I, II and III.</p>
+<span class="card-meta"><span class="chip open">₹49 one-time</span>
+<span class="chip">Official cutoff data</span><span class="chip">Safe / moderate / reach</span></span>
+</span></a><a class="card cat-medical" href="/tools/neet-college-predictor.html"><span class="card-body" style="padding-left:0">
+<h3>NEET College Predictor</h3><p>Enter your NEET All India Rank and category to see the MBBS, BDS and BSc Nursing seats that closed at or near it in MCC counselling.</p>
+<span class="card-meta"><span class="chip open">₹49 one-time</span>
+<span class="chip">Official cutoff data</span><span class="chip">Safe / moderate / reach</span></span>
+</span></a></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap reveal">
     <div class="sec-head-row"><div class="sec-head"><p class="eyebrow">Guides</p>
-      <h2>Choosing between exams, and what happens after</h2>
-      <p>Comparisons, career paths and the counselling advice that actually changes outcomes.</p></div>
-      <a class="btn ghost" href="/guides/">All guides</a></div>
+      <h2>Choosing between exams, and what comes after</h2>
+      <p>Comparisons, salary and posting breakdowns, and the counselling advice that changes outcomes.</p></div>
+      <a class="btn ghost" href="/guides/">All guides <span class="ar" aria-hidden="true">→</span></a></div>
     <div class="grid g2"><a class="card" href="/guides/ssc-cgl-vs-bank-po.html"><span class="card-body" style="padding-left:0">
 <h3>SSC CGL or Bank PO: which one should you actually pick?</h3><p>Both are graduate-level, both are winnable in a year of honest work, and they pull your life in opposite directions. Here is the comparison that matters.</p>
-<span class="card-meta"><span class="chip">Choosing an exam</span><span class="chip">8 min</span></span>
+<span class="card-meta"><span class="chip next">Choosing an exam</span>
+<span class="chip">8 min</span></span>
 </span></a><a class="card" href="/guides/careers-and-salary-after-every-exam.html"><span class="card-body" style="padding-left:0">
 <h3>What you actually earn, and where you actually get posted</h3><p>Exam by exam: the job you get, the pay you start on, where you are posted, and how the career moves after that.</p>
-<span class="card-meta"><span class="chip">Careers</span><span class="chip">12 min</span></span>
+<span class="card-meta"><span class="chip next">Careers</span>
+<span class="chip">12 min</span></span>
 </span></a><a class="card" href="/guides/neet-all-india-quota-vs-state-quota.html"><span class="card-body" style="padding-left:0">
 <h3>NEET counselling: All India Quota or state quota?</h3><p>Two separate registrations, two separate seat pools, two different strategies. Getting this wrong costs people seats every single year.</p>
-<span class="card-meta"><span class="chip">Counselling</span><span class="chip">7 min</span></span>
+<span class="card-meta"><span class="chip next">Counselling</span>
+<span class="chip">7 min</span></span>
 </span></a><a class="card" href="/guides/jee-main-vs-mht-cet-maharashtra.html"><span class="card-body" style="padding-left:0">
 <h3>JEE Main or MHT CET: what Maharashtra students should do</h3><p>You do not have to choose. But you do have to understand how the two feed into the same CAP process, and where each one actually helps.</p>
-<span class="card-meta"><span class="chip">Choosing an exam</span><span class="chip">6 min</span></span>
+<span class="card-meta"><span class="chip next">Choosing an exam</span>
+<span class="chip">6 min</span></span>
 </span></a></div>
   </div>
 </section>
 
-<section class="section">
+<section class="section alt">
   <div class="wrap">
-    <div class="cta-strip">
+    <div class="cta-strip reveal">
       <div><h2>Every exam page is free</h2>
-      <p>No account, no ads, no email capture. The two college predictors are one-time paid
-      unlocks — the only thing that funds the site. If something is out of date,
-      tell us and it gets fixed.</p></div>
-      <div class="btns"><a class="btn" href="/calendar.html">Open the calendar</a>
+      <p>No account, no ads, no email capture. Start with the calendar and work backwards from
+      your next deadline.</p></div>
+      <div class="btns"><a class="btn" href="/calendar.html">Open the calendar <span class="ar" aria-hidden="true">→</span></a>
       <a class="btn ghost" href="/contact.html">Report a correction</a></div>
     </div>
   </div>
 </section>
 </main>
+<nav class="mobile-bar" aria-label="Quick navigation"><a href="/exams/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Exams</span></a><a href="/calendar.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg><span>Calendar</span></a><a href="/tools/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h8"/></svg><span>Tools</span></a><a href="/guides/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Guides</span></a></nav>
+<button class="to-top" type="button" id="totop" aria-label="Back to top">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+ stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <div class="disclaimer"><div class="wrap"><p><strong>Please verify before you act.</strong>
 College Helper compiles dates, syllabus and cutoff information from official notifications and
 established education sources. Schedules change, notices get revised, and errors are possible.
