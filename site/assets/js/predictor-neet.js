@@ -95,7 +95,12 @@
       var a = parseInt(air.value, 10);
       if (!a || a < 1) {
         out.innerHTML = '';
-        out.appendChild(el('p', { class: 'empty', text: 'Enter your All India Rank to see results.' }));
+        out.appendChild(C.emptyState({
+          title: 'Enter your All India Rank',
+          body: 'Add your NEET All India Rank above to see the MBBS, BDS and BSc Nursing seats ' +
+                'that closed at or near it.'
+        }));
+        C.toast('Enter your NEET All India Rank first.', 'warn');
         air.focus();
         return;
       }
@@ -145,10 +150,13 @@
 
     out.innerHTML = '';
     if (!hits.length) {
-      out.appendChild(el('p', { class: 'empty',
-        text: 'No All India Quota seat closed near AIR ' + C.fmt(f.air) +
-              ' for that combination. Widen the course or quota filter — and remember this ' +
-              'covers AIQ only. Your state quota merit list is separate and often more forgiving.' }));
+      out.appendChild(C.emptyState({
+        icon: 'search',
+        title: 'No AIQ seat closed near AIR ' + C.fmt(f.air),
+        body: 'Nothing matched that combination. Widen the course or quota filter — and remember ' +
+              'this tool covers All India Quota only. Your state quota merit list is separate ' +
+              'and is often more forgiving.'
+      }));
       return;
     }
 
@@ -200,6 +208,7 @@
           SHORT.set(list); renderShortlist();
         }
         add.textContent = '✓ Added'; add.disabled = true;
+        C.toast(h.course + ' at ' + h.college + ' added to your choice list.', 'ok');
       });
       tr.appendChild(el('td', {}, [add]));
       tb.appendChild(tr);
@@ -223,6 +232,7 @@
                    h.round, h.opening, h.closing, h.seats]);
       });
       C.download('neet-matches-' + f.air + '.csv', C.csv(rows));
+      C.toast('Downloaded ' + C.fmt(hits.length) + ' matches as CSV.', 'ok');
     });
     out.appendChild(el('div', { class: 'form-actions' }, [dl]));
   }
@@ -283,10 +293,18 @@
         rows.push([i + 1, x.college, x.state, x.course, x.quota, x.category, x.closing, x.band]);
       });
       C.download('neet-choice-list.csv', C.csv(rows));
+      C.toast('Choice list exported.', 'ok');
     });
     var clr = el('button', { class: 'btn ghost sm', type: 'button', text: 'Clear list' });
     clr.addEventListener('click', function () {
-      if (confirm('Clear your saved choice list?')) { SHORT.clear(); renderShortlist(); }
+      C.confirm({
+        title: 'Clear your choice list?',
+        body: 'This removes all ' + list.length + ' saved seats from this device. It cannot be undone.',
+        confirm: 'Clear list'
+      }, function () {
+        SHORT.clear(); renderShortlist();
+        C.toast('Choice list cleared.', 'ok');
+      });
     });
     box.appendChild(el('div', { class: 'form-actions' }, [exp, clr]));
     mount.appendChild(box);

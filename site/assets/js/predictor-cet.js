@@ -15,7 +15,7 @@
     mount: mount,
     name: 'MHT CET College Predictor',
     bullets: [
-      '370 colleges, 103 branches and 71,603 closing merit numbers from the official 2025 CAP Rounds I\u2013III cut-off lists',
+      'Every closing merit number from the official 2025 CAP Rounds I\u2013III cut-off lists',
       'Filter by category, seat level, pool, branch group, region, CAP round and college type',
       'Safe, moderate and reach banding with round-wise closing numbers for every seat',
       'CSV export and a reorderable saved choice list',
@@ -116,7 +116,12 @@
       var m = parseInt(merit.value, 10);
       if (!m || m < 1) {
         out.innerHTML = '';
-        out.appendChild(el('p', { class: 'empty', text: 'Enter your State General Merit Number to see results.' }));
+        out.appendChild(C.emptyState({
+          title: 'Enter your merit number',
+          body: 'Add your Maharashtra State General Merit Number above and we will list every ' +
+                'college and branch that closed at or near it.'
+        }));
+        C.toast('Enter your State General Merit Number first.', 'warn');
         merit.focus();
         return;
       }
@@ -164,10 +169,23 @@
 
     out.innerHTML = '';
     if (!hits.length) {
-      out.appendChild(el('p', { class: 'empty',
-        text: 'No seat in this combination closed near merit number ' + C.fmt(f.merit) +
-              '. Try a different seat level or category — the same branch at the same college ' +
-              'often closes at a very different number under Home University.' }));
+      var wider = el('button', { class: 'btn ghost', type: 'button', text: 'Clear the optional filters' });
+      wider.addEventListener('click', function () {
+        // Only the optional selects carry a blank placeholder option; the
+        // required ones (category, seat level, pool) are left untouched.
+        document.querySelectorAll('#cet-app select').forEach(function (sel) {
+          if (sel.options.length && sel.options[0].value === '') sel.value = '';
+        });
+        C.toast('Optional filters cleared. Press "Show my colleges" again.', 'info');
+      });
+      out.appendChild(C.emptyState({
+        icon: 'search',
+        title: 'No seat closed near merit number ' + C.fmt(f.merit),
+        body: 'Nothing in this exact combination matched. The same branch at the same college ' +
+              'often closes at a very different number under a different seat level, so try ' +
+              'Home University vs Other Than Home University first.',
+        actions: [wider]
+      }));
       return;
     }
 
@@ -219,6 +237,7 @@
         }
         add.textContent = '✓ Added';
         add.disabled = true;
+        C.toast(h.rec.branch + ' at ' + h.rec.college + ' added to your choice list.', 'ok');
       });
       tr.appendChild(el('td', {}, [add]));
       tb.appendChild(tr);
@@ -244,6 +263,7 @@
                    h.rec.city, h.rec.region, h.rec.type]);
       });
       C.download('mht-cet-matches-' + f.merit + '.csv', C.csv(rows));
+      C.toast('Downloaded ' + C.fmt(hits.length) + ' matches as CSV.', 'ok');
     });
     out.appendChild(el('div', { class: 'form-actions' }, [dl]));
   }
@@ -304,10 +324,18 @@
         rows.push([i + 1, x.college, x.branch, x.category, x.seat, x.closing, x.band]);
       });
       C.download('mht-cet-choice-list.csv', C.csv(rows));
+      C.toast('Choice list exported.', 'ok');
     });
     var clr = el('button', { class: 'btn ghost sm', type: 'button', text: 'Clear list' });
     clr.addEventListener('click', function () {
-      if (confirm('Clear your saved choice list?')) { SHORT.clear(); renderShortlist(); }
+      C.confirm({
+        title: 'Clear your choice list?',
+        body: 'This removes all ' + list.length + ' saved seats from this device. It cannot be undone.',
+        confirm: 'Clear list'
+      }, function () {
+        SHORT.clear(); renderShortlist();
+        C.toast('Choice list cleared.', 'ok');
+      });
     });
     box.appendChild(el('div', { class: 'form-actions' }, [exp, clr]));
     mount.appendChild(box);

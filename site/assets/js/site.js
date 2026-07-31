@@ -3,15 +3,127 @@
 (function () {
   'use strict';
 
+  /* --------------------------------------------------------------- theme --
+     The <head> runs a tiny inline script that applies the stored theme before
+     first paint. This part only handles the toggle and keeps the address-bar
+     colour in sync. Choice order: explicit user setting → OS preference. */
+  var THEME_KEY = 'ch:theme';
+  var root = document.documentElement;
+
+  function systemDark() {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function activeTheme() {
+    return root.getAttribute('data-theme') || (systemDark() ? 'dark' : 'light');
+  }
+  function paintMeta() {
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', activeTheme() === 'dark' ? '#0E1117' : '#FFFFFF');
+  }
+  function setTheme(t) {
+    root.setAttribute('data-theme', t);
+    try { localStorage.setItem(THEME_KEY, t); } catch (e) { /* private mode */ }
+    paintMeta();
+    document.querySelectorAll('.theme-btn').forEach(function (b) {
+      b.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      b.setAttribute('aria-pressed', String(t === 'dark'));
+    });
+  }
+  paintMeta();
+  document.querySelectorAll('.theme-btn').forEach(function (btn) {
+    btn.setAttribute('aria-pressed', String(activeTheme() === 'dark'));
+    btn.setAttribute('aria-label', activeTheme() === 'dark'
+      ? 'Switch to light theme' : 'Switch to dark theme');
+    btn.addEventListener('click', function () {
+      setTheme(activeTheme() === 'dark' ? 'light' : 'dark');
+    });
+  });
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var onSys = function () { if (!root.getAttribute('data-theme')) paintMeta(); };
+    if (mq.addEventListener) mq.addEventListener('change', onSys);
+    else if (mq.addListener) mq.addListener(onSys);
+  }
+
+  /* --------------------------------------------------------------- toasts --
+     Replaces alert() for success/error feedback. Polite live region so a
+     screen reader announces it without stealing focus. */
+  var toastWrap = null;
+  var TOAST_ICON = {
+    ok: '<path d="M20 6 9 17l-5-5"/>',
+    err: '<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>',
+    warn: '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/>'
+  };
+  function toast(message, kind, ms) {
+    kind = kind || 'info';
+    if (!toastWrap) {
+      toastWrap = document.createElement('div');
+      toastWrap.className = 'toasts';
+      toastWrap.setAttribute('role', 'status');
+      toastWrap.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toastWrap);
+    }
+    var t = document.createElement('div');
+    t.className = 'toast ' + kind;
+    t.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      (TOAST_ICON[kind] || TOAST_ICON.info) + '</svg><span></span>' +
+      '<button class="toast-x" type="button" aria-label="Dismiss">&times;</button>';
+    t.querySelector('span').textContent = message;   // textContent, never innerHTML
+    toastWrap.appendChild(t);
+
+    var gone = false;
+    function close() {
+      if (gone) return;
+      gone = true;
+      t.classList.add('out');
+      setTimeout(function () { t.remove(); }, 200);
+    }
+    t.querySelector('.toast-x').addEventListener('click', close);
+    setTimeout(close, ms || (kind === 'err' ? 9000 : 5000));
+    return close;
+  }
+  window.CHToast = toast;
+
   /* ---------------------------------------------------------- mobile nav -- */
   var burger = document.querySelector('.burger');
   var mnav = document.getElementById('mnav');
   if (burger && mnav) {
+    var setNav = function (open) {
+      burger.setAttribute('aria-expanded', String(open));
+      mnav.classList.toggle('open', open);
+    };
     burger.addEventListener('click', function () {
-      var open = burger.getAttribute('aria-expanded') === 'true';
-      burger.setAttribute('aria-expanded', String(!open));
-      mnav.classList.toggle('open', !open);
+      setNav(burger.getAttribute('aria-expanded') !== 'true');
     });
+    // Escape closes and returns focus to the trigger.
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') {
+        setNav(false);
+        burger.focus();
+      }
+    });
+    // A tap anywhere outside the panel closes it.
+    document.addEventListener('click', function (ev) {
+      if (burger.getAttribute('aria-expanded') !== 'true') return;
+      if (!mnav.contains(ev.target) && !burger.contains(ev.target)) setNav(false);
+    });
+    // Never leave the panel open when it becomes the desktop layout.
+    if (window.matchMedia) {
+      var wide = window.matchMedia('(min-width: 880px)');
+      var onWide = function (e) { if (e.matches) setNav(false); };
+      if (wide.addEventListener) wide.addEventListener('change', onWide);
+    }
+  }
+
+  /* ------------------------------------------------- sticky header shadow -- */
+  var head = document.querySelector('.site-head');
+  if (head) {
+    var onHeadScroll = function () { head.classList.toggle('stuck', window.scrollY > 4); };
+    window.addEventListener('scroll', onHeadScroll, { passive: true });
+    onHeadScroll();
   }
 
   /* ----------------------------------------------------------- countdowns -- */
@@ -73,12 +185,92 @@
     var cards = Array.prototype.slice.call(results.querySelectorAll('.card'));
     var count = document.getElementById('count');
     var empty = document.getElementById('empty');
-    var state = { text: '', cat: '', level: '', state: '' };
+    var chipBar = document.getElementById('activefilters');
+    var sortSel = document.getElementById('sort');
+    var labels = {};                       // filter value -> human label, for chips
+    var state = { text: '', cat: '', level: '', state: '', sort: 'relevance' };
+
+    document.querySelectorAll('.filter').forEach(function (b) {
+      var v = b.getAttribute('data-value');
+      if (v) labels[b.getAttribute('data-filter') + ':' + v] = b.textContent.trim();
+    });
 
     function setPressed(group, value) {
       document.querySelectorAll('[data-filter="' + group + '"]').forEach(function (b) {
         b.setAttribute('aria-pressed', String(b.getAttribute('data-value') === value));
       });
+    }
+
+    /* Sorting reorders the DOM once per change; 14 nodes, so this is cheaper
+       than maintaining a parallel model and re-rendering. */
+    function sortCards() {
+      var mode = state.sort;
+      var sorted = cards.slice();
+      if (mode === 'soonest') {
+        sorted.sort(function (a, b) {
+          var da = a.getAttribute('data-next') || '9999-12-31';
+          var db = b.getAttribute('data-next') || '9999-12-31';
+          if (da === db) return a.getAttribute('data-sort').localeCompare(b.getAttribute('data-sort'));
+          return da < db ? -1 : 1;
+        });
+      } else if (mode === 'name') {
+        sorted.sort(function (a, b) {
+          return a.getAttribute('data-sort').localeCompare(b.getAttribute('data-sort'));
+        });
+      } else if (mode === 'status') {
+        sorted.sort(function (a, b) {
+          var d = (+a.getAttribute('data-rank')) - (+b.getAttribute('data-rank'));
+          return d !== 0 ? d : a.getAttribute('data-sort').localeCompare(b.getAttribute('data-sort'));
+        });
+      } else {
+        sorted.sort(function (a, b) {
+          return (+a.getAttribute('data-order')) - (+b.getAttribute('data-order'));
+        });
+      }
+      var frag = document.createDocumentFragment();
+      sorted.forEach(function (c) { frag.appendChild(c); });
+      results.appendChild(frag);
+    }
+
+    function renderChips() {
+      if (!chipBar) return;
+      chipBar.innerHTML = '';
+      var active = [];
+      if (state.text) active.push(['text', state.text, 'Search: "' + state.text + '"']);
+      if (state.cat) active.push(['cat', state.cat, labels['cat:' + state.cat] || state.cat]);
+      if (state.level) active.push(['level', state.level, labels['level:' + state.level] || state.level]);
+      if (state.state) active.push(['state', state.state, labels['state:' + state.state] || state.state]);
+      active.forEach(function (a) {
+        var chip = document.createElement('span');
+        chip.className = 'fchip';
+        var txt = document.createElement('span');
+        txt.textContent = a[2];                      // textContent — user input is never parsed as HTML
+        var x = document.createElement('button');
+        x.type = 'button';
+        x.innerHTML = '&times;';
+        x.setAttribute('aria-label', 'Remove filter ' + a[2]);
+        x.addEventListener('click', function () {
+          state[a[0]] = '';
+          if (a[0] === 'text') q.value = '';
+          setPressed('cat', state.cat); setPressed('level', state.level); setPressed('state', state.state);
+          apply();
+        });
+        chip.appendChild(txt); chip.appendChild(x);
+        chipBar.appendChild(chip);
+      });
+    }
+
+    /* Keep the URL in step so a filtered view can be bookmarked or shared. */
+    function syncUrl() {
+      if (!window.history || !history.replaceState) return;
+      var p = new URLSearchParams();
+      if (state.text) p.set('q', state.text);
+      if (state.cat) p.set('c', state.cat);
+      if (state.level) p.set('level', state.level);
+      if (state.state) p.set('state', state.state);
+      if (state.sort && state.sort !== 'relevance') p.set('sort', state.sort);
+      var qs = p.toString();
+      history.replaceState(null, '', qs ? '?' + qs : location.pathname);
     }
 
     function apply() {
@@ -93,11 +285,29 @@
         c.hidden = !ok;
         if (ok) shown++;
       });
-      if (count) count.textContent = shown + ' of ' + cards.length + ' exams';
+      sortCards();
+      if (count) {
+        count.textContent = shown === cards.length
+          ? 'Showing all ' + cards.length + ' exams'
+          : 'Showing ' + shown + ' of ' + cards.length + ' exams';
+      }
       if (empty) empty.hidden = shown !== 0;
+      renderChips();
+      syncUrl();
     }
 
-    q.addEventListener('input', function () { state.text = q.value; apply(); });
+    // Debounced so long lists are not re-filtered on every keystroke.
+    var typing;
+    q.addEventListener('input', function () {
+      clearTimeout(typing);
+      typing = setTimeout(function () { state.text = q.value; apply(); }, 120);
+    });
+    // Escape clears the field, which is what people expect from a search box.
+    q.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && q.value) {
+        q.value = ''; state.text = ''; apply();
+      }
+    });
 
     document.querySelectorAll('.filter').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -113,18 +323,39 @@
       });
     });
 
-    var clear = document.getElementById('clear');
-    if (clear) clear.addEventListener('click', function () {
-      state = { text: '', cat: '', level: '', state: '' };
+    if (sortSel) sortSel.addEventListener('change', function () {
+      state.sort = sortSel.value; apply();
+    });
+
+    function clearAll() {
+      state = { text: '', cat: '', level: '', state: '', sort: state.sort };
       q.value = '';
       setPressed('cat', ''); setPressed('level', ''); setPressed('state', '');
       apply();
+      q.focus();
+    }
+    document.querySelectorAll('#clear, #clear-all').forEach(function (b) {
+      b.addEventListener('click', clearAll);
     });
 
-    // deep link: /exams/?c=banking or ?q=neet
+    // Mobile filter drawer.
+    var fToggle = document.querySelector('.filter-toggle');
+    var fWrap = document.getElementById('filters-wrap');
+    if (fToggle && fWrap) {
+      fToggle.addEventListener('click', function () {
+        var open = fToggle.getAttribute('aria-expanded') === 'true';
+        fToggle.setAttribute('aria-expanded', String(!open));
+        fWrap.hidden = open;
+      });
+    }
+
+    // deep link: /exams/?c=banking&q=neet&sort=soonest
     var params = new URLSearchParams(location.search);
     if (params.get('c')) { state.cat = params.get('c'); setPressed('cat', state.cat); }
+    if (params.get('level')) { state.level = params.get('level'); setPressed('level', state.level); }
+    if (params.get('state')) { state.state = params.get('state'); setPressed('state', state.state); }
     if (params.get('q')) { state.text = params.get('q'); q.value = state.text; }
+    if (params.get('sort') && sortSel) { state.sort = params.get('sort'); sortSel.value = state.sort; }
     apply();
   }
 
@@ -134,15 +365,83 @@
   if (calq && cal) {
     var items = Array.prototype.slice.call(cal.querySelectorAll('.cal-item'));
     var months = Array.prototype.slice.call(cal.querySelectorAll('.cal-month'));
-    calq.addEventListener('input', function () {
+    var calEmpty = document.getElementById('cal-empty');
+    var calCount = document.getElementById('cal-count');
+    // Cache the lowercased text once; textContent in a filter loop is the slow part.
+    var hay = items.map(function (it) { return it.textContent.toLowerCase(); });
+
+    function calApply() {
       var t = calq.value.trim().toLowerCase();
-      items.forEach(function (it) {
-        it.hidden = !!t && it.textContent.toLowerCase().indexOf(t) === -1;
+      var shown = 0;
+      items.forEach(function (it, i) {
+        var ok = !t || hay[i].indexOf(t) !== -1;
+        it.hidden = !ok;
+        if (ok) shown++;
       });
       months.forEach(function (m) {
         m.hidden = !m.querySelector('.cal-item:not([hidden])');
       });
+      if (calCount) {
+        calCount.textContent = t
+          ? 'Showing ' + shown + ' of ' + items.length + ' dates'
+          : 'Showing all ' + items.length + ' dates';
+      }
+      if (calEmpty) calEmpty.hidden = shown !== 0;
+    }
+    var calTyping;
+    calq.addEventListener('input', function () {
+      clearTimeout(calTyping);
+      calTyping = setTimeout(calApply, 120);
     });
+    calq.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && calq.value) { calq.value = ''; calApply(); }
+    });
+    var calClear = document.getElementById('cal-clear');
+    if (calClear) calClear.addEventListener('click', function () {
+      calq.value = ''; calApply(); calq.focus();
+    });
+    calApply();
+  }
+
+  /* --------------------------------------------------------- count-up ----
+     Purely decorative. The final value is already in the HTML, so anything
+     that skips this (no JS, reduced motion, no observer) still reads right. */
+  var counters = document.querySelectorAll('[data-count]');
+  if (counters.length && 'IntersectionObserver' in window &&
+      !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        cio.unobserve(el);
+        var target = parseInt(el.getAttribute('data-count'), 10);
+        if (!isFinite(target) || target <= 0) return;
+        var dur = 620, t0 = 0;
+        function step(ts) {
+          if (!t0) t0 = ts;
+          var p = Math.min((ts - t0) / dur, 1);
+          // ease-out cubic: fast start, gentle landing
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = target;
+        }
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(function (c) { cio.observe(c); });
+  }
+
+  /* ------------------------------------------------- sticky finder shadow -- */
+  var finder = document.querySelector('.finder.sticky');
+  if (finder && 'IntersectionObserver' in window) {
+    var sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText = 'position:absolute;height:1px;width:1px;';
+    finder.parentNode.insertBefore(sentinel, finder);
+    new IntersectionObserver(function (en) {
+      finder.classList.toggle('stuck', !en[0].isIntersecting);
+    }, { rootMargin: '-' + (parseInt(getComputedStyle(document.documentElement)
+        .getPropertyValue('--head-h'), 10) || 52) + 'px 0px 0px 0px' }).observe(sentinel);
   }
 
   /* ------------------------------------------------------ predictor loader */
@@ -235,13 +534,99 @@ window.CH = (function () {
     };
   }
 
+  var ICONS = {
+    search: '<circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/>',
+    warn: '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
+    empty: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 15h8"/>'
+  };
+
+  /* Reusable empty / error state. Same shape everywhere, so a "no results"
+     and a "load failed" read as the same family of message. */
+  function emptyState(o) {
+    var box = el('div', { class: 'empty-state' });
+    box.appendChild(el('div', { class: 'ico', html:
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" ' +
+      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      (ICONS[o.icon] || ICONS.empty) + '</svg>' }));
+    box.appendChild(el('h3', { text: o.title || 'Nothing to show' }));
+    if (o.body) box.appendChild(el('p', { text: o.body }));
+    if (o.actions && o.actions.length) {
+      box.appendChild(el('div', { class: 'btns' }, o.actions));
+    }
+    return box;
+  }
+
+  /* Shimmer placeholder shaped roughly like the thing that is loading, so the
+     layout does not jump when the real content arrives. */
+  function skeleton(kind) {
+    var wrap = el('div', { 'aria-busy': 'true', 'aria-live': 'polite' });
+    wrap.appendChild(el('span', { class: 'sr', text: 'Loading…' }));
+    wrap.appendChild(el('div', { class: 'progress', html: '<span></span>' }));
+    if (kind === 'results') {
+      var stats = el('div', { class: 'stats' });
+      for (var s = 0; s < 4; s++) stats.appendChild(el('div', { class: 'sk sk-stat' }));
+      wrap.appendChild(stats);
+      for (var r = 0; r < 6; r++) wrap.appendChild(el('div', { class: 'sk sk-row' }));
+      return wrap;
+    }
+    var card = el('div', { class: 'sk-card' });
+    card.appendChild(el('div', { class: 'sk sk-title' }));
+    var grid = el('div', { class: 'form-grid' });
+    for (var i = 0; i < 6; i++) {
+      var f = el('div');
+      f.appendChild(el('div', { class: 'sk sk-line w40' }));
+      f.appendChild(el('div', { class: 'sk', style: 'height:40px' }));
+      grid.appendChild(f);
+    }
+    card.appendChild(grid);
+    wrap.appendChild(card);
+    return wrap;
+  }
+
+  function toast(msg, kind, ms) {
+    if (window.CHToast) return window.CHToast(msg, kind, ms);
+    return function () {};
+  }
+
+  /* Accessible confirm dialog — replaces window.confirm(), which cannot be
+     styled and reads poorly on mobile. Falls back to confirm() if <dialog>
+     is unavailable, so the destructive action is never silently skipped. */
+  function confirmDialog(o, onYes) {
+    if (typeof window.HTMLDialogElement === 'undefined') {
+      if (window.confirm(o.body || o.title)) onYes();
+      return;
+    }
+    var d = el('dialog', { class: 'ch-dialog' });
+    d.appendChild(el('h3', { text: o.title || 'Are you sure?' }));
+    if (o.body) d.appendChild(el('p', { text: o.body }));
+    var no = el('button', { class: 'btn ghost', type: 'button', text: o.cancel || 'Cancel' });
+    var yes = el('button', { class: 'btn danger', type: 'button', text: o.confirm || 'Confirm' });
+    d.appendChild(el('div', { class: 'form-actions' }, [yes, no]));
+    document.body.appendChild(d);
+    function close() { d.close(); d.remove(); }
+    no.addEventListener('click', close);
+    yes.addEventListener('click', function () { close(); onYes(); });
+    d.addEventListener('cancel', function () { d.remove(); });
+    d.showModal();
+    no.focus();
+  }
+
   function fail(mount, msg) {
     mount.innerHTML = '';
-    mount.appendChild(el('p', { class: 'empty', text: msg }));
+    var retry = el('button', { class: 'btn', type: 'button', text: 'Try again' });
+    retry.addEventListener('click', function () { location.reload(); });
+    mount.appendChild(emptyState({
+      icon: 'warn',
+      title: 'That did not load',
+      body: msg,
+      actions: [retry]
+    }));
   }
 
   return { el: el, opts: opts, band: band, BAND_ORDER: BAND_ORDER, fmt: fmt,
-           csv: csv, download: download, store: store, fail: fail };
+           csv: csv, download: download, store: store, fail: fail,
+           emptyState: emptyState, skeleton: skeleton, toast: toast,
+           confirm: confirmDialog };
 })();
 
 /* ==========================================================================
@@ -289,10 +674,7 @@ window.CH = (function () {
 
     function loadData(token) {
       mount.innerHTML = '';
-      mount.appendChild(el('div', { class: 'loading' }, [
-        el('div', { class: 'spin' }),
-        document.createTextNode('Loading the dataset…')
-      ]));
+      mount.appendChild(C.skeleton('form'));
       fetch('/api/data/' + opts.tool, { headers: { 'Authorization': 'Bearer ' + token } })
         .then(function (r) {
           if (r.status === 401 || r.status === 403) { var e = new Error('auth'); e.auth = true; throw e; }
@@ -392,9 +774,11 @@ window.CH = (function () {
                   signature: resp.razorpay_signature
                 }).then(function (v) {
                   saveToken(v.token);
-                  alert('Payment successful.\n\nYour payment ID is ' + v.paymentId +
-                        ' — it is also in your Razorpay receipt email. Keep it: it restores ' +
-                        'your access on any other device.');
+                  if (window.CHToast) {
+                    window.CHToast('Payment successful — unlocking your results now.', 'ok', 7000);
+                    window.CHToast('Save your payment ID ' + v.paymentId +
+                      ' — it restores access on any other device.', 'info', 14000);
+                  }
                   loadData(v.token);
                 }).catch(function (e) {
                   btn.disabled = false;
