@@ -95,22 +95,105 @@ CSS_V = asset_v("/assets/css/site.css")
 JS_V = asset_v("/assets/js/site.js")
 
 
+def _tool_stats():
+    """Real dataset counts from convert_data.py, used as trust signals on the
+    predictor pages. Falls back to an empty dict so the build never depends on
+    the private datasets having been converted on this machine."""
+    try:
+        with open(os.path.join(SITE, "assets", "data", "tool-stats.json"), encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
+TOOL_STATS = _tool_stats()
+
+
+def stat_grid(pairs):
+    """Reusable proof-point row: big number + quiet label.
+
+    Each entry is (value, label) or (value, label, tooltip). The tooltip is
+    progressive: it explains the number on hover/focus, and the label alone
+    still makes sense without it."""
+    cells = ""
+    for item in pairs:
+        v, l = item[0], item[1]
+        tip = item[2] if len(item) > 2 else None
+        if not v:
+            continue
+        lab = (f'<span class="l tip" data-tip-text="{attr(tip)}" tabindex="0">{e(l)}</span>'
+               if tip else f'<span class="l">{e(l)}</span>')
+        cells += f'<div class="stat"><span class="n mono">{e(v)}</span>{lab}</div>'
+    return f'<div class="stats">{cells}</div>' if cells else ""
+
+
+def skeleton_block(msg):
+    """Server-rendered shimmer placeholder. Sized like the form it replaces so
+    the page does not jump when the real tool mounts."""
+    widths = ["w40", "w60", "w40", "w60", "w60", "w40"]
+    fields = "".join(
+        f'<div><div class="sk sk-line {w}"></div>'
+        f'<div class="sk" style="height:40px"></div></div>' for w in widths)
+    return (f'<div class="loading-shell" aria-busy="true" aria-live="polite">'
+            f'<span class="sr">{e(msg)}</span>'
+            f'<div class="progress"><span></span></div>'
+            f'<div class="sk-card"><div class="sk sk-title"></div>'
+            f'<div class="form-grid">{fields}</div></div></div>')
+
+
 def attr(s):
     return html.escape(str(s), quote=True)
 
 
 # ----------------------------------------------------------------- helpers --
-MARK = ('<svg class="brand-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true">'
-        '<rect x="1.5" y="1.5" width="23" height="23" rx="5" fill="#F7F8FA" stroke="#CDD5E0"/>'
-        '<rect x="5.5" y="6.5" width="2" height="13" rx="1" fill="#15509E"/>'
-        '<rect x="10" y="7" width="10.5" height="2" rx="1" fill="#1A2233"/>'
-        '<rect x="10" y="12" width="7.5" height="2" rx="1" fill="#8A93A3"/>'
-        '<rect x="10" y="17" width="9.5" height="2" rx="1" fill="#8A93A3"/></svg>')
+# Runs before first paint so a dark-mode visitor never sees a white flash.
+# Deliberately inline and tiny: an external file would be a second round trip
+# and would still paint light first. Also flags <html class="js"> so the CSS
+# can keep scroll-reveal content visible when scripting is unavailable.
+THEME_BOOT = (
+    "(function(){try{var d=document.documentElement;d.className+=' js';"
+    "var t=localStorage.getItem('ch:theme');"
+    "if(t==='dark'||t==='light')d.setAttribute('data-theme',t);"
+    "}catch(e){}})();"
+)
+
+# Brand mark colours come from CSS variables so the logo inverts with the
+# theme; the literal values are the light-mode fallbacks.
+MARK = ('<svg class="brand-mark" viewBox="0 0 26 26" fill="none" aria-hidden="true" focusable="false">'
+        '<rect x="1.5" y="1.5" width="23" height="23" rx="5" '
+        'fill="var(--mark-bg,#F7F8FA)" stroke="var(--mark-line,#CDD5E0)"/>'
+        '<rect x="5.5" y="6.5" width="2" height="13" rx="1" fill="var(--mark-key,#15509E)"/>'
+        '<rect x="10" y="7" width="10.5" height="2" rx="1" fill="var(--mark-ink,#1A2233)"/>'
+        '<rect x="10" y="12" width="7.5" height="2" rx="1" fill="var(--mark-mute,#8A93A3)"/>'
+        '<rect x="10" y="17" width="9.5" height="2" rx="1" fill="var(--mark-mute,#8A93A3)"/></svg>')
+
+# Theme toggle. Both icons ship; CSS shows whichever represents the *next*
+# theme, so the control reads as an action rather than a status.
+THEME_BTN = (
+    '<button class="theme-btn" type="button" data-theme-toggle '
+    'aria-label="Switch to dark theme" aria-pressed="false" title="Switch theme">'
+    '<svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>'
+    '<svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/>'
+    '<path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2'
+    'M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>'
+)
 
 ICON_SEARCH = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" '
                'aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 4 4"/></svg>')
 ICON_ALERT = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" '
               'aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v5M10 14h.01"/></svg>')
+# Trust-strip glyphs. Decorative only — the adjacent text carries the meaning,
+# so they are hidden from assistive tech.
+ICON_CHECK = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" '
+              'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+              '<path d="m4 10.5 4 4 8-9"/></svg>')
+ICON_SHIELD = ('<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" '
+               'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+               '<path d="M10 2 3.5 4.8v4.4c0 3.6 2.7 6.9 6.5 8.3 3.8-1.4 6.5-4.7 6.5-8.3V4.8z"/>'
+               '<path d="m7.2 10 2 2 3.6-4"/></svg>')
 
 
 def _ic(paths):
@@ -172,16 +255,21 @@ def head(title, desc, path, *, extra="", jsonld=None, og_type="website"):
         for b in blocks:
             ld += ('<script type="application/ld+json">'
                    + json.dumps(b, ensure_ascii=False, separators=(",", ":")) + "</script>")
+    twitter = CFG.get("twitter", "")
+    tw_site = f'<meta name="twitter:site" content="{attr(twitter)}">\n' if twitter else ""
     return f"""<!DOCTYPE html>
 <html lang="en-IN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>{THEME_BOOT}</script>
 <title>{e(title)}</title>
 <meta name="description" content="{attr(desc)}">
 <link rel="canonical" href="{attr(url)}">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark">
+<meta name="format-detection" content="telephone=no">
 <meta property="og:site_name" content="{attr(CFG['name'])}">
 <meta property="og:type" content="{og_type}">
 <meta property="og:title" content="{attr(title)}">
@@ -189,10 +277,15 @@ def head(title, desc, path, *, extra="", jsonld=None, og_type="website"):
 <meta property="og:url" content="{attr(url)}">
 <meta property="og:locale" content="{attr(CFG['locale'])}">
 <meta property="og:image" content="{attr(CFG['url'])}/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="{attr(CFG['name'])} — {attr(CFG['tagline'])}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{attr(title)}">
+{tw_site}<meta name="twitter:title" content="{attr(title)}">
 <meta name="twitter:description" content="{attr(desc)}">
 <meta name="twitter:image" content="{attr(CFG['url'])}/assets/img/og.png">
+<meta name="twitter:image:alt" content="{attr(CFG['name'])} — {attr(CFG['tagline'])}">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/img/icon-180.png">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -217,9 +310,12 @@ def header(path):
     mob += '<a href="/tools/">College predictors</a><a href="/about.html">About</a>'
     return f"""<header class="site-head">
 <div class="head-in">
-<a class="brand" href="/">{MARK}College<em>Helper</em></a>
+<a class="brand" href="/" aria-label="{attr(CFG['name'])} — home">{MARK}College<em>Helper</em></a>
 <nav class="nav" aria-label="Main">{links}</nav>
+<div class="head-tools">
+{THEME_BTN}
 <button class="burger" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Menu"><span></span></button>
+</div>
 </div>
 <nav class="mobile-nav" id="mnav" aria-label="Mobile">{mob}</nav>
 </header>"""
@@ -257,17 +353,22 @@ official website of the conducting body before acting on it.</p></div></div>
 <div class="wrap">
 <div class="foot-grid">
   <div class="foot-about">
-    <h4>{e(CFG['name'])}</h4>
+    <h2>{e(CFG['name'])}</h2>
     <p>Every major Indian competitive exam in one place — dates, syllabus, eligibility, cutoffs
     and college predictors. Updated as notifications drop.</p>
     <p class="mono" style="font-size:.76rem">Last built {e(fmt_date(CFG['built']))}</p>
   </div>
-  <div><h4>Exams</h4><ul>{cats}</ul></div>
-  <div><h4>Tools</h4><ul>{tools}
+  <div><h2>Exams</h2><ul>{cats}</ul></div>
+  <div><h2>Tools</h2><ul>{tools}
     <li><a href="/calendar.html">Exam calendar</a></li>
     <li><a href="/exams/">All exams</a></li></ul></div>
-  <div><h4>Guides</h4><ul>{guides}<li><a href="/guides/">All guides</a></li></ul></div>
+  <div><h2>Guides</h2><ul>{guides}<li><a href="/guides/">All guides</a></li></ul></div>
 </div>
+<ul class="trust foot-trust">
+  <li>{ICON_SHIELD}Independent — not affiliated with any conducting body</li>
+  <li>{ICON_CHECK}Sourced from official notifications</li>
+  <li>{ICON_CHECK}No ads · no trackers · no account</li>
+</ul>
 <div class="foot-bar">
   <span>© {TODAY.year} {e(CFG['name'])} · {e(CFG['domain'])}</span>
   <span><a href="/about.html">About</a> · <a href="/contact.html">Contact</a>
@@ -334,7 +435,12 @@ def board_row(exam):
 </a>"""
 
 
-def exam_card(exam):
+# Sort weight for the "By status" ordering — most urgent first.
+STATUS_RANK = {"live": 0, "counselling": 0, "open": 1, "open-soon": 1,
+               "in-progress": 2, "upcoming": 3, "watch": 4, "cycle-closed": 5}
+
+
+def exam_card(exam, order=0):
     cls, label = status_of(exam)
     d = exam.get("nextDate")
     when = ""
@@ -344,10 +450,20 @@ def exam_card(exam):
                 else f'<span class="chip">{e(fmt_date(d))}</span>')
     st = e(CATEGORIES.get(exam["category"], {}).get("label", exam["category"]))
     lvl = f'<span class="chip">{e(exam["state"])}</span>' if exam.get("state") else ""
+    # Search haystack also covers the category label and state, so typing
+    # "banking" or "Maharashtra" finds exams even when the name omits the word.
+    hay = " ".join(filter(None, [
+        exam["name"].lower(), exam["fullName"].lower(), exam["body"].lower(),
+        CATEGORIES.get(exam["category"], {}).get("label", "").lower(),
+        (exam.get("state") or "").lower(), (exam.get("tagline") or "").lower(),
+    ]))
     return f"""<a class="card cat-{attr(exam['category'])}" href="/exams/{attr(exam['slug'])}.html"
-   data-name="{attr(exam['name'].lower()+' '+exam['fullName'].lower()+' '+exam['body'].lower())}"
+   data-name="{attr(hay)}"
    data-cat="{attr(exam['category'])}" data-level="{attr(exam['level'])}"
-   data-state="{attr(exam.get('state') or '')}">
+   data-state="{attr(exam.get('state') or '')}"
+   data-sort="{attr(exam['name'].lower())}" data-order="{order}"
+   data-rank="{STATUS_RANK.get(exam.get('status', ''), 6)}"
+   data-next="{attr(exam.get('nextDate') or '')}">
 <span class="card-rail {cls}" aria-hidden="true"></span>
 <span class="card-body">
 <h3>{e(exam['name'])}</h3>
@@ -357,19 +473,29 @@ def exam_card(exam):
 </span></a>"""
 
 
-def table(t):
+def table(t, caption=None):
     """Content table. `data-label` lets the CSS stack it into label/value rows
-    on phones instead of forcing a horizontal scroll."""
+    on phones instead of forcing a horizontal scroll.
+
+    `scope="col"` is what lets a screen reader announce the column header with
+    each cell. The wrapper is given role/tabindex so that when the table *does*
+    scroll sideways, keyboard users can actually reach and pan it."""
     head = t["head"]
-    thead = "".join(f"<th>{e(h)}</th>" for h in head)
+    thead = "".join(f'<th scope="col">{e(h)}</th>' for h in head)
     body = ""
     for r in t["rows"]:
         cells = ""
         for i, c in enumerate(r):
             lbl = head[i] if i < len(head) else ""
-            cells += f'<td data-label="{attr(lbl)}">{e(str(c))}</td>'
+            # First cell acts as the row header.
+            tag = "th" if i == 0 else "td"
+            scope = ' scope="row"' if i == 0 else ""
+            cells += f'<{tag}{scope} data-label="{attr(lbl)}">{e(str(c))}</{tag}>'
         body += f"<tr>{cells}</tr>"
-    return (f'<div class="tw stack"><table><thead><tr>{thead}</tr></thead>'
+    cap = f"<caption class=\"sr\">{e(caption)}</caption>" if caption else ""
+    label = attr(caption) if caption else "Data table"
+    return (f'<div class="tw stack" role="region" tabindex="0" aria-label="{label}">'
+            f'<table>{cap}<thead><tr>{thead}</tr></thead>'
             f'<tbody>{body}</tbody></table></div>')
 
 
@@ -423,9 +549,15 @@ def build_home():
                              "target": {"@type": "EntryPoint",
                                         "urlTemplate": CFG["url"] + "/exams/?q={search_term_string}"},
                              "query-input": "required name=search_term_string"}},
-        {"@context": "https://schema.org", "@type": "Organization", "name": CFG["name"],
-         "url": CFG["url"], "logo": CFG["url"] + "/assets/img/og.png",
-         "description": CFG["description"]},
+        {"@context": "https://schema.org", "@type": "Organization",
+         "@id": CFG["url"] + "/#organization", "name": CFG["name"],
+         "url": CFG["url"],
+         "logo": {"@type": "ImageObject", "url": CFG["url"] + "/assets/img/og.png",
+                  "width": 1200, "height": 630},
+         "description": CFG["description"],
+         "contactPoint": {"@type": "ContactPoint", "contactType": "customer support",
+                          "email": CFG["email"], "areaServed": "IN",
+                          "availableLanguage": ["en", "hi"]}},
     ]
 
     body = f"""{head(
@@ -451,11 +583,17 @@ def build_home():
     </div>
 
     <div class="hero-stats">
-      <span><b>{len(EXAMS)}</b> exams tracked</span>
-      <span><b>{nlive}</b> open right now</span>
-      <span><b>{len(GUIDES)}</b> guides</span>
-      <span><b>2</b> college predictors</span>
+      <span><b data-count="{len(EXAMS)}">{len(EXAMS)}</b> exams tracked</span>
+      <span><b data-count="{nlive}">{nlive}</b> open right now</span>
+      <span><b data-count="{len(GUIDES)}">{len(GUIDES)}</b> guides</span>
+      <span><b data-count="{len(TOOLS)}">{len(TOOLS)}</b> college predictors</span>
     </div>
+
+    <ul class="trust">
+      <li>{ICON_CHECK}Sourced from official notifications</li>
+      <li>{ICON_CHECK}No ads, no account needed</li>
+      <li>{ICON_CHECK}Your rank never leaves your browser</li>
+    </ul>
   </div>
 
   <div class="board">
@@ -667,7 +805,8 @@ def build_exam(x):
 # ============================================================== exam index ==
 def build_exam_index():
     cb, cld = crumbs([("Home", "/"), ("Exams", None)])
-    cards = "".join(exam_card(x) for x in sorted(EXAMS, key=lambda z: (z["category"], z["name"])))
+    ordered = sorted(EXAMS, key=lambda z: (z["category"], z["name"]))
+    cards = "".join(exam_card(x, i) for i, x in enumerate(ordered))
     catfilters = "".join(
         f'<button class="filter" type="button" data-filter="cat" data-value="{attr(k)}" '
         f'aria-pressed="false">{e(v["label"])}</button>' for k, v in CATEGORIES.items())
@@ -693,26 +832,57 @@ def build_exam_index():
 <p class="sub">{len(EXAMS)} exams tracked. Search by name, or filter by category, level and state.</p>
 </div></section>
 <div class="section"><div class="wrap">
-<div class="finder">
-  <div class="search-box">{ICON_SEARCH}
-    <label class="sr" for="q">Search exams</label>
-    <input type="search" id="q" placeholder="Search — try 'banking', 'NTA', 'Maharashtra'…" autocomplete="off">
+<div class="finder sticky">
+  <div class="finder-top">
+    <div class="search-box">{ICON_SEARCH}
+      <label class="sr" for="q">Search exams</label>
+      <input type="search" id="q" placeholder="Search — try 'banking', 'NTA', 'Maharashtra'…"
+             autocomplete="off" enterkeyhint="search">
+    </div>
+    <div class="sortwrap">
+      <label for="sort">Sort</label>
+      <select id="sort">
+        <option value="relevance">Category</option>
+        <option value="soonest">Soonest date</option>
+        <option value="status">Status</option>
+        <option value="name">Name A–Z</option>
+      </select>
+    </div>
+    <button class="filter filter-toggle" type="button" aria-expanded="false" aria-controls="filters-wrap">
+      Filters
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
   </div>
-  <div class="filters" role="group" aria-label="Filter by category">
-    <button class="filter" type="button" data-filter="cat" data-value="" aria-pressed="true">All</button>
-    {catfilters}
+  <div id="filters-wrap" class="filters-wrap">
+    <div class="filters" role="group" aria-label="Filter by category">
+      <button class="filter" type="button" data-filter="cat" data-value="" aria-pressed="true">All</button>
+      {catfilters}
+    </div>
+    <div class="filters" role="group" aria-label="Filter by level and state">
+      <button class="filter" type="button" data-filter="level" data-value="" aria-pressed="true">Any level</button>
+      <button class="filter" type="button" data-filter="level" data-value="national" aria-pressed="false">National</button>
+      <button class="filter" type="button" data-filter="level" data-value="state" aria-pressed="false">State</button>
+      {statefilters}
+    </div>
   </div>
-  <div class="filters" role="group" aria-label="Filter by level">
-    <button class="filter" type="button" data-filter="level" data-value="" aria-pressed="true">Any level</button>
-    <button class="filter" type="button" data-filter="level" data-value="national" aria-pressed="false">National</button>
-    <button class="filter" type="button" data-filter="level" data-value="state" aria-pressed="false">State</button>
-    {statefilters}
+  <div class="active-filters" id="activefilters"></div>
+</div>
+<h2 class="sr">Exam results</h2>
+<p class="result-count" id="count" role="status" aria-live="polite">Showing all {len(EXAMS)} exams</p>
+<div class="grid g3" id="results">{cards}</div>
+<div class="empty-state" id="empty" hidden>
+  <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/>
+   <path d="m16.5 16.5 4 4"/></svg></div>
+  <h3>No exam matches that</h3>
+  <p>Try a shorter search term — searching the conducting body ("NTA", "IBPS") or a state
+  ("Maharashtra") often works better than a full exam name.</p>
+  <div class="btns">
+    <button class="btn" type="button" id="clear">Clear all filters</button>
+    <a class="btn ghost" href="/calendar.html">Browse the calendar</a>
   </div>
 </div>
-<p class="result-count" id="count" aria-live="polite"></p>
-<div class="grid g3" id="results">{cards}</div>
-<p class="empty" id="empty" hidden>No exam matches that. Try a shorter search term, or
-<button class="btn ghost sm" type="button" id="clear">clear the filters</button>.</p>
 </div></div>
 {footer("/exams/")}"""
     page("/exams/index.html", out, "0.9", "weekly")
@@ -777,13 +947,28 @@ def build_calendar():
 in one running list. Past dates stay visible so you can see where a cycle currently stands.</p>
 </div></section>
 <div class="section"><div class="wrap">
-<div class="finder">
-  <div class="search-box">{ICON_SEARCH}
-    <label class="sr" for="calq">Search the calendar</label>
-    <input type="search" id="calq" placeholder="Filter — try 'NEET', 'mains', 'registration'…" autocomplete="off">
+<div class="finder sticky">
+  <div class="finder-top">
+    <div class="search-box">{ICON_SEARCH}
+      <label class="sr" for="calq">Search the calendar</label>
+      <input type="search" id="calq" placeholder="Filter — try 'NEET', 'mains', 'registration'…"
+             autocomplete="off" enterkeyhint="search">
+    </div>
   </div>
 </div>
+<p class="result-count" id="cal-count" role="status" aria-live="polite"></p>
 <div id="calendar">{body}</div>
+<div class="empty-state" id="cal-empty" hidden>
+  <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/>
+   <path d="M8 2v4M16 2v4M3 10h18"/></svg></div>
+  <h3>No dates match that</h3>
+  <p>Try an exam name ("NEET"), a stage ("mains", "counselling") or a shorter word.</p>
+  <div class="btns">
+    <button class="btn" type="button" id="cal-clear">Clear the filter</button>
+    <a class="btn ghost" href="/exams/">Browse all exams</a>
+  </div>
+</div>
 </div></div>
 {footer("/calendar.html")}"""
     page("/calendar.html", out, "0.9", "daily")
@@ -843,9 +1028,12 @@ def build_guide(g):
           "datePublished": g["updated"], "dateModified": g["updated"],
           "inLanguage": "en-IN",
           "author": {"@type": "Organization", "name": CFG["name"]},
-          "publisher": {"@type": "Organization", "name": CFG["name"],
+          "image": [CFG["url"] + "/assets/img/og.png"],
+          "publisher": {"@type": "Organization", "@id": CFG["url"] + "/#organization",
+                        "name": CFG["name"],
                         "logo": {"@type": "ImageObject", "url": CFG["url"] + "/assets/img/og.png"}},
-          "mainEntityOfPage": f"{CFG['url']}/guides/{g['slug']}.html"}
+          "mainEntityOfPage": {"@type": "WebPage",
+                               "@id": f"{CFG['url']}/guides/{g['slug']}.html"}}
 
     out = f"""{head(f"{g['title']} | {CFG['name']}", g["excerpt"],
                     f"/guides/{g['slug']}.html", jsonld=[cld, ld], og_type="article")}
@@ -881,7 +1069,8 @@ def build_guide_index():
 <p class="sub">Choosing between exams, what the job actually pays, and the counselling mistakes
 that cost people seats every year.</p>
 </div></section>
-<div class="section"><div class="wrap"><div class="grid g2">{cards}</div></div></div>
+<div class="section"><div class="wrap"><h2 class="sr">All guides</h2>
+<div class="grid g2">{cards}</div></div></div>
 {footer("/guides/")}"""
     page("/guides/index.html", out, "0.8", "monthly")
 
@@ -906,7 +1095,8 @@ def build_tools_index():
 using the official cutoff lists. Each tool is a one-time unlock; the calculation runs in your
 browser and your rank is never uploaded.</p>
 </div></section>
-<div class="section"><div class="wrap"><div class="grid g2">{cards}</div>
+<div class="section"><div class="wrap"><h2 class="sr">Available predictors</h2>
+<div class="grid g2">{cards}</div>
 <div class="callout" style="margin-top:2rem"><p><strong>How to read the results.</strong>
 A predictor tells you where last year's cutoffs landed, not where this year's will.
 Read <a href="/guides/how-to-read-a-cutoff-list.html">how to read a cutoff list</a> before you
@@ -920,6 +1110,17 @@ score does.</p></div>
 def build_cet_tool():
     t = TOOLS[0]
     cb, cld = crumbs([("Home", "/"), ("Tools", "/tools/"), ("MHT CET Predictor", None)])
+    st = TOOL_STATS.get("cet", {})
+    cet_stats = stat_grid([
+        (f"{st.get('colleges', ''):,}" if st.get("colleges") else "", "colleges",
+         "Every college that appeared in the 2025 CAP cut-off lists."),
+        (f"{st.get('branches', ''):,}" if st.get("branches") else "", "branches",
+         "Distinct degree branches across all participating colleges."),
+        (f"{st.get('rows', ''):,}" if st.get("rows") else "", "closing numbers",
+         "One closing merit number per seat, per category, per CAP round."),
+        ("I–III", "CAP rounds",
+         "Rounds I, II and III of Maharashtra centralised admission."),
+    ])
     ld = {"@context": "https://schema.org", "@type": "WebApplication",
           "name": t["name"], "applicationCategory": "EducationalApplication",
           "operatingSystem": "Any", "url": f"{CFG['url']}/tools/{t['slug']}.html",
@@ -936,10 +1137,16 @@ def build_cet_tool():
 that closed at or near it. Built on the official MHT CET 2025 CAP Rounds I–III cut-off lists.</p>
 <div class="exam-badges"><span class="badge open">₹{t['price']} one-time unlock</span>
 <span class="badge">Runs in your browser</span><span class="badge">Restore on any device</span></div>
+<ul class="trust">
+<li>{ICON_SHIELD}Payments secured by Razorpay</li>
+<li>{ICON_CHECK}Official Maharashtra CET Cell data</li>
+<li>{ICON_CHECK}Your merit number is never uploaded</li>
+</ul>
 </div></section>
 <div class="tool-shell"><div class="wrap">
+{cet_stats}
 <div id="cet-app" data-tool="cet">
-  <div class="loading"><div class="spin"></div>Loading the CAP cutoff dataset…</div>
+{skeleton_block("Loading the CAP cutoff dataset…")}
 </div>
 <div class="callout" style="margin-top:2rem"><p><strong>What the bands mean.</strong>
 <em>Safe</em> means your merit number is at or better than last year's closing number for that seat.
@@ -956,6 +1163,17 @@ CAP schedule.</p></div>
 def build_neet_tool():
     t = TOOLS[1]
     cb, cld = crumbs([("Home", "/"), ("Tools", "/tools/"), ("NEET Predictor", None)])
+    st = TOOL_STATS.get("neet", {})
+    neet_stats = stat_grid([
+        (f"{st.get('colleges', ''):,}" if st.get("colleges") else "", "colleges",
+         "Medical, dental and nursing colleges in the MCC allotment lists."),
+        (f"{st.get('rows', ''):,}" if st.get("rows") else "", "closing ranks",
+         "One closing All India Rank per course, quota, category and round."),
+        (str(st.get("states", "")) if st.get("states") else "", "states",
+         "States and union territories represented in All India Quota."),
+        ("1–3", "MCC rounds",
+         "Rounds 1, 2 and 3 of All India Quota counselling."),
+    ])
     ld = {"@context": "https://schema.org", "@type": "WebApplication",
           "name": t["name"], "applicationCategory": "EducationalApplication",
           "operatingSystem": "Any", "url": f"{CFG['url']}/tools/{t['slug']}.html",
@@ -972,10 +1190,16 @@ seats that closed at or near it. Built on MCC All India Quota counselling allotm
 Rounds 1 to 3.</p>
 <div class="exam-badges"><span class="badge open">₹{t['price']} one-time unlock</span>
 <span class="badge">Runs in your browser</span><span class="badge">Restore on any device</span></div>
+<ul class="trust">
+<li>{ICON_SHIELD}Payments secured by Razorpay</li>
+<li>{ICON_CHECK}Official MCC allotment data</li>
+<li>{ICON_CHECK}Your rank is never uploaded</li>
+</ul>
 </div></section>
 <div class="tool-shell"><div class="wrap">
+{neet_stats}
 <div id="neet-app" data-tool="neet">
-  <div class="loading"><div class="spin"></div>Loading the MCC counselling dataset…</div>
+{skeleton_block("Loading the MCC counselling dataset…")}
 </div>
 <div class="callout" style="margin-top:2rem"><p><strong>This covers All India Quota only.</strong>
 MCC counselling handles 15% of government college seats plus AIIMS, JIPMER, deemed and central
