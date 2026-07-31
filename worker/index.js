@@ -6,7 +6,12 @@
 const json = (o, s = 200) =>
   new Response(JSON.stringify(o), {
     status: s,
-    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'no-referrer'
+    }
   });
 
 async function hmacHex(secret, msg) {
@@ -23,6 +28,11 @@ const prices = env => ({
 });
 
 const isTool = t => t === 'cet' || t === 'neet';
+
+/* Razorpay identifier shapes. Cheap structural checks that keep malformed or
+   probing input from ever reaching a KV lookup. */
+const isPaymentId = v => typeof v === 'string' && /^pay_[A-Za-z0-9]{6,32}$/.test(v.trim());
+const isOrderId = v => typeof v === 'string' && /^order_[A-Za-z0-9]{6,32}$/.test(v.trim());
 
 /* ------------------------------------------------------------- endpoints -- */
 
@@ -42,6 +52,11 @@ async function createOrder(request, env) {
   if (!env.RZP_KEY_ID || !env.RZP_KEY_SECRET) {
     return json({ error: 'Payments are not configured yet. The site owner needs to add the Razorpay keys.' }, 503);
   }
+  // Verification cannot work without KV, so fail here rather than after the
+  // visitor has already been charged.
+  if (!env.CH_KV) return json({ error: 'Storage is not configured (CH_KV binding missing).' }, 503);
+
+  const amount = p[b.tool] * 100;                    // paise
   const r = await fetch('https://api.razorpay.com/v1/orders', {
     method: 'POST',
     headers: {
@@ -49,7 +64,7 @@ async function createOrder(request, env) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      amount: p[b.tool] * 100,           // paise
+      amount,
       currency: 'INR',
       receipt: b.tool + '-' + Date.now(),
       notes: { tool: b.tool }
@@ -57,6 +72,17 @@ async function createOrder(request, env) {
   });
   const d = await r.json();
   if (!r.ok) return json({ error: d?.error?.description || 'Could not create the payment order.' }, 502);
+
+  /* Record which tool (and price) this order is for, server-side.
+     Without this the tool name at verification time comes from the browser,
+     so a buyer could pay for the cheaper predictor and claim the dearer one.
+     Razorpay orders expire well inside 24h, so does this record. */
+  await env.CH_KV.put(
+    'order:' + d.id,
+    JSON.stringify({ tool: b.tool, amount: d.amount, ts: Date.now() }),
+    { expirationTtl: 86400 }
+  );
+
   return json({ orderId: d.id, amount: d.amount, currency: d.currency, keyId: env.RZP_KEY_ID });
 }
 
@@ -64,17 +90,32 @@ async function verifyPayment(request, env) {
   if (!env.CH_KV) return json({ error: 'Storage is not configured (CH_KV binding missing).' }, 503);
   let b;
   try { b = await request.json(); } catch { return json({ error: 'Bad request' }, 400); }
-  if (!isTool(b.tool)) return json({ error: 'Unknown tool' }, 400);
   if (!b.orderId || !b.paymentId || !b.signature) return json({ error: 'Missing payment details' }, 400);
+  if (!isPaymentId(b.paymentId) || !isOrderId(b.orderId)) {
+    return json({ error: 'Missing payment details' }, 400);
+  }
 
   const expected = await hmacHex(env.RZP_KEY_SECRET, b.orderId + '|' + b.paymentId);
-  if (expected !== b.signature) return json({ error: 'Payment could not be verified.' }, 400);
+  if (!timingSafeEqual(expected, String(b.signature))) {
+    return json({ error: 'Payment could not be verified.' }, 400);
+  }
+
+  // The tool comes from the order we recorded, never from the request body.
+  const order = await env.CH_KV.get('order:' + b.orderId, 'json');
+  if (!order || !isTool(order.tool)) {
+    return json({ error: 'That order has expired. If money was deducted, use "Restore access" with your payment ID.' }, 400);
+  }
+  const tool = order.tool;
+
+  // A replayed verification should return the existing grant, not mint a second one.
+  const existing = await env.CH_KV.get('pay:' + b.paymentId, 'json');
+  if (existing) return json({ token: existing.token, paymentId: b.paymentId });
 
   const ts = Date.now();
-  const amount = prices(env)[b.tool] || 0;
+  const amount = typeof order.amount === 'number' ? Math.round(order.amount / 100) : (prices(env)[tool] || 0);
   const token = crypto.randomUUID().replace(/-/g, '') + crypto.randomUUID().replace(/-/g, '');
-  await env.CH_KV.put('tok:' + token, JSON.stringify({ tool: b.tool, paymentId: b.paymentId, ts }));
-  await env.CH_KV.put('pay:' + b.paymentId, JSON.stringify({ token, tool: b.tool, ts, amount }));
+  await env.CH_KV.put('tok:' + token, JSON.stringify({ tool, paymentId: b.paymentId, ts }));
+  await env.CH_KV.put('pay:' + b.paymentId, JSON.stringify({ token, tool, ts, amount }));
   return json({ token, paymentId: b.paymentId });
 }
 
@@ -84,6 +125,9 @@ async function restoreAccess(request, env) {
   try { b = await request.json(); } catch { return json({ error: 'Bad request' }, 400); }
   const pid = String(b.paymentId || '').trim();
   if (!pid) return json({ error: 'Enter your payment ID.' }, 400);
+  if (!isPaymentId(pid)) {
+    return json({ error: 'That does not look like a Razorpay payment ID. It starts with "pay_" and is in your receipt email.' }, 400);
+  }
   const rec = await env.CH_KV.get('pay:' + pid, 'json');
   if (!rec) return json({ error: 'No purchase found for that payment ID. Check it against your Razorpay receipt email.' }, 404);
   return json({ token: rec.token, tool: rec.tool });
@@ -110,7 +154,7 @@ async function serveData(request, env, tool) {
 
 function adminGuard(request, env) {
   if (!env.ADMIN_SECRET) return json({ error: 'ADMIN_SECRET is not set in the Worker environment variables.' }, 503);
-  let ok = (request.headers.get('x-admin-secret') || '') === env.ADMIN_SECRET;
+  let ok = timingSafeEqual(request.headers.get('x-admin-secret') || '', env.ADMIN_SECRET);
   if (!ok) {
     // The /admin/ pages are already behind Basic Auth; accept those credentials too.
     const auth = request.headers.get('Authorization') || '';
