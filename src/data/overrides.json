@@ -1,13 +1,13 @@
 {
  "_note": "Written by the College Helper admin panel. Edited here, not by hand.",
- "_generated": "2026-07-30T16:04:14.098Z",
+ "_generated": "2026-07-31T18:22:37.908Z",
  "site": {
   "name": "College Helper",
   "domain": "collegehelper.xyz",
   "url": "https://collegehelper.xyz",
   "tagline": "Every Indian competitive exam, tracked in one place",
   "description": "Exam dates, syllabus, eligibility, cutoffs and college predictors for JEE, NEET, UPSC, SSC, banking, CAT, CLAT, GATE, CUET and MHT CET. Updated as notifications drop.",
-  "email": "rushikeshlade@gmail.com",
+  "email": "rushikeshlade3014s@gmail.com",
   "twitter": "@collegehelper",
   "locale": "en_IN",
   "built": "2026-07-29",
@@ -4320,6 +4320,14 @@
    "UPSC CSE",
    "upcoming",
    "/exams/upsc-cse.html"
+  ],
+  [
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
   ]
  ],
  "boardOrder": [
