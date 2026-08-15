@@ -1,5 +1,0 @@
-# Trailing-slash and legacy tidy-ups
-/exam/*      /exams/:splat   301
-/tool/*      /tools/:splat   301
-/guide/*     /guides/:splat  301
-/index       /               301
