@@ -1,0 +1,29 @@
+{
+  "name": "jee-college-finder",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "import": "node scripts/import-josaa.mjs"
+  },
+  "dependencies": {
+    "next": "^15.3.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "pdfkit": "^0.15.1",
+    "server-only": "^0.0.1",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/pdfkit": "^0.13.9",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.7.0"
+  }
+}
