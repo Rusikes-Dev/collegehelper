@@ -2,11 +2,15 @@ import { NextResponse } from 'next/server';
 import { loadDataset, rowsForTypes } from '@/lib/dataset';
 import { evaluate } from '@/lib/eligibility';
 import { searchSchema, fieldErrors } from '@/lib/validation';
-import { newSession, writeSession, readSession } from '@/lib/session';
+import { cookies } from 'next/headers';
+import { newSession, writeSession, readSession, hasAccess } from '@/lib/session';
+import { recordEvent } from '@/lib/db';
 import { rateLimit, clientKey, LIMITS } from '@/lib/ratelimit';
 import { handleError, apiError } from '@/lib/api';
 import { PRICE_PAISE } from '@/lib/razorpay';
 import type { StudentProfile, SearchPreferences } from '@/lib/types';
+
+export const runtime = 'nodejs';
 
 /**
  * Runs the search and opens a session for it.
@@ -54,16 +58,22 @@ export async function POST(req: Request) {
 
     const result = evaluate({ rows, institutes: ds.institutes, programs: ds.programs, student });
 
-    // Reuse an existing paid session when the student re-runs the identical
-    // search, so nobody is charged twice for the same thing.
+    // Access belongs to the person, not to one particular search, so anyone
+    // with a live grant can change a branch and re-run without paying again.
     const existing = await readSession();
-    const sameSearch =
-      existing?.paid &&
-      JSON.stringify(existing.student) === JSON.stringify(student) &&
-      JSON.stringify(existing.preferences) === JSON.stringify(preferences);
+    const unlocked = await hasAccess(existing);
 
-    const session = sameSearch ? existing! : newSession(student, preferences);
+    const session = existing
+      ? { ...existing, student, preferences, paid: unlocked }
+      : newSession(student, preferences);
     await writeSession(session);
+
+    recordEvent({
+      name: 'search_run',
+      visitorId: (await cookies()).get('jcf_vid')?.value,
+      userId: session.userId,
+      props: { eligible: result.eligible.length, unlocked },
+    });
 
     const byType: Record<string, number> = {};
     const institutes = new Set<number>();
@@ -75,7 +85,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({
-      alreadyPaid: Boolean(sameSearch),
+      alreadyPaid: unlocked,
       pricePaise: PRICE_PAISE,
       summary: {
         eligible: result.eligible.length,
