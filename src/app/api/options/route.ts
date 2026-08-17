@@ -3,6 +3,7 @@ import { loadDataset, programOptions } from '@/lib/dataset';
 import { rateLimit, clientKey, LIMITS } from '@/lib/ratelimit';
 import { handleError, apiError } from '@/lib/api';
 import { paymentsConfigured, PRICE_PAISE } from '@/lib/razorpay';
+import { supabaseConfigured } from '@/lib/db';
 
 /** Public form metadata: programmes, institute types, and what the data covers. */
 export async function GET(req: Request) {
@@ -29,6 +30,8 @@ export async function GET(req: Request) {
         },
         pricePaise: PRICE_PAISE,
         paymentsEnabled: paymentsConfigured(),
+        // Restoring access needs somewhere to have stored the grant.
+        restoreEnabled: supabaseConfigured(),
       },
       { headers: { 'Cache-Control': 'public, max-age=300, s-maxage=3600' } },
     );
