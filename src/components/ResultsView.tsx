@@ -145,7 +145,7 @@ export default function ResultsView({
   const activeFilters = typeFilter.length + quotaFilter.length;
 
   return (
-    <div className="wrap" style={{ paddingBlock: '22px 0', maxWidth: 900 }}>
+    <div className="wrap has-bottom-bar" style={{ paddingBlock: '22px 0', maxWidth: 900 }}>
       {/* ---- header ---- */}
       <div>
         <h1 style={{ fontSize: 'clamp(1.35rem, 4.6vw, 1.8rem)' }}>
@@ -185,9 +185,6 @@ export default function ResultsView({
           aria-label="Search college or programme"
         />
         <div style={{ display: 'flex', gap: 8, marginTop: 10, overflowX: 'auto', paddingBottom: 2 }}>
-          <button className="chip" onClick={() => setFiltersOpen(true)} style={{ flexShrink: 0 }}>
-            Filters{activeFilters > 0 ? ` (${activeFilters})` : ''}
-          </button>
           <select
             className="chip"
             value={sort}
@@ -305,10 +302,16 @@ export default function ResultsView({
         </>
       )}
 
-      {/* ---- sticky choice list bar ---- */}
-      <div className="sticky-bottom" style={{ marginInline: -20, marginTop: 28 }}>
-        <button className="btn btn-primary btn-block" onClick={() => setChoicesOpen(true)} disabled={choices.length === 0}>
-          {choices.length === 0 ? 'Your choice list is empty' : `View choice list (${choices.length})`}
+      {/* ---- thumb-reachable action bar ----
+           Filters and the choice list are the only two things anyone does
+           repeatedly here, so on a phone they live within thumb reach rather
+           than scrolled off the top of a long list. */}
+      <div className="action-bar" style={{ marginInline: -20, marginTop: 28 }}>
+        <button className="btn btn-secondary" onClick={() => setFiltersOpen(true)}>
+          Filters{activeFilters > 0 ? ` (${activeFilters})` : ''}
+        </button>
+        <button className="btn btn-primary" onClick={() => setChoicesOpen(true)} disabled={choices.length === 0}>
+          {choices.length === 0 ? 'Choice list' : `Choice list (${choices.length})`}
         </button>
       </div>
 

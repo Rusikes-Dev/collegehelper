@@ -22,6 +22,7 @@ interface Options {
   coverage: { years: number[]; rounds: number[]; instituteCount: number; rowCount: number };
   pricePaise: number;
   paymentsEnabled: boolean;
+  restoreEnabled: boolean;
 }
 
 const digitsOnly = (v: string) => v.replace(/[^\d]/g, '');
@@ -259,6 +260,7 @@ export default function FindForm() {
           summary={summary}
           pricePaise={options.pricePaise}
           paymentsEnabled={options.paymentsEnabled}
+          restoreEnabled={options.restoreEnabled}
           onClose={() => setSummary(null)}
           onUnlocked={() => router.push('/results')}
         />
