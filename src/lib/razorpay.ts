@@ -67,6 +67,24 @@ export function verifySignature(orderId: string, paymentId: string, signature: s
 }
 
 /**
+ * Webhook signatures are HMAC-SHA256 over the *raw* request body, keyed with
+ * the webhook secret — a different secret from the API key secret. The body
+ * must not be parsed and re-serialised before this runs, or the digest changes.
+ */
+export function verifyWebhookSignature(rawBody: string, signature: string): boolean {
+  const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+  if (!webhookSecret) return false;
+  const expected = createHmac('sha256', webhookSecret).update(rawBody).digest('hex');
+  const a = Buffer.from(expected, 'utf8');
+  const b = Buffer.from(signature, 'utf8');
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
+export function webhooksConfigured(): boolean {
+  return Boolean(process.env.RAZORPAY_WEBHOOK_SECRET);
+}
+
+/**
  * Second, independent check: ask Razorpay what it thinks the payment is.
  * Guards against a leaked signature and confirms the amount actually charged.
  */

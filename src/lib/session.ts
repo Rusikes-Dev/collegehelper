@@ -2,6 +2,7 @@ import 'server-only';
 import { createHmac, timingSafeEqual, randomUUID } from 'node:crypto';
 import { cookies } from 'next/headers';
 import type { StudentProfile, SearchPreferences } from './types';
+import { getAccessState, supabaseConfigured } from './db';
 
 /**
  * Stateless, signed sessions.
@@ -11,19 +12,26 @@ import type { StudentProfile, SearchPreferences } from './types';
  * request body, so changing rank or category client-side cannot widen what an
  * already-paid session returns — it would invalidate the signature.
  *
- * Payment state lives in the token only after the server has verified the
- * Razorpay signature. There is no client-settable "paid" flag anywhere.
+ * Since access became user-scoped, the cookie is no longer the final word on
+ * whether someone has paid. It carries the user id; the grant lives in the
+ * database, so revoking access in the admin panel takes effect on the next
+ * request rather than whenever the cookie happens to expire.
  */
 
 const COOKIE = 'jcf_session';
-const TTL_MS = 1000 * 60 * 60 * 24 * 7; // results stay reachable for a week
+const TTL_MS = 1000 * 60 * 60 * 24 * 30; // a month; the access grant itself lasts longer
 
 export interface SessionPayload {
   sid: string;
   student: StudentProfile;
   preferences: SearchPreferences;
-  /** Set only by the server, only after Razorpay signature verification. */
+  /** Cookie-level flag. Confirmed against the database when one is configured. */
   paid: boolean;
+  /** Supabase app_users.id, set once the student gives their email and phone. */
+  userId?: string;
+  email?: string;
+  phone?: string;
+  name?: string | null;
   orderId?: string;
   paymentId?: string;
   paidAt?: number;
@@ -92,13 +100,34 @@ export async function clearSession(): Promise<void> {
   (await cookies()).delete(COOKIE);
 }
 
+/**
+ * The one definition of "this person may see results".
+ *
+ * With a database configured, a live grant on the user always wins: it lets a
+ * restored session work even though its cookie was minted unpaid, and lets a
+ * revoked user be locked out even though their cookie still says paid.
+ */
+export async function hasAccess(session: SessionPayload | null): Promise<boolean> {
+  if (!session) return false;
+  if (supabaseConfigured() && session.userId) {
+    try {
+      const state = await getAccessState(session.userId);
+      if (state.active) return true;
+    } catch (e) {
+      // A database outage must not lock out someone whose cookie already says paid.
+      console.error('[session] access check failed', (e as Error)?.message);
+    }
+  }
+  return session.paid === true;
+}
+
 /** Guard for every route that returns paid content. */
 export async function requirePaidSession(): Promise<SessionPayload> {
   const session = await readSession();
   if (!session) {
     throw Object.assign(new Error('Your session has expired. Please start a new search.'), { status: 401, code: 'NO_SESSION' });
   }
-  if (!session.paid) {
+  if (!(await hasAccess(session))) {
     throw Object.assign(new Error('This session has not completed payment.'), { status: 402, code: 'PAYMENT_REQUIRED' });
   }
   return session;

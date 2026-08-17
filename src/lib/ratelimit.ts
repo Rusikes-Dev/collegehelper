@@ -19,6 +19,15 @@ export const LIMITS = {
   results: { limit: 120, windowMs: 60_000 },
   pdf: { limit: 15, windowMs: 60_000 },
   options: { limit: 60, windowMs: 60_000 },
+  /** Contact capture. Loose enough for typo corrections, tight enough to stop scraping. */
+  account: { limit: 20, windowMs: 60_000 },
+  /** Restore guesses an (email, phone) pair, so this is the one to keep tight. */
+  restore: { limit: 8, windowMs: 15 * 60_000 },
+  /** Page views. Generous: a student clicking around should never be throttled. */
+  track: { limit: 240, windowMs: 60_000 },
+  /** Admin sign-in. Deliberately slow to brute force. */
+  adminLogin: { limit: 6, windowMs: 15 * 60_000 },
+  admin: { limit: 300, windowMs: 60_000 },
 } satisfies Record<string, Limit>;
 
 export function rateLimit(key: string, { limit, windowMs }: Limit): { ok: boolean; retryAfter: number } {

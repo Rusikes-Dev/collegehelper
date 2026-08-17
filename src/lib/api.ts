@@ -22,6 +22,14 @@ export function handleError(e: unknown) {
     return apiError(err.message ?? 'Request failed.', err.code ?? 'BAD_REQUEST', err.status);
   }
 
+  // Deliberate 5xx: thrown by us, with a code and a message already written for
+  // the reader. Without this branch a deployment missing its Razorpay keys tells
+  // students "something went wrong on our side" and tells the operator nothing.
+  if (typeof err?.status === 'number' && err.status >= 500 && err.code) {
+    console.error('[api]', err.code, err.message);
+    return apiError(err.message ?? 'Service unavailable.', err.code, err.status);
+  }
+
   console.error('[api] unhandled error', e);
   return apiError('Something went wrong on our side. Please try again.', 'INTERNAL', 500);
 }
