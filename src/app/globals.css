@@ -178,7 +178,7 @@ a  { color: var(--brand); text-decoration-thickness: 1px; text-underline-offset:
   padding-bottom: env(safe-area-inset-bottom);
   animation: rise .22s cubic-bezier(.2,.8,.3,1);
 }
-.sheet-grip { width: 36px; height: 4px; border-radius: 2px; background: var(--rule); margin: 10px auto 4px; }
+.sheet-grip { width: 36px; height: 4px; border-radius: 2px; background: var(--faint); opacity: .5; margin: 0 auto; }
 .sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 20px 12px; border-bottom: 1px solid var(--rule); }
 .sheet-body { overflow-y: auto; padding: 16px 20px; -webkit-overflow-scrolling: touch; }
 .sheet-foot { padding: 12px 20px; border-top: 1px solid var(--rule); display: flex; gap: 10px; }
@@ -199,4 +199,321 @@ a  { color: var(--brand); text-decoration-thickness: 1px; text-underline-offset:
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ==================================================================
+   Mobile refinements
+
+   Most students open this on a phone, on mobile data, one-handed,
+   often while the counselling window is open and they are in a hurry.
+   Everything below exists because of that: bigger targets, no accidental
+   zoom, sheets that can be thumbed away, and a bottom bar that puts the
+   two things they actually do within reach of a thumb.
+   ================================================================== */
+
+html {
+  /* Stops a long-press from flashing a grey box over every button. */
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  /* Kills the horizontal rubber-band that makes a fixed header look broken. */
+  overscroll-behavior-x: none;
+}
+
+/* Nothing may push the page sideways on a 320px screen. */
+img, svg, video, table { max-width: 100%; }
+
+/* Give the sticky bottom bar somewhere to sit without covering content. */
+.has-bottom-bar { padding-bottom: 96px; }
+
+@media (max-width: 719px) {
+  .wrap { padding-inline: 16px; }
+  .card { border-radius: var(--r-md); }
+  .panel { padding: 14px; }
+
+  /* Two thumbs-width rows read better than three cramped columns. */
+  .btn { padding-inline: 16px; }
+}
+
+/* Sheets: full-height on phones without the iOS toolbar cropping them. */
+.sheet { max-height: 88dvh; overscroll-behavior: contain; }
+.sheet-body { overscroll-behavior: contain; }
+
+/* Drag handle target: the grip is 4px tall but must be grabbable. */
+.sheet-grab {
+  padding: 6px 0 2px;
+  touch-action: none;
+  cursor: grab;
+}
+.sheet-grab:active { cursor: grabbing; }
+
+/* ---------------- results action bar ---------------- */
+
+.action-bar {
+  position: sticky; bottom: 0; z-index: 30;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 8px;
+  background: var(--paper); border-top: 1px solid var(--rule);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  box-shadow: var(--shadow-up);
+}
+.action-bar .btn { min-height: 46px; font-size: 14.5px; }
+
+/* ---------------- shared bits ---------------- */
+
+.tick {
+  width: 52px; height: 52px; border-radius: 999px;
+  background: var(--safe-tint); color: var(--safe);
+  display: grid; place-items: center; font-size: 26px; margin: 0 auto;
+}
+
+.tick-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; }
+.tick-list li { display: flex; gap: 10px; font-size: 14.5px; align-items: flex-start; }
+.tick-list li span { color: var(--safe); font-weight: 700; flex-shrink: 0; }
+
+/* ==================================================================
+   Admin panel
+
+   A different job for a different person: you, scanning numbers, usually
+   on a laptop but sometimes on a phone between other things. So it is
+   denser than the student side, monospace wherever a figure needs to be
+   compared down a column, and it drops the site chrome entirely.
+   ================================================================== */
+
+/* The panel is not part of the site, so the site header and footer go. */
+body:has(.admin-shell) > header,
+body:has(.admin-shell) > footer,
+body:has(.admin-login) > header,
+body:has(.admin-login) > footer { display: none; }
+
+body:has(.admin-shell), body:has(.admin-login) { background: var(--surface); }
+
+.admin-eyebrow {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* ---------------- login ---------------- */
+
+.admin-login { min-height: 100dvh; display: grid; place-items: center; padding: 24px 20px; }
+.admin-login-card { width: 100%; max-width: 380px; padding: 28px 24px; }
+
+/* ---------------- shell ---------------- */
+
+.admin-shell { min-height: 100dvh; display: flex; flex-direction: column; }
+
+.admin-top {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--paper); border-bottom: 1px solid var(--rule);
+}
+.admin-top-inner {
+  max-width: 1240px; margin: 0 auto; padding: 14px 20px 10px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.admin-title { font-size: 20px; letter-spacing: -.02em; }
+.admin-top-actions { display: flex; gap: 6px; align-items: center; }
+
+.admin-tabs {
+  max-width: 1240px; margin: 0 auto; padding: 0 20px;
+  display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none;
+}
+.admin-tabs::-webkit-scrollbar { display: none; }
+
+.admin-tab {
+  flex-shrink: 0; min-height: 42px; padding: 10px 14px;
+  border: 0; border-bottom: 2px solid transparent; background: none;
+  font: 600 14.5px/1 var(--font-body); color: var(--muted); cursor: pointer;
+  transition: color .15s ease, border-color .15s ease;
+}
+.admin-tab:hover { color: var(--ink-2); }
+.admin-tab[aria-current='page'] { color: var(--brand-dark); border-bottom-color: var(--brand); }
+
+.admin-main { flex: 1; max-width: 1240px; width: 100%; margin: 0 auto; padding: 24px 20px 48px; }
+.admin-foot {
+  max-width: 1240px; margin: 0 auto; padding: 0 20px 28px;
+  font-size: 12.5px; color: var(--muted);
+}
+
+/* ---------------- layout pieces ---------------- */
+
+.admin-h2 { font-size: 15px; margin: 30px 0 12px; }
+.admin-h2:first-of-type { margin-top: 0; }
+.admin-h3 { font-size: 14px; margin: 24px 0 10px; }
+
+.admin-hint { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.admin-muted { font-size: 13.5px; color: var(--muted); }
+.admin-count { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.admin-message {
+  margin-top: 14px; padding: 10px 12px; border-radius: var(--r-sm);
+  background: var(--brand-tint); color: var(--brand-dark); font-size: 13.5px; font-weight: 500;
+}
+
+.admin-toolbar { display: grid; gap: 12px; margin-bottom: 18px; }
+.admin-card { padding: 18px; }
+.admin-grid-2 { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.admin-field-row { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+.admin-empty { text-align: center; padding: 32px 20px; }
+
+/* ---------------- stat tiles ---------------- */
+
+.admin-stats { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); }
+.admin-stat {
+  background: var(--paper); border: 1px solid var(--rule);
+  border-radius: var(--r-md); padding: 14px;
+}
+.admin-stat-label {
+  font-size: 11.5px; font-weight: 600; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--muted);
+}
+.admin-stat-value { font-size: 24px; font-weight: 600; line-height: 1.2; margin-top: 6px; color: var(--ink); }
+.admin-stat-sub { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.admin-tone-good { color: var(--safe); }
+.admin-tone-warn { color: var(--border-line); }
+.admin-tone-bad  { color: var(--miss); }
+
+/* ---------------- bar lists ---------------- */
+
+.admin-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; }
+.admin-bars li {
+  position: relative; display: flex; align-items: center; gap: 10px;
+  min-height: 30px; padding: 4px 8px; border-radius: 5px; font-size: 13.5px;
+}
+.admin-bar-track {
+  position: absolute; inset: 0 auto 0 0; width: var(--w);
+  background: var(--brand-tint); border-radius: 5px;
+}
+.admin-bar-label {
+  position: relative; flex: 1; min-width: 0; color: var(--ink-2);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.admin-bar-value { position: relative; font-weight: 600; color: var(--ink); font-size: 13px; }
+.admin-bar-unit {
+  min-height: 0; padding-top: 6px; font-size: 11.5px;
+  color: var(--faint); text-transform: uppercase; letter-spacing: .04em;
+}
+
+/* ---------------- daily chart ---------------- */
+
+.admin-chart-legend {
+  display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+  font-size: 12.5px; color: var(--ink-2); margin-bottom: 14px;
+}
+.admin-chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.admin-swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.admin-swatch-visitors { background: var(--brand); opacity: .35; }
+.admin-swatch-paid { background: var(--safe); border-radius: 999px; }
+
+.admin-chart {
+  display: flex; align-items: flex-end; gap: 2px;
+  height: 132px; padding-top: 4px;
+}
+.admin-chart-col { position: relative; flex: 1; height: 100%; display: flex; align-items: flex-end; min-width: 3px; }
+.admin-chart-bar {
+  width: 100%; min-height: 2px; border-radius: 2px 2px 0 0;
+  background: var(--brand); opacity: .32;
+}
+.admin-chart-col:hover .admin-chart-bar { opacity: .6; }
+.admin-chart-dot {
+  position: absolute; left: 50%; translate: -50% 0;
+  width: 6px; height: 6px; border-radius: 999px;
+  background: var(--safe); box-shadow: 0 0 0 2px var(--paper);
+}
+.admin-chart-axis {
+  display: flex; justify-content: space-between;
+  font-size: 11.5px; color: var(--faint); margin-top: 8px;
+}
+
+/* ---------------- tables ---------------- */
+
+.admin-table-wrap {
+  background: var(--paper); border: 1px solid var(--rule);
+  border-radius: var(--r-md); overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.admin-table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; }
+.admin-table th {
+  text-align: left; padding: 10px 14px; white-space: nowrap;
+  font-size: 11.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--muted); background: var(--surface); border-bottom: 1px solid var(--rule);
+  position: sticky; top: 0; z-index: 1;
+}
+.admin-table td { padding: 11px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.admin-table tbody tr:last-child td { border-bottom: 0; }
+.admin-table tbody tr[tabindex] { cursor: pointer; }
+.admin-table tbody tr[tabindex]:hover { background: var(--surface); }
+.admin-num { text-align: right; }
+
+.admin-strong { display: block; font-weight: 600; color: var(--ink); }
+.admin-sub { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.admin-chevron { color: var(--faint); font-size: 20px; line-height: 1; }
+
+.admin-pager {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-top: 16px;
+}
+
+/* ---------------- key/value + lists ---------------- */
+
+.admin-kv { display: grid; gap: 1px; margin: 0; background: var(--rule); border-radius: var(--r-sm); overflow: hidden; }
+.admin-kv > div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 12px; background: var(--paper); }
+.admin-kv dt { font-size: 12.5px; color: var(--muted); flex-shrink: 0; }
+.admin-kv dd { margin: 0; font-size: 13.5px; font-weight: 500; text-align: right; word-break: break-word; }
+
+.admin-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--rule); border-radius: var(--r-sm); overflow: hidden; }
+.admin-list li { display: flex; justify-content: space-between; gap: 14px; padding: 10px 12px; background: var(--paper); font-size: 13.5px; }
+
+@media (max-width: 719px) {
+  .admin-top-inner { padding: 12px 16px 8px; }
+  .admin-tabs { padding-inline: 16px; }
+  .admin-main { padding: 18px 16px 40px; }
+  .admin-title { font-size: 18px; }
+  .admin-stat-value { font-size: 21px; }
+  .admin-field-row { grid-template-columns: 1fr; }
+  .admin-top-actions .btn-ghost { display: none; }
+}
+
+/* ==================================================================
+   Dark mode
+
+   Follows the phone's own setting. Students check cutoffs late at night
+   during counselling, and a full-white page at 1am is genuinely worse
+   to read. Only the tokens change; no component knows about this.
+   ================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink:        #E7ECF3;
+    --ink-2:      #B6C2D2;
+    --muted:      #8494A8;
+    --faint:      #5E6E84;
+    --paper:      #0F1621;
+    --surface:    #151E2C;
+    --surface-2:  #1D2838;
+    --rule:       #26334555;
+
+    --brand:      #4B82F7;
+    --brand-dark: #7CA5FF;
+    --brand-tint: #16233B;
+
+    --safe:       #34D399;
+    --safe-tint:  #0E2A22;
+    --likely:     #38BDF8;
+    --likely-tint:#0D2434;
+    --border-line:#FBBF24;
+    --border-tint:#2A2213;
+    --miss:       #FB7185;
+    --miss-tint:  #2C1620;
+
+    --shadow-1: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-2: 0 4px 10px rgba(0,0,0,.45);
+    --shadow-up: 0 -4px 16px rgba(0,0,0,.45);
+  }
+
+  html { color-scheme: dark; }
+
+  /* The header uses a translucent white in light mode; match it here. */
+  body > header { background: rgba(15,22,33,.92) !important; }
+
+  .btn-primary { color: #0B1220; }
+  .chip[aria-pressed='true'], .chip[data-selected='true'] { color: var(--brand-dark); }
+  .admin-bar-track { background: var(--brand-tint); }
 }

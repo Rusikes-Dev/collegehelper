@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
+import Analytics from '@/components/Analytics';
 import './globals.css';
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com';
@@ -29,11 +30,14 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: '#1D4ED8',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#1D4ED8' },
+    { media: '(prefers-color-scheme: dark)', color: '#0F1621' },
+  ],
 };
 
 const FOOTER_LINKS = [
-  { group: 'Tool', links: [['Find my colleges', '/find'], ['How it works', '/how-it-works'], ['JoSAA cutoffs', '/josaa-cutoff']] },
+  { group: 'Tool', links: [['Find my colleges', '/find'], ['Restore my access', '/restore'], ['How it works', '/how-it-works'], ['JoSAA cutoffs', '/josaa-cutoff']] },
   { group: 'Predictors', links: [['JEE Main predictor', '/jee-main-college-predictor'], ['JEE Advanced predictor', '/jee-advanced-college-predictor'], ['College list', '/jee-college-list']] },
   { group: 'Legal', links: [['Privacy policy', '/privacy'], ['Terms & conditions', '/terms'], ['Refund policy', '/refunds'], ['Disclaimer', '/disclaimer'], ['Contact us', '/contact']] },
 ];
@@ -59,13 +63,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16.5, letterSpacing: '-.02em' }}>JEE College Finder</span>
             </Link>
             <nav style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <Link href="/how-it-works" className="btn btn-ghost" style={{ fontSize: 14.5 }}>How it works</Link>
+              <Link href="/restore" className="btn btn-ghost" style={{ fontSize: 14.5 }}>Restore access</Link>
               <Link href="/find" className="btn btn-primary" style={{ padding: '10px 16px', fontSize: 14.5 }}>Find my colleges</Link>
             </nav>
           </div>
         </header>
 
         <main id="main">{children}</main>
+
+        <Analytics />
 
         <footer style={{ borderTop: '1px solid var(--rule)', background: 'var(--surface)', marginTop: 72, paddingBlock: '40px 32px' }}>
           <div className="wrap">
