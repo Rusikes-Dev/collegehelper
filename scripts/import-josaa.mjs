@@ -481,7 +481,9 @@ function mergeWithExisting(next, outPath) {
   if (replaced) warn(`Replaced ${replaced.toLocaleString('en-IN')} existing row(s) for ${YEAR} round ${ROUND}.`);
 
   for (const r of next.rows) {
-    prev.rows.push([mi.get(r[0]), mp.get(r[1]), mq.get(r[2]), mc.get(r[3]), mg.get(r[4]), r[5], r[6], r[7], r[8], r[9]]);
+    // r[10] is mixedRankLists. It was previously dropped here, which silently
+    // un-hid incomparable PwD opening ranks on every appended round.
+    prev.rows.push([mi.get(r[0]), mp.get(r[1]), mq.get(r[2]), mc.get(r[3]), mg.get(r[4]), r[5], r[6], r[7], r[8], r[9], r[10]]);
   }
 
   prev.meta.generatedAt = new Date().toISOString();
