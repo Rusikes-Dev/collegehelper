@@ -517,3 +517,178 @@ body:has(.admin-shell), body:has(.admin-login) { background: var(--surface); }
   .chip[aria-pressed='true'], .chip[data-selected='true'] { color: var(--brand-dark); }
   .admin-bar-track { background: var(--brand-tint); }
 }
+
+/* ==================================================================
+   Above-the-fold CTA
+
+   Side by side where there is room, stacked where there is not. The
+   input keeps its 16px font at every width: anything smaller makes iOS
+   zoom the whole page on focus, which on the landing page means the
+   first thing a student does is get thrown into a zoomed viewport.
+   ================================================================== */
+
+.hero-cta-form {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  max-width: 480px;
+}
+.hero-cta-form .input { font-size: 16px; }
+
+@media (max-width: 479px) {
+  .hero-cta-form { flex-direction: column; gap: 10px; }
+  .hero-cta-form .btn { width: 100%; }
+}
+
+/* ==================================================================
+   Sticky mobile CTA
+
+   Phones only. On a laptop the header CTA is already on screen at all
+   times, so a second fixed bar would just eat vertical space.
+
+   It animates out rather than unmounting so that a student mid-scroll
+   does not get the page height changing under their thumb.
+   ================================================================== */
+
+.sticky-cta { display: none; }
+
+@media (max-width: 719px) {
+  .sticky-cta {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 45;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+    box-shadow: var(--shadow-up);
+    transform: translateY(100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform .22s cubic-bezier(.2,.8,.3,1), opacity .18s ease, visibility .22s;
+  }
+  .sticky-cta[data-show='true'] {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  .sticky-cta-text { display: grid; line-height: 1.3; min-width: 0; }
+  .sticky-cta .btn { flex-shrink: 0; padding-inline: 18px; }
+
+  /* Keep the footer clear of the bar, or the last link is unreachable. */
+  body:has(.sticky-cta[data-show='true']) footer { padding-bottom: 84px; }
+}
+
+/* A bottom sheet must sit above the CTA bar, never behind it. */
+.sheet, .sheet-backdrop { z-index: 50; }
+
+/* ==================================================================
+   Cookie banner
+
+   Bottom-anchored, above the sticky CTA, and never full-screen: it is a
+   choice about analytics, not a wall. Both buttons are the same size,
+   because a "reject" that is harder to hit than "accept" is not consent.
+   ================================================================== */
+
+.cookie-banner {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 70;
+  background: var(--paper);
+  border-top: 1px solid var(--rule);
+  box-shadow: var(--shadow-up);
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+  animation: rise .2s cubic-bezier(.2,.8,.3,1);
+}
+.cookie-inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.cookie-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.cookie-actions .btn { min-width: 104px; }
+
+@media (max-width: 719px) {
+  .cookie-inner { flex-direction: column; align-items: stretch; gap: 12px; }
+  .cookie-actions .btn { flex: 1; min-width: 0; }
+}
+
+/* ==================================================================
+   Mobile breakpoints
+
+   Four widths, each earning its place rather than being a round number:
+
+     360px  the floor. Most budget Android handsets in India, and the
+            width the whole flow has to work at one-handed.
+     480px  where two controls stop fitting on one row.
+     720px  phone to tablet: sheets become centred dialogs.
+     1024px where multi-column content genuinely has room.
+   ================================================================== */
+
+/* ---- 360px and below: the tightest real devices ---- */
+@media (max-width: 380px) {
+  .wrap { padding-inline: 14px; }
+
+  h1 { font-size: 1.62rem; line-height: 1.18; }
+  h2 { font-size: 1.28rem; }
+
+  /* Full-width buttons stop wrapping to two lines at this width. */
+  .btn { padding-inline: 14px; font-size: 14.5px; }
+
+  /* Chips wrap to three or four rows here; tighten so the form stays scannable. */
+  .chips { gap: 6px; }
+  .chip { padding: 8px 12px; font-size: 14px; }
+
+  .panel { padding: 12px; }
+  .card { border-radius: var(--r-md); }
+
+  .sticky-cta { padding-inline: 12px; gap: 8px; }
+  .sticky-cta-text span:first-child { font-size: 13.5px; }
+  .sticky-cta-text span:last-child { font-size: 11.5px; }
+  .sticky-cta .btn { padding-inline: 14px; font-size: 14px; }
+
+  .action-bar { padding-inline: 12px; gap: 6px; }
+  .action-bar .btn { font-size: 13.5px; padding-inline: 10px; }
+
+  .tick { width: 46px; height: 46px; font-size: 23px; }
+}
+
+/* ---- up to 480px: stack anything that was side by side ---- */
+@media (max-width: 479px) {
+  /* Stat tiles read better as two columns than as a cramped four. */
+  .wrap dl { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* A three-across action bar leaves ~100px per button; two rows is kinder. */
+  .action-bar { grid-auto-flow: row; grid-auto-columns: auto; }
+}
+
+/* ---- 480px to 719px: larger phones and small tablets ---- */
+@media (min-width: 480px) and (max-width: 719px) {
+  .wrap { padding-inline: 18px; }
+}
+
+/* ---- 1024px and up: comfortable reading measure ---- */
+@media (min-width: 1024px) {
+  .wrap { padding-inline: 24px; }
+}
+
+/* ---- landscape phones ----
+   A 360x640 handset turned sideways has ~360px of height. A sticky
+   bottom bar plus a sticky header can leave under 200px of content, so
+   the bar stands down until the phone is upright again. */
+@media (max-height: 460px) and (orientation: landscape) {
+  .sticky-cta { display: none !important; }
+  body > header { position: static; }
+}
+
+/* ---- foldables and very wide phones ----
+   Stop the reading column stretching to the full width of an unfolded
+   device, where a line of body text would otherwise run past 100 characters. */
+@media (min-width: 720px) {
+  article.wrap p, article.wrap li { max-width: 68ch; }
+}

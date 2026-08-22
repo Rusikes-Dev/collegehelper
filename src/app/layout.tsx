@@ -1,9 +1,14 @@
 import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
 import Analytics from '@/components/Analytics';
+import ThirdPartyAnalytics from '@/components/ThirdPartyAnalytics';
+import CookieBanner from '@/components/CookieBanner';
+import StickyCta from '@/components/StickyCta';
+import { SITE as CONFIG, needsCookieConsent } from '@/lib/site';
+import { PRICE_LABEL } from '@/lib/razorpay';
 import './globals.css';
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com';
+const SITE = CONFIG.url;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -23,7 +28,26 @@ export const metadata: Metadata = {
     locale: 'en_IN',
   },
   twitter: { card: 'summary_large_image', title: 'JEE College Finder', description: 'Colleges within reach of your JEE rank, based on previous-year JoSAA closing ranks.' },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+  },
+  applicationName: CONFIG.name,
+  authors: [{ name: CONFIG.name }],
+  creator: CONFIG.name,
+  publisher: CONFIG.name,
+  category: 'education',
+  // Safari turns anything that looks like a rank into a blue phone-call link
+  // on iOS. Ranks are the entire content of this site, so that is switched off.
+  formatDetection: { telephone: false, date: false, address: false, email: false },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
 };
 
 export const viewport: Viewport = {
@@ -42,6 +66,21 @@ const FOOTER_LINKS = [
   { group: 'Legal', links: [['Privacy policy', '/privacy'], ['Terms & conditions', '/terms'], ['Refund policy', '/refunds'], ['Disclaimer', '/disclaimer'], ['Contact us', '/contact']] },
 ];
 
+/** Organisation schema, so search engines have a contact point to attach to the brand. */
+const ORG_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: CONFIG.name,
+  url: CONFIG.url,
+  email: CONFIG.email,
+  contactPoint: [{
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    email: CONFIG.email,
+    availableLanguage: ['en', 'hi'],
+  }],
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-IN">
@@ -54,6 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_SCHEMA) }} />
         <a href="#main" className="btn btn-secondary sr-only">Skip to main content</a>
 
         <header style={{ borderBottom: '1px solid var(--rule)', position: 'sticky', top: 0, background: 'rgba(255,255,255,.92)', backdropFilter: 'blur(8px)', zIndex: 40 }}>
@@ -72,6 +112,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
 
         <Analytics />
+        <ThirdPartyAnalytics />
+        <StickyCta price={PRICE_LABEL} />
+        <CookieBanner enabled={needsCookieConsent()} />
 
         <footer style={{ borderTop: '1px solid var(--rule)', background: 'var(--surface)', marginTop: 72, paddingBlock: '40px 32px' }}>
           <div className="wrap">
@@ -87,9 +130,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </div>
               ))}
             </div>
-            <p style={{ marginTop: 32, paddingTop: 20, borderTop: '1px solid var(--rule)', fontSize: 13, color: 'var(--muted)', maxWidth: 720 }}>
+            <div style={{ marginTop: 30, paddingTop: 20, borderTop: '1px solid var(--rule)', display: 'flex', flexWrap: 'wrap', gap: '8px 24px', alignItems: 'baseline' }}>
+              <p style={{ fontSize: 14, color: 'var(--ink-2)' }}>
+                Support:{' '}
+                <a href={`mailto:${CONFIG.email}`} style={{ wordBreak: 'break-all' }}>{CONFIG.email}</a>
+              </p>
+              <p style={{ fontSize: 13, color: 'var(--muted)' }}>
+                We reply {CONFIG.responseTime}.
+              </p>
+            </div>
+
+            <p style={{ marginTop: 18, fontSize: 13, color: 'var(--muted)', maxWidth: 720 }}>
               Cutoff figures are previous-year opening and closing ranks published by JoSAA. They are shown for counselling guidance only and do not
               guarantee admission. JEE College Finder is not affiliated with JoSAA, the NTA, the IITs, the NITs or any participating institute.
+            </p>
+
+            <p style={{ marginTop: 16, fontSize: 12.5, color: 'var(--faint)' }}>
+              &copy; {new Date().getFullYear()} {CONFIG.legalName || CONFIG.name}. All rights reserved.
             </p>
           </div>
         </footer>

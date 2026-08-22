@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import HeroRankCta from '@/components/HeroRankCta';
 import { loadDataset } from '@/lib/dataset';
 import { PRICE_LABEL } from '@/lib/razorpay';
 
@@ -70,30 +71,23 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* ---------------- hero ---------------- */}
-      <section style={{ paddingBlock: 'clamp(40px, 8vw, 76px)', background: 'linear-gradient(180deg, var(--brand-tint) 0%, var(--paper) 100%)' }}>
+      <section style={{ paddingBlock: 'clamp(24px, 6vw, 68px)', background: 'linear-gradient(180deg, var(--brand-tint) 0%, var(--paper) 100%)' }}>
         <div className="wrap" style={{ maxWidth: 860 }}>
           <p className="badge" style={{ background: 'var(--paper)', color: 'var(--brand-dark)', border: '1px solid var(--rule)' }}>
             Based on JoSAA opening &amp; closing ranks
           </p>
-          <h1 style={{ marginTop: 16, maxWidth: '16ch' }}>
+          <h1 style={{ marginTop: 14, maxWidth: '16ch' }}>
             Find JEE colleges you can get at your rank
           </h1>
-          <p style={{ marginTop: 16, fontSize: 'clamp(1.02rem, 2.6vw, 1.2rem)', color: 'var(--ink-2)', maxWidth: '58ch' }}>
-            Enter your JEE Main or JEE Advanced rank and see every IIT, NIT, IIIT and GFTI programme whose closing rank was within your
-            reach in last year&rsquo;s counselling &mdash; matched to your category, not just the OPEN list.
+          <p style={{ marginTop: 14, fontSize: 'clamp(1rem, 2.6vw, 1.18rem)', color: 'var(--ink-2)', maxWidth: '54ch' }}>
+            See every IIT, NIT, IIIT and GFTI programme whose JoSAA closing rank was within your reach &mdash;
+            matched to your category, not just the OPEN list.
           </p>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 28 }}>
-            <Link href="/find" className="btn btn-primary" style={{ fontSize: 16, padding: '14px 26px' }}>Find my colleges</Link>
-            <Link href="/how-it-works" className="btn btn-secondary" style={{ fontSize: 16, padding: '14px 24px' }}>How it works</Link>
-          </div>
-
-          <p style={{ marginTop: 16, fontSize: 14, color: 'var(--muted)' }}>
-            {PRICE_LABEL} one time &middot; No account needed &middot; Works on any phone
-          </p>
+          <HeroRankCta price={PRICE_LABEL} />
 
           {c.ok && (
-            <dl style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(126px, 1fr))', gap: 12, marginTop: 36 }}>
+            <dl style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(126px, 1fr))', gap: 12, marginTop: 30 }}>
               {[
                 [c.rows.toLocaleString('en-IN'), 'cutoff records'],
                 [String(c.institutes), 'institutes'],
@@ -193,7 +187,10 @@ export default function Home() {
         <div className="card" style={{ padding: 'clamp(24px, 5vw, 40px)', textAlign: 'center', background: 'var(--brand-tint)', borderColor: 'var(--brand)' }}>
           <h2>Ready to see your list?</h2>
           <p style={{ marginTop: 10, color: 'var(--ink-2)' }}>Takes about two minutes. No account required.</p>
-          <Link href="/find" className="btn btn-primary" style={{ marginTop: 20, fontSize: 16, padding: '14px 28px' }}>Find my colleges</Link>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', marginTop: 20 }}>
+            <Link href="/find" className="btn btn-primary" style={{ fontSize: 16, padding: '14px 28px' }}>Find my colleges</Link>
+            <Link href="/restore" className="btn btn-secondary" style={{ fontSize: 16, padding: '14px 24px' }}>Already paid? Restore access</Link>
+          </div>
         </div>
       </section>
     </>
