@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { loadDataset, rowsForTypes } from '@/lib/dataset';
+import { loadDataset, rowsForTypes, rowsForRounds, latestRound } from '@/lib/dataset';
 import { evaluate, sortResults, CONFIDENCE_LABELS, type SortKey } from '@/lib/eligibility';
 import { requirePaidSession } from '@/lib/session';
 import { resultsQuerySchema } from '@/lib/validation';
@@ -26,7 +26,11 @@ export async function GET(req: Request) {
     const q = parsed.data;
 
     const ds = loadDataset();
-    let rows = rowsForTypes(ds, session.preferences.instituteTypes);
+
+    // Sessions minted before round selection existed carry no preference; they
+    // get the latest round, the same default a new search would get.
+    const chosenRounds = session.preferences.rounds ?? [latestRound(ds)];
+    let rows = rowsForRounds(rowsForTypes(ds, session.preferences.instituteTypes), chosenRounds);
     if (session.preferences.programIds !== 'ALL') {
       const wanted = new Set(session.preferences.programIds);
       rows = rows.filter((r) => wanted.has(r.programId));
@@ -113,7 +117,7 @@ export async function GET(req: Request) {
       counts: { eligible: evaluated.eligible.length, nearMisses: evaluated.nearMisses.length },
       unevaluated: evaluated.unevaluated,
       ranksUsed: evaluated.ranksUsed,
-      coverage: { years: ds.meta.years, rounds: ds.meta.rounds, source: ds.meta.source },
+      coverage: { years: ds.meta.years, rounds: ds.meta.rounds, selectedRounds: chosenRounds, source: ds.meta.source },
     });
   } catch (e) {
     return handleError(e);
