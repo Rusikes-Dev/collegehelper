@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { loadDataset, programOptions } from '@/lib/dataset';
+import { loadDataset, programOptions, latestRound } from '@/lib/dataset';
 import { rateLimit, clientKey, LIMITS } from '@/lib/ratelimit';
 import { handleError, apiError } from '@/lib/api';
 import { paymentsConfigured, PRICE_PAISE } from '@/lib/razorpay';
@@ -20,6 +20,18 @@ export async function GET(req: Request) {
           available: (ds.byInstituteType.get(code as never)?.length ?? 0) > 0,
         })),
         institutes: ds.instituteList.map((i) => ({ id: i.id, name: i.name, type: i.type, state: i.state })),
+        // One entry per counselling round held, newest first, so the form can
+        // label them ("Final round") rather than showing a bare number, and
+        // can say how many cutoffs sit behind each.
+        rounds: [...ds.meta.rounds]
+          .sort((a, b) => b - a)
+          .map((round, i) => ({
+            round,
+            label: i === 0 ? `Round ${round} \u2014 final` : `Round ${round}`,
+            isLatest: i === 0,
+            rowCount: ds.rows.filter((r) => r.round === round).length,
+          })),
+        latestRound: latestRound(ds),
         coverage: {
           years: ds.meta.years,
           rounds: ds.meta.rounds,
