@@ -8,6 +8,11 @@ export const metadata: Metadata = {
   description:
     'Already paid? Enter the same email address and mobile number you used at checkout to get your college list back on any device.',
   alternates: { canonical: '/restore' },
+  openGraph: {
+    title: 'Restore your JEE College Finder access',
+    description: 'Get your college list back on any device with the email address and mobile number you paid with.',
+    type: 'website',
+  },
 };
 
 export const dynamic = 'force-dynamic';
