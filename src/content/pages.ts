@@ -7,6 +7,8 @@
  * carry keywords.
  */
 
+import { SITE } from '@/lib/site';
+
 export interface Block { h?: string; p?: string; list?: string[] }
 export interface Page { slug: string; title: string; description: string; heading: string; intro: string; blocks: Block[] }
 
@@ -107,7 +109,8 @@ export const PAGES: Page[] = [
         'A session cookie holding your search and access state. Signed so it cannot be edited, HttpOnly so scripts cannot read it, and required for the product to work.',
         'A visitor cookie holding a random id, and one recording which site or campaign first sent you here. These are used only for our own visitor counts.',
       ] },
-      { h: 'Your rights', p: 'You can ask us for a copy of what we hold about you, ask us to correct it, or ask us to delete it. Write to us from the email address you used, or contact us with your mobile number, and we will act on it. Deleting your record ends any access you have paid for, so tell us if you would rather wait until it lapses.' },
+      { h: 'Your rights', p: `You can ask us for a copy of what we hold about you, ask us to correct it, or ask us to delete it. Write to ${SITE.email} from the email address you used at checkout, or include the mobile number you used, and we will act on it \u2014 normally ${SITE.responseTime}. Deleting your record ends any access you have paid for, so tell us if you would rather wait until it lapses.` },
+      { h: 'Who to contact', p: `All privacy and data questions go to ${SITE.email}. If you are not satisfied with how we have handled a request, say so in reply and we will escalate it rather than closing the thread.` },
       { h: 'Children', p: 'Most users of this tool are of college-entry age. If you are under 18, please have a parent or guardian make the purchase and provide the contact details.' },
       { h: 'Changes', p: 'If we start collecting something not listed here, this page will be updated before we do. The version published here on the day you use the site is the one that applies.' },
     ],
@@ -124,6 +127,8 @@ export const PAGES: Page[] = [
       { h: 'Accuracy of data', p: 'Cutoff figures are imported from JoSAA seat allotment results and are reproduced as published. We make reasonable efforts to import them accurately, but we do not warrant that every figure is free of error, and we are not responsible for changes or corrections made at source after import.' },
       { h: 'Acceptable use', p: 'You may use the tool for your own counselling research. You may not scrape it, resell its output, share your access with others, attempt to bypass payment, or interfere with its operation. Access may be withdrawn without refund where these terms are broken.' },
       { h: 'Limitation of liability', p: `To the extent permitted by law, our liability arising from your use of the service is limited to the ${PRICE} you paid. We are not liable for decisions taken on the basis of the information shown.` },
+      { h: 'Governing law', p: 'These terms are governed by the laws of India, and the courts of India have exclusive jurisdiction over any dispute arising from them.' },
+      { h: 'How to reach us', p: `Questions about these terms, about a payment, or about your access go to ${SITE.email}. Include the email address and mobile number you used at checkout so we can find your record on the first reply.` },
       { h: 'Changes', p: 'These terms may be updated as the product changes. The version in force is the one published here on the date you use the service.' },
     ],
   },
@@ -146,7 +151,7 @@ export const PAGES: Page[] = [
         'You changed your mind after viewing the results.',
       ] },
       { h: 'Before requesting one', p: 'If you paid but cannot see your results, try the Restore access page first and enter the same email address and mobile number you used at checkout. This resolves most cases immediately, including payments that completed after the browser closed.' },
-      { h: 'How to request one', p: 'Contact us with the date and approximate time of the payment and the Razorpay payment reference from your receipt. Approved refunds are returned to the original payment method, normally within five to seven working days depending on your bank.' },
+      { h: 'How to request one', p: `Email ${SITE.email} with the date and approximate time of the payment and the Razorpay payment reference from your receipt. Approved refunds are returned to the original payment method, normally within five to seven working days depending on your bank.` },
     ],
   },
   {
@@ -173,7 +178,13 @@ export const PAGES: Page[] = [
       { h: 'Before you write in', p: 'For a payment or refund question, please include the date and approximate time of payment and the Razorpay payment reference from your receipt, along with the email address and mobile number you used. That is usually all we need to resolve it in one reply. Never send us your card number, UPI PIN, CVV or any password \u2014 we will never ask for them.' },
       { h: 'Data requests', p: 'To ask for a copy of what we hold about you, to have it corrected, or to have it deleted, write to us from the email address you used at checkout. See the privacy policy for what we store and how long we keep it.' },
       { h: 'Reporting a data error', p: 'If a cutoff figure here does not match the official JoSAA seat allotment result, tell us the institute, programme, quota, seat type and round, and we will check it against the source and correct the import.' },
-      { h: 'Contact details', p: 'Add your support email address, business name and registered address here before going live. Razorpay requires reachable contact details on the site as a condition of accepting payments.' },
+      { h: 'Contact details', list: [
+        `Email \u2014 ${SITE.email}. This is the fastest route and reaches a person, not a ticket queue.`,
+        `Response time \u2014 we aim to reply ${SITE.responseTime}. During the JoSAA counselling window replies are checked more often, because that is when a locked-out student cannot afford to wait.`,
+        'Support is handled in English and Hindi.',
+        ...(SITE.phone ? [`Phone \u2014 ${SITE.phone}`] : []),
+        ...(SITE.addressLines.length ? [`Address \u2014 ${SITE.addressLines.join(', ')}`] : []),
+      ] },
     ],
   },
 ];
