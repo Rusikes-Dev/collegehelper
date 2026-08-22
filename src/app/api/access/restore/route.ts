@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { readSession, writeSession, newSession } from '@/lib/session';
+import { readSession, writeSession, newSession, hasRealSearch, EMPTY_STUDENT, EMPTY_PREFS } from '@/lib/session';
 import { parseContact } from '@/lib/contact';
 import { findUser, getAccessState, recordEvent, supabaseConfigured } from '@/lib/db';
 import { rateLimit, clientKey, LIMITS } from '@/lib/ratelimit';
 import { handleError, apiError } from '@/lib/api';
-import type { StudentProfile, SearchPreferences } from '@/lib/types';
-
 export const runtime = 'nodejs';
 
 /**
@@ -20,15 +18,6 @@ export const runtime = 'nodejs';
  * belongs to a customer. The rate limit is the tightest in the app for the
  * same reason.
  */
-
-const EMPTY_STUDENT: StudentProfile = {
-  ranks: { mainCrl: 1 },
-  category: 'OPEN',
-  isPwd: false,
-  gender: 'MALE',
-  homeState: null,
-};
-const EMPTY_PREFS: SearchPreferences = { instituteTypes: 'ALL', programIds: 'ALL' };
 
 export async function POST(req: Request) {
   try {
@@ -92,7 +81,7 @@ export async function POST(req: Request) {
       name: user.name,
       accessUntil: access.until,
       /** Whether the session already holds a search worth showing results for. */
-      hasSearch: Boolean(current && current.student.ranks.mainCrl > 1),
+      hasSearch: hasRealSearch(current),
     });
   } catch (e) {
     return handleError(e);
