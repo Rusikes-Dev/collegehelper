@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import type {
   CutoffRow, Institute, Program, CategoryCode, GenderCode, InstituteTypeCode,
 } from './types';
+import { latestRoundOf } from './rounds';
 
 /**
  * Loads the imported cutoff dataset once per server instance and builds the
@@ -131,6 +132,18 @@ export function loadDataset(): Dataset {
 export function rowsForTypes(ds: Dataset, types: InstituteTypeCode[] | 'ALL'): CutoffRow[] {
   if (types === 'ALL') return ds.rows;
   return types.flatMap((t) => ds.byInstituteType.get(t) ?? []);
+}
+
+/**
+ * Round helpers live in `./rounds` so they can be unit-tested: this module is
+ * `server-only` and throws if imported outside a server component. Re-exported
+ * here so callers still have one obvious place to import from.
+ */
+export { rowsForRounds } from './rounds';
+
+/** The last round held in the loaded dataset. */
+export function latestRound(ds: Dataset): number {
+  return latestRoundOf(ds.meta.rounds);
 }
 
 /** Distinct programme names, for the programme picker. */

@@ -40,6 +40,10 @@ export const searchSchema = z
     homeState: z.string().trim().max(60).nullable().default(null),
     instituteTypes: z.union([z.literal('ALL'), z.array(instituteTypeSchema).min(1)]).default('ALL'),
     programIds: z.union([z.literal('ALL'), z.array(z.number().int().nonnegative()).min(1)]).default('ALL'),
+    // Which counselling round(s) to compare against. Omitted means "the latest
+    // round we hold", which the search route resolves from the dataset rather
+    // than hard-coding a number that would go stale on the next import.
+    rounds: z.union([z.literal('ALL'), z.array(z.number().int().min(1).max(10)).min(1).max(10)]).optional(),
   })
   .superRefine((v, ctx) => {
     // A category rank can never be worse than the All India Rank it derives from.

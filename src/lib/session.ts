@@ -82,6 +82,33 @@ export function newSession(student: StudentProfile, preferences: SearchPreferenc
   return { sid: randomUUID(), student, preferences, paid: false, createdAt: now, expiresAt: now + TTL_MS };
 }
 
+/**
+ * A session that carries access but no search yet.
+ *
+ * Two routes need one: `/access/restore`, where someone returns on a new phone
+ * before typing a rank, and `/pay`, where someone buys before searching at all.
+ * Because access is user-scoped rather than search-scoped, both are valid
+ * states — the student simply has not told us their rank yet.
+ *
+ * `mainCrl: 1` is the sentinel rather than `0` because the schema requires a
+ * positive rank. Nothing is ever computed from it: `hasRealSearch()` is the
+ * one place that reads it, and every caller checks that before showing results.
+ */
+export const EMPTY_STUDENT: StudentProfile = {
+  ranks: { mainCrl: 1 },
+  category: 'OPEN',
+  isPwd: false,
+  gender: 'MALE',
+  homeState: null,
+};
+
+export const EMPTY_PREFS: SearchPreferences = { instituteTypes: 'ALL', programIds: 'ALL' };
+
+/** Whether this session holds a real search, as opposed to the blank placeholder. */
+export function hasRealSearch(session: SessionPayload | null): boolean {
+  return Boolean(session && session.student.ranks.mainCrl > 1);
+}
+
 export async function readSession(): Promise<SessionPayload | null> {
   return unseal((await cookies()).get(COOKIE)?.value);
 }

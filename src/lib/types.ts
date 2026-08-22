@@ -65,7 +65,12 @@ export interface SearchPreferences {
   instituteTypes: InstituteTypeCode[] | 'ALL';
   programIds: number[] | 'ALL';
   years?: number[];
-  rounds?: number[];
+  /**
+   * Counselling rounds to compare against. 'ALL' shows every round side by
+   * side; a list picks specific ones. Undefined on sessions created before
+   * round selection existed, and treated as the latest round.
+   */
+  rounds?: number[] | 'ALL';
 }
 
 export type Confidence = 'SAFER' | 'MODERATE' | 'BORDERLINE' | 'NEAR_MISS' | 'OUT_OF_REACH';
