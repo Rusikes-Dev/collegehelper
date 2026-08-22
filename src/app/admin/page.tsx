@@ -6,7 +6,8 @@ import AdminApp from '@/components/admin/AdminApp';
 
 export const metadata: Metadata = {
   title: 'Admin',
-  robots: { index: false, follow: false, nocache: true },
+  description: 'Private administration panel for JEE College Finder.',
+  robots: { index: false, follow: false, nocache: true, noarchive: true, nosnippet: true },
 };
 
 export const dynamic = 'force-dynamic';
