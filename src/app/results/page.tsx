@@ -3,7 +3,14 @@ import { redirect } from 'next/navigation';
 import { readSession } from '@/lib/session';
 import ResultsView from '@/components/ResultsView';
 
-export const metadata: Metadata = { title: 'Your college list', robots: { index: false, follow: false } };
+export const metadata: Metadata = {
+  title: 'Your college list',
+  description:
+    'Your personalised list of JEE programmes whose JoSAA closing ranks were within reach of your rank, with a choice-list builder and PDF export.',
+  // Personal and paid. It must never be indexed, and the description exists
+  // only so a browser tab or a shared screenshot reads sensibly.
+  robots: { index: false, follow: false, nocache: true },
+};
 export const dynamic = 'force-dynamic';
 
 /**
