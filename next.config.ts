@@ -12,13 +12,26 @@ import type { NextConfig } from 'next';
 
 const RAZORPAY = 'https://*.razorpay.com';
 
+/**
+ * Analytics origins.
+ *
+ * Listed unconditionally rather than only when the env var is set. The header
+ * is built once at build time, and a CSP that silently differs between
+ * environments is the kind of thing that passes locally and blocks a script in
+ * production. Neither host can do anything if no script tag ever points at it,
+ * so naming them costs nothing.
+ */
+const GOOGLE_ANALYTICS = 'https://www.googletagmanager.com https://www.google-analytics.com';
+const GA_CONNECT = 'https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com';
+const PLAUSIBLE = 'https://plausible.io';
+
 const csp = [
   "default-src 'self'",
   // 'unsafe-inline' is required by Next's own bootstrap scripts.
-  `script-src 'self' 'unsafe-inline' ${RAZORPAY}`,
+  `script-src 'self' 'unsafe-inline' ${RAZORPAY} ${GOOGLE_ANALYTICS} ${PLAUSIBLE}`,
   `frame-src ${RAZORPAY}`,
-  `connect-src 'self' ${RAZORPAY} https://lumberjack.razorpay.com`,
-  `img-src 'self' data: blob: ${RAZORPAY}`,
+  `connect-src 'self' ${RAZORPAY} https://lumberjack.razorpay.com ${GA_CONNECT} ${PLAUSIBLE}`,
+  `img-src 'self' data: blob: ${RAZORPAY} ${GOOGLE_ANALYTICS}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' data: https://fonts.gstatic.com",
   "object-src 'none'",
@@ -62,6 +75,20 @@ const config: NextConfig = {
       {
         source: '/results',
         headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
+      // A confirmation page must never be indexed: it would put a "payment
+      // successful" page in front of people who have not paid.
+      {
+        source: '/thank-you',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+          { key: 'Cache-Control', value: 'no-store' },
+        ],
+      },
+      // Icons and the manifest change only on deploy, so they can be cached hard.
+      {
+        source: '/:file(favicon.ico|apple-icon.png|icon.svg|icon-192.png|icon-512.png|icon-maskable-512.png)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
       },
     ];
   },

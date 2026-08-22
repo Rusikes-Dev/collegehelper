@@ -10,15 +10,15 @@ Students enter their rank, pick a category, institute types and programmes, pay 
 
 | Area | State |
 | --- | --- |
-| Data importer | Working. Full JoSAA round-1 dataset imported: 138 institutes, 13,292 rows, 0 errors |
-| Eligibility engine | Working, 44 tests passing |
+| Data importer | Working. JoSAA 2025 rounds 1 and 6 imported: 138 institutes, 25,236 rows |
+| Eligibility engine | Working, 52 tests passing |
 | Payment flow | Complete, needs your Razorpay keys |
 | Accounts, restore access | Complete, needs your Supabase project |
 | Admin panel | Complete, needs `ADMIN_PASSWORD` |
 | Visitor and source analytics | Complete, first-party, no third-party scripts |
 | Results, filters, sorting, search, pagination | Complete |
 | Choice list + PDF | Complete |
-| Landing, SEO and legal pages | Complete, contact details need filling in |
+| Landing, SEO and legal pages | Complete, real contact details wired in |
 
 **Before going live** see [What you still need to provide](#what-you-still-need-to-provide).
 
@@ -26,6 +26,7 @@ Students enter their rank, pick a category, institute types and programmes, pay 
 
 ## Features
 
+- **Round-aware matching.** Cutoffs are compared against one counselling round at a time, defaulting to the latest held, so a seat published in several rounds is never listed several times. "Compare all rounds" is available explicitly for seeing how far a cutoff moved.
 - **Rank-aware matching.** IIT and IISc seats are compared against your JEE Advanced rank, NIT/IIIT/GFTI seats against your JEE Main rank. Never mixed.
 - **Correct category handling.** Reserved-category cutoffs are category ranks, so they are compared against your category rank. If you have not supplied one, those seats are excluded and reported rather than compared against your AIR.
 - **PwD rank list handled separately**, including JoSAA's inconsistent `P` rank suffix.
@@ -223,8 +224,8 @@ To load several rounds:
 
 ```bash
 npm run import -- --in ./raw/r1.html --year 2025 --round 1
-npm run import -- --in ./raw/r5.html --year 2025 --round 5 --append
-npm run import -- --in ./raw/2024r5.html --year 2024 --round 5 --append
+npm run import -- --in ./raw/r6.html --year 2025 --round 6 --append
+npm run import -- --in ./raw/2024r6.html --year 2024 --round 6 --append
 ```
 
 ### What the importer validates
@@ -420,7 +421,7 @@ tests/attribution.test.ts   12 tests — traffic source classification
 npm test
 ```
 
-44 tests across three files.
+52 tests across four files.
 
 **Eligibility (21).** The boundary cases that matter: exact closing rank, one rank worse,
 Advanced-only and Main-only routing, IISc's Advanced exception, reserved-category seats without a
@@ -434,6 +435,10 @@ writing the same number must all collapse to one stored value.
 
 **Attribution (12).** That a `utm_source=instagram` link is filed as social rather than direct,
 that self-referrals are not counted as a source, and that crawlers stay out of your traffic.
+
+**Round selection (8).** That choosing one round returns each seat exactly once. Every seat is
+published once per counselling round, so with two rounds loaded an unfiltered search returns each
+one twice — which would double the match count the paywall is asking a student to pay against.
 
 Manual checks worth repeating before a release:
 
@@ -457,7 +462,7 @@ Manual checks worth repeating before a release:
 6. **Business contact details** for the Contact page, in `src/content/pages.ts`. Razorpay will not approve live mode without them.
 7. **A privacy policy that matches reality.** You now collect email addresses and phone numbers. `src/content/pages.ts` needs to say what you store, why, how long for, and how someone asks for deletion.
 8. **Institute locations** in `data/institute-meta.json`. Strongly recommended now rather than optional — see below.
-9. **Optionally, further rounds and years.** Round 1 for 2025 is loaded. Later rounds have looser cutoffs and are what most students actually want to compare against. Import them with `--append`.
+9. **Optionally, further rounds and years.** Rounds 1 and 6 for 2025 are loaded, and the search defaults to the latest round held. Import more with `--append`; no code change is needed, because the default round is read from the data.
 
 ### Why institute locations now matter
 
