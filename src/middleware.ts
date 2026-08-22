@@ -52,6 +52,10 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // Page requests only. Static assets and API routes would just add noise.
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|icon.svg|manifest.webmanifest|robots.txt|sitemap.xml).*)'],
+  // Page requests only. Static assets and API routes would just add noise,
+  // and every icon that falls through here costs a middleware invocation on
+  // Vercel for a file that never changes.
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|icon.svg|apple-icon.png|icon-192.png|icon-512.png|icon-maskable-512.png|manifest.webmanifest|robots.txt|sitemap.xml).*)',
+  ],
 };
