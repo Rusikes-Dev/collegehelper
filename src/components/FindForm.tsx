@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import ProgramPicker, { type ProgramOption } from './ProgramPicker';
 import Paywall, { type SearchSummary } from './Paywall';
+import ErrorSummary from './ErrorSummary';
 
 type Category = 'OPEN' | 'EWS' | 'OBC-NCL' | 'SC' | 'ST';
 type InstituteType = 'IIT' | 'NIT' | 'IIIT' | 'GFTI';
@@ -19,21 +20,40 @@ const CATEGORIES: { code: Category; label: string }[] = [
 interface Options {
   programs: ProgramOption[];
   instituteTypes: { code: InstituteType; label: string; full: string; available: boolean }[];
+  rounds: { round: number; label: string; isLatest: boolean; rowCount: number }[];
+  latestRound: number;
   coverage: { years: number[]; rounds: number[]; instituteCount: number; rowCount: number };
   pricePaise: number;
   paymentsEnabled: boolean;
   restoreEnabled: boolean;
 }
 
+/** Field id -> label, so the error summary reads as words rather than ids. */
+const FIELD_LABELS: Record<string, string> = {
+  mainCrl: 'JEE Main All India Rank',
+  advancedCrl: 'JEE Advanced All India Rank',
+  mainCategory: 'JEE Main category rank',
+  advancedCategory: 'JEE Advanced category rank',
+  mainPwd: 'JEE Main PwD rank',
+  advancedPwd: 'JEE Advanced PwD rank',
+};
+
 const digitsOnly = (v: string) => v.replace(/[^\d]/g, '');
 const groupIN = (v: string) => (v ? Number(v).toLocaleString('en-IN') : '');
 
 export default function FindForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [options, setOptions] = useState<Options | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
-  const [mainCrl, setMainCrl] = useState('');
+  // Prefilled from the home-page hero when the student typed their rank there,
+  // so the first field is already answered when they arrive.
+  const [mainCrl, setMainCrl] = useState(() => {
+    const raw = searchParams?.get('rank') ?? '';
+    const digits = raw.replace(/\D/g, '');
+    return digits && Number(digits) <= 2_000_000 ? digits : '';
+  });
   const [advancedCrl, setAdvancedCrl] = useState('');
   const [category, setCategory] = useState<Category>('OPEN');
   const [mainCategory, setMainCategory] = useState('');
@@ -44,6 +64,10 @@ export default function FindForm() {
   const [advancedPwd, setAdvancedPwd] = useState('');
   const [types, setTypes] = useState<InstituteType[] | 'ALL'>('ALL');
   const [programIds, setProgramIds] = useState<number[] | 'ALL'>('ALL');
+  // null until the options load, then the latest round. Kept out of the
+  // payload as null so the server picks the default rather than the client
+  // guessing a round number that may not exist in the data.
+  const [rounds, setRounds] = useState<number[] | 'ALL' | null>(null);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
@@ -52,7 +76,10 @@ export default function FindForm() {
   useEffect(() => {
     fetch('/api/options')
       .then(async (r) => { if (!r.ok) throw new Error((await r.json()).error); return r.json(); })
-      .then(setOptions)
+      .then((o: Options) => {
+        setOptions(o);
+        setRounds([o.latestRound]);
+      })
       .catch((e) => setLoadError(e.message ?? 'Could not load the form.'));
   }, []);
 
@@ -67,7 +94,8 @@ export default function FindForm() {
     advancedPwd: isPwd ? advancedPwd || undefined : undefined,
     category, isPwd, gender, homeState: null,
     instituteTypes: types, programIds,
-  }), [mainCrl, advancedCrl, mainCategory, advancedCategory, mainPwd, advancedPwd, category, isPwd, gender, types, programIds, reserved]);
+    rounds: rounds ?? undefined,
+  }), [mainCrl, advancedCrl, mainCategory, advancedCategory, mainPwd, advancedPwd, category, isPwd, gender, types, programIds, rounds, reserved]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -83,10 +111,9 @@ export default function FindForm() {
 
       if (!res.ok) {
         if (data.fields) {
+          // ErrorSummary takes focus itself, so the whole list is announced
+          // rather than only the first bad field.
           setErrors(data.fields);
-          const first = document.querySelector<HTMLElement>('[aria-invalid="true"]');
-          first?.focus();
-          first?.scrollIntoView({ block: 'center', behavior: 'smooth' });
         } else {
           setErrors({ form: data.error ?? 'Something went wrong. Please try again.' });
         }
@@ -157,6 +184,8 @@ export default function FindForm() {
   return (
     <>
       <form onSubmit={onSubmit} noValidate style={{ marginTop: 28, display: 'grid', gap: 26 }}>
+        <ErrorSummary errors={errors} labels={FIELD_LABELS} />
+
         {/* ---- ranks ---- */}
         <fieldset style={{ border: 0, padding: 0, margin: 0, display: 'grid', gap: 18 }}>
           <legend className="sr-only">Your ranks</legend>
@@ -215,6 +244,48 @@ export default function FindForm() {
           )}
         </fieldset>
 
+        {/* ---- counselling round ----
+             Only worth showing once more than one round has been imported.
+             With a single round there is no choice to make and the control
+             would be noise on a form that is already long on a phone. */}
+        {options.rounds.length > 1 && (
+          <fieldset style={{ border: 0, padding: 0, margin: 0 }}>
+            <legend className="label" style={{ padding: 0 }}>Counselling round</legend>
+            <p className="hint" style={{ marginTop: 0, marginBottom: 8 }}>
+              Cutoffs loosen with every round as candidates withdraw or upgrade. The final round is the fullest
+              picture of what was actually available; round 1 is the tightest.
+            </p>
+            <div className="chips" role="group" aria-label="Counselling round">
+              {options.rounds.map((r) => (
+                <button
+                  key={r.round}
+                  type="button"
+                  className="chip"
+                  aria-pressed={rounds !== 'ALL' && (rounds ?? []).length === 1 && (rounds ?? [])[0] === r.round}
+                  onClick={() => setRounds([r.round])}
+                >
+                  {r.label}
+                </button>
+              ))}
+              <button
+                type="button"
+                className="chip"
+                aria-pressed={rounds === 'ALL'}
+                onClick={() => setRounds('ALL')}
+                title="Lists every seat once per round, so you can see how far a cutoff moved"
+              >
+                Compare all rounds
+              </button>
+            </div>
+            {rounds === 'ALL' && (
+              <p className="hint" style={{ marginTop: 8 }}>
+                Each seat will appear once per round, so the list will be longer and will contain the same
+                programme more than once.
+              </p>
+            )}
+          </fieldset>
+        )}
+
         {/* ---- institute type ---- */}
         <fieldset style={{ border: 0, padding: 0, margin: 0 }}>
           <legend className="label" style={{ padding: 0 }}>Institute type</legend>
@@ -243,14 +314,13 @@ export default function FindForm() {
           <p className="hint">Pick as many as you like, or leave it on all programmes and filter later.</p>
         </div>
 
-        {errors.form && <p className="error" role="alert"><span aria-hidden>!</span>{errors.form}</p>}
-
         <div className="sticky-bottom" style={{ marginInline: -20 }}>
           <button type="submit" className="btn btn-primary btn-block" disabled={busy || !mainCrl}>
             {busy ? 'Checking cutoffs\u2026' : 'Find colleges'}
           </button>
           <p style={{ textAlign: 'center', fontSize: 12.5, color: 'var(--muted)', marginTop: 8 }}>
-            Cutoffs from JoSAA {options.coverage.years.join(', ')}, round {options.coverage.rounds.join(', ')}
+            Cutoffs from JoSAA {options.coverage.years.join(', ')}, round{' '}
+            {rounds === 'ALL' || rounds === null ? options.coverage.rounds.join(', ') : rounds.join(', ')}
           </p>
         </div>
       </form>

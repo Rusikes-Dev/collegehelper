@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import ErrorSummary from './ErrorSummary';
 
 /**
  * Two fields and one button.
@@ -70,10 +71,15 @@ export default function RestoreForm() {
 
   return (
     <form onSubmit={submit} noValidate style={{ marginTop: 26, display: 'grid', gap: 18 }}>
+      <ErrorSummary
+        errors={{ ...fields, ...(error ? { form: error } : {}) }}
+        labels={{ email: 'Email address', phone: 'Mobile number' }}
+      />
+
       <div className="field">
-        <label className="label" htmlFor="r-email">Email address</label>
+        <label className="label" htmlFor="email">Email address</label>
         <input
-          id="r-email"
+          id="email"
           className="input"
           type="email"
           inputMode="email"
@@ -86,16 +92,16 @@ export default function RestoreForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           aria-invalid={Boolean(fields.email)}
-          aria-describedby={fields.email ? 'r-email-err' : undefined}
+          aria-describedby={fields.email ? 'email-err' : undefined}
           disabled={busy}
         />
-        {fields.email && <p className="error" id="r-email-err" role="alert"><span aria-hidden>!</span>{fields.email}</p>}
+        {fields.email && <p className="error" id="email-err" role="alert"><span aria-hidden>!</span>{fields.email}</p>}
       </div>
 
       <div className="field">
-        <label className="label" htmlFor="r-phone">Mobile number</label>
+        <label className="label" htmlFor="phone">Mobile number</label>
         <input
-          id="r-phone"
+          id="phone"
           className="input"
           type="tel"
           inputMode="numeric"
@@ -106,13 +112,11 @@ export default function RestoreForm() {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           aria-invalid={Boolean(fields.phone)}
-          aria-describedby={fields.phone ? 'r-phone-err' : undefined}
+          aria-describedby={fields.phone ? 'phone-err' : undefined}
           disabled={busy}
         />
-        {fields.phone && <p className="error" id="r-phone-err" role="alert"><span aria-hidden>!</span>{fields.phone}</p>}
+        {fields.phone && <p className="error" id="phone-err" role="alert"><span aria-hidden>!</span>{fields.phone}</p>}
       </div>
-
-      {error && <p className="error" role="alert"><span aria-hidden>!</span>{error}</p>}
 
       <button type="submit" className="btn btn-primary btn-block" disabled={busy || !email || !phone}>
         {busy ? 'Checking\u2026' : 'Restore my access'}

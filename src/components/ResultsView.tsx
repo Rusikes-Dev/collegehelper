@@ -18,7 +18,7 @@ interface Payload {
   counts: { eligible: number; nearMisses: number };
   unevaluated: { reason: string; count: number; message: string; action: string }[];
   ranksUsed: string[];
-  coverage: { years: number[]; rounds: number[]; source: string };
+  coverage: { years: number[]; rounds: number[]; selectedRounds?: number[] | 'ALL'; source: string };
 }
 
 const SORTS: [string, string][] = [
@@ -52,6 +52,7 @@ export default function ResultsView({
   const [page, setPage] = useState(1);
   const [typeFilter, setTypeFilter] = useState<string[]>([]);
   const [quotaFilter, setQuotaFilter] = useState<string[]>([]);
+  const [roundFilter, setRoundFilter] = useState<string[]>([]);
 
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [choicesOpen, setChoicesOpen] = useState(false);
@@ -76,6 +77,7 @@ export default function ResultsView({
     if (debounced) p.set('q', debounced);
     if (typeFilter.length) p.set('instituteTypes', typeFilter.join(','));
     if (quotaFilter.length) p.set('quotas', quotaFilter.join(','));
+    if (roundFilter.length) p.set('rounds', roundFilter.join(','));
     try {
       const res = await fetch(`/api/results?${p}`);
       const json = await res.json();
@@ -89,7 +91,7 @@ export default function ResultsView({
     } finally {
       setLoading(false);
     }
-  }, [view, sort, page, debounced, typeFilter, quotaFilter]);
+  }, [view, sort, page, debounced, typeFilter, quotaFilter, roundFilter]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -142,7 +144,10 @@ export default function ResultsView({
 
   const facetTypes = Object.entries(data?.facets.instituteType ?? {});
   const facetQuotas = Object.entries(data?.facets.quota ?? {});
-  const activeFilters = typeFilter.length + quotaFilter.length;
+  // Rounds are numbers, so sort them numerically rather than as strings, or
+  // round 10 would sort between round 1 and round 2.
+  const facetRounds = Object.entries(data?.facets.round ?? {}).sort((a, b) => Number(a[0]) - Number(b[0]));
+  const activeFilters = typeFilter.length + quotaFilter.length + roundFilter.length;
 
   return (
     <div className="wrap has-bottom-bar" style={{ paddingBlock: '22px 0', maxWidth: 900 }}>
@@ -161,7 +166,11 @@ export default function ResultsView({
       {/* ---- transparency ---- */}
       {data && (
         <div className="panel" style={{ marginTop: 16, fontSize: 13.5, color: 'var(--ink-2)' }}>
-          Eligibility is based on previous-year closing rank data &mdash; JoSAA {data.coverage.years.join(', ')}, round {data.coverage.rounds.join(', ')}.
+          Eligibility is based on previous-year closing rank data &mdash; JoSAA {data.coverage.years.join(', ')}, round{' '}
+          {(data.coverage.selectedRounds === 'ALL' || !data.coverage.selectedRounds
+            ? data.coverage.rounds
+            : data.coverage.selectedRounds
+          ).join(', ')}.
           {data.ranksUsed.length > 0 && <> Compared using your {data.ranksUsed.join(' and ')}.</>}
           {' '}Closing ranks change every year and do not guarantee admission.
         </div>
@@ -322,12 +331,18 @@ export default function ResultsView({
           onClose={() => setFiltersOpen(false)}
           footer={
             <>
-              <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => { setTypeFilter([]); setQuotaFilter([]); setPage(1); }}>Clear all</button>
+              <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => { setTypeFilter([]); setQuotaFilter([]); setRoundFilter([]); setPage(1); }}>Clear all</button>
               <button className="btn btn-primary" style={{ flex: 2 }} onClick={() => setFiltersOpen(false)}>Show results</button>
             </>
           }
         >
-          {([['Institute type', facetTypes, typeFilter, setTypeFilter], ['Quota', facetQuotas, quotaFilter, setQuotaFilter]] as const).map(
+          {([
+            ['Institute type', facetTypes, typeFilter, setTypeFilter],
+            ['Quota', facetQuotas, quotaFilter, setQuotaFilter],
+            // Only offered when the search actually spans more than one round.
+            // With a single round the group would be one chip that does nothing.
+            ...(facetRounds.length > 1 ? [['Counselling round', facetRounds, roundFilter, setRoundFilter] as const] : []),
+          ] as const).map(
             ([title, facets, value, setValue]) => (
               <div key={title} style={{ marginBottom: 22 }}>
                 <p className="label">{title}</p>
@@ -339,7 +354,8 @@ export default function ResultsView({
                       aria-pressed={value.includes(code)}
                       onClick={() => { setValue(value.includes(code) ? value.filter((v) => v !== code) : [...value, code]); setPage(1); }}
                     >
-                      {code} <span style={{ color: 'var(--muted)', fontWeight: 400 }}>{count}</span>
+                      {title === 'Counselling round' ? `Round ${code}` : code}{' '}
+                      <span style={{ color: 'var(--muted)', fontWeight: 400 }}>{count}</span>
                     </button>
                   ))}
                 </div>
