@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { loadDataset, rowsForTypes } from '@/lib/dataset';
+import { loadDataset, rowsForTypes, rowsForRounds, latestRound } from '@/lib/dataset';
 import { evaluate } from '@/lib/eligibility';
 import { searchSchema, fieldErrors } from '@/lib/validation';
 import { cookies } from 'next/headers';
@@ -47,10 +47,19 @@ export async function POST(req: Request) {
       gender: v.gender,
       homeState: v.homeState,
     };
-    const preferences: SearchPreferences = { instituteTypes: v.instituteTypes, programIds: v.programIds };
-
     const ds = loadDataset();
-    let rows = rowsForTypes(ds, preferences.instituteTypes);
+
+    // Default to the final round we hold rather than every round at once.
+    // Without this a seat published in both round 1 and round 6 comes back
+    // twice, and the count on the paywall reads as double what it is.
+    const rounds: number[] | 'ALL' = v.rounds ?? [latestRound(ds)];
+    const preferences: SearchPreferences = {
+      instituteTypes: v.instituteTypes,
+      programIds: v.programIds,
+      rounds,
+    };
+
+    let rows = rowsForRounds(rowsForTypes(ds, preferences.instituteTypes), rounds);
     if (preferences.programIds !== 'ALL') {
       const wanted = new Set(preferences.programIds);
       rows = rows.filter((r) => wanted.has(r.programId));
@@ -96,7 +105,7 @@ export async function POST(req: Request) {
       },
       unevaluated: result.unevaluated,
       ranksUsed: result.ranksUsed,
-      coverage: { years: ds.meta.years, rounds: ds.meta.rounds },
+      coverage: { years: ds.meta.years, rounds: ds.meta.rounds, selectedRounds: rounds },
     });
   } catch (e) {
     return handleError(e);
