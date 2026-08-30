@@ -1,3 +1,0 @@
-{
-  "_comment": "Optional institute location map. Keys are institute names exactly as they appear in the JoSAA data. Filling this in enables the Home State / Other State quota filter and the state filter on the results page. Institutes left out here are shown with location 'Not available' and their HS/OS rows are kept rather than guessed at. Example: \"National Institute of Technology Agartala\": { \"state\": \"Tripura\", \"city\": \"Agartala\" }"
-}
