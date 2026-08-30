@@ -100,6 +100,28 @@ async function upsertChunked<T>(table: string, rows: T[], onConflict: string) {
   process.stdout.write('\n');
 }
 
+/**
+ * PostgREST caps every response at the project's max-rows setting (1,000 by
+ * default), so a full-table read has to be paged. Reading college_programs in
+ * one shot silently returns the first 1,000 of 2,330 and the import then fails
+ * on the first unmatched course code.
+ */
+async function selectAll<T>(table: string, columns: string): Promise<T[]> {
+  const out: T[] = [];
+  const size = 1000;
+  for (let from = 0; ; from += size) {
+    const { data, error } = await db
+      .from(table)
+      .select(columns)
+      .range(from, from + size - 1);
+    if (error) throw new Error(`${table}: ${error.message}`);
+    if (!data?.length) break;
+    out.push(...(data as T[]));
+    if (data.length < size) break;
+  }
+  return out;
+}
+
 async function main() {
   console.log(`Importing ${YEAR} from ${DATA_DIR}\n`);
 
