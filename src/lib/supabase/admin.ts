@@ -27,7 +27,15 @@ export function supabaseAdmin(): Db {
         'Supabase admin client needs NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.',
       );
     }
-    cached = createClient(url, key, { auth: { persistSession: false } });
+    cached = createClient(url, key, {
+      auth: { persistSession: false },
+      global: {
+        // Next patches global fetch and caches GET requests by default. Since
+        // supabase-js goes through fetch, every read inside a GET route would
+        // otherwise be frozen at the first response.
+        fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }),
+      },
+    });
   }
   return cached;
 }
