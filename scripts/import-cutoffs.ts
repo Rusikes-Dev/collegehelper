@@ -161,10 +161,9 @@ async function main() {
   });
   await upsertChunked('colleges', colleges, 'institute_code');
 
-  const { data: collegeRows, error: cErr } = await db
-    .from('colleges').select('id, institute_code');
-  if (cErr) throw cErr;
-  const collegeByCode = new Map(collegeRows!.map((c) => [c.institute_code, c.id]));
+  const collegeRows = await selectAll<{ id: string; institute_code: string }>(
+    'colleges', 'id, institute_code');
+  const collegeByCode = new Map(collegeRows.map((c) => [c.institute_code, c.id]));
 
   // --- branches ------------------------------------------------------------
   const programs = readCsv('programs.csv');
