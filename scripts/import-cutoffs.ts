@@ -180,9 +180,8 @@ async function main() {
   }
   await upsertChunked('branches', [...branchByNorm.values()], 'slug');
 
-  const { data: branchRows, error: bErr } = await db.from('branches').select('id, slug');
-  if (bErr) throw bErr;
-  const branchBySlug = new Map(branchRows!.map((b) => [b.slug, b.id]));
+  const branchRows = await selectAll<{ id: string; slug: string }>('branches', 'id, slug');
+  const branchBySlug = new Map(branchRows.map((b) => [b.slug, b.id]));
 
   // --- college programs ----------------------------------------------------
   const programRows = programs.map((p) => {
