@@ -55,11 +55,6 @@ function slugify(s: string): string {
     .slice(0, 90);
 }
 
-/** Normalise for de-duplication only. The stored name stays verbatim. */
-function normName(s: string): string {
-  return s.replace(/\s+/g, ' ').trim().toLowerCase();
-}
-
 /**
  * Coarse UI grouping. Order matters: the first match wins, so the more
  * specific families are listed before the general ones.
@@ -103,17 +98,14 @@ async function upsertChunked<T>(table: string, rows: T[], onConflict: string) {
 /**
  * PostgREST caps every response at the project's max-rows setting (1,000 by
  * default), so a full-table read has to be paged. Reading college_programs in
- * one shot silently returns the first 1,000 of 2,330 and the import then fails
- * on the first unmatched course code.
+ * one shot silently returns the first 1,000 of 2,330 rows and the import then
+ * fails on the first unmatched course code.
  */
 async function selectAll<T>(table: string, columns: string): Promise<T[]> {
   const out: T[] = [];
   const size = 1000;
   for (let from = 0; ; from += size) {
-    const { data, error } = await db
-      .from(table)
-      .select(columns)
-      .range(from, from + size - 1);
+    const { data, error } = await db.from(table).select(columns).range(from, from + size - 1);
     if (error) throw new Error(`${table}: ${error.message}`);
     if (!data?.length) break;
     out.push(...(data as T[]));
@@ -167,18 +159,23 @@ async function main() {
 
   // --- branches ------------------------------------------------------------
   const programs = readCsv('programs.csv');
-  const branchByNorm = new Map<string, { slug: string; name: string; family: string }>();
+  // Keyed by slug, not by name. Two source names can slugify to the same value
+  // -- "...Engineering (Cyber Security)" and "...Engineering(Cyber Security)"
+  // differ only by a space. Since slug is the upsert conflict target, keying by
+  // name would put the same slug in one batch twice and Postgres rejects that
+  // with "ON CONFLICT DO UPDATE command cannot affect row a second time".
+  const branchBySlugDef = new Map<string, { slug: string; name: string; family: string }>();
   for (const p of programs) {
-    const key = normName(p.program_name);
-    if (!branchByNorm.has(key)) {
-      branchByNorm.set(key, {
-        slug: slugify(p.program_name),
+    const slug = slugify(p.program_name);
+    if (!branchBySlugDef.has(slug)) {
+      branchBySlugDef.set(slug, {
+        slug,
         name: p.program_name.replace(/\s+/g, ' ').trim(),
         family: familyFor(p.program_name),
       });
     }
   }
-  await upsertChunked('branches', [...branchByNorm.values()], 'slug');
+  await upsertChunked('branches', [...branchBySlugDef.values()], 'slug');
 
   const branchRows = await selectAll<{ id: string; slug: string }>('branches', 'id, slug');
   const branchBySlug = new Map(branchRows.map((b) => [b.slug, b.id]));
@@ -187,10 +184,9 @@ async function main() {
   const programRows = programs.map((p) => {
     const collegeId = collegeByCode.get(p.institute_code);
     if (!collegeId) throw new Error(`Unknown institute ${p.institute_code}`);
-    const branch = branchByNorm.get(normName(p.program_name))!;
     return {
       college_id: collegeId,
-      branch_id: branchBySlug.get(branch.slug) ?? null,
+      branch_id: branchBySlug.get(slugify(p.program_name)) ?? null,
       course_code: p.course_code,
       program_name: p.program_name,
       choice_code_flags: choiceFlags(p.course_code),

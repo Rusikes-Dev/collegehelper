@@ -67,6 +67,7 @@ SEAT_LEVELS = {
     "Other Than Home University Seats Allotted to Other Than Home University Candidates",
     "Minority Seats Allotted to Maharashtra State Candidature Candidates",
     "Minority Seats Allotted to Other Than Maharashtra State Candidature Candidates",
+    "Maharashtra State Seats Allotted to All India Candidature Candidates",
     "All India Seats",
 }
 
@@ -84,7 +85,8 @@ NOISE_PREFIXES = (
     "Cut Off List",
     "Degree Courses In Engineering",
     "Legends:",
-    "Maharashtra State Seats",
+    "Maharashtra State Seats - Cut Off",
+    "* Maharashtra State Seats",
 )
 
 
@@ -137,10 +139,10 @@ def classify(cells, label_max):
     words = [w for _, w in cells]
     text = row_text(cells)
 
-    if any(text.startswith(p) for p in NOISE_PREFIXES):
-        return "noise", None
     if text in SEAT_LEVELS:
         return "seat_level", text
+    if any(text.startswith(p) for p in NOISE_PREFIXES):
+        return "noise", None
     if text.startswith("Status:"):
         m = RE_STATUS.match(text)
         if m:
@@ -192,8 +194,12 @@ def parse_page(page, carry=None, label_max=LABEL_ZONE_MAX):
     }
     current = None
     pending_course_name = None
+    last_other = None
+    last_other_idx = -1
+    unknown_headings = []
 
-    for y, cells in page_rows(page):
+    rows = page_rows(page)
+    for idx, (y, cells) in enumerate(rows):
         kind, payload = classify(cells, label_max)
 
         if kind == "noise":
@@ -214,6 +220,11 @@ def parse_page(page, carry=None, label_max=LABEL_ZONE_MAX):
             ctx["seat_level"] = payload
             current = None
         elif kind == "categories":
+            if last_other and last_other_idx == idx - 1:
+                # A heading-shaped row we do not recognise sat directly above
+                # this table. Silently ignoring it would attribute the table to
+                # the previous seat level, so it is reported instead.
+                unknown_headings.append(last_other)
             current = {
                 "y": y,
                 "ctx": dict(ctx),
@@ -246,13 +257,15 @@ def parse_page(page, carry=None, label_max=LABEL_ZONE_MAX):
                         # Second line of a wrapped stage label, e.g. "I-Non"+"PWD".
                         st["stage"] = f"{st['stage']} {label}".strip()
         elif kind == "other":
+            if payload and not any(ch.isdigit() for ch in payload) and len(payload) < 90:
+                last_other, last_other_idx = payload, idx
             # Wrapped course name continuation, e.g. "Technology)". Only valid
             # immediately after the course row, before the Status row.
             if pending_course_name and ctx["course_name"] is not None:
                 ctx["course_name"] = (ctx["course_name"] + " " + payload).strip()
             continue
 
-    return blocks, ctx
+    return blocks, ctx, unknown_headings
 
 
 def splice(main_blocks, cont_blocks, anomalies, round_name, pageno, x_offset):
@@ -430,11 +443,17 @@ def main():
                 has_banner = PAGE_BANNER in page.get_text("text")
                 # Continuation pages must not inherit context as if they were a
                 # fresh vertical page; they are spliced sideways instead.
-                blocks, ctx = parse_page(
+                blocks, ctx, unknown = parse_page(
                     page,
                     carry if has_banner else None,
                     label_max=LABEL_ZONE_MAX if has_banner else -1.0,
                 )
+                for h in unknown:
+                    anomalies.append({
+                        "round": round_name, "page": pno + 1,
+                        "issue": "unrecognised heading above a table",
+                        "detail": h,
+                    })
                 for b in blocks:
                     b["page"] = pno + 1
                 if has_banner:
