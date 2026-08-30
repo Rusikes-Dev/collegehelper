@@ -139,8 +139,20 @@ export function classify(
       marginLabel: marginLabel(margin, rankType),
     });
   }
-  // Best margin first, then earliest round.
-  return out.sort((a, b) => b.margin - a.margin || a.round_order - b.round_order);
+  // Chance first, then the most competitive college within each group: highest
+  // closing percentile, or lowest closing rank. Sorting by margin alone put the
+  // easiest colleges at the top, which is the opposite of what a candidate
+  // wants to see -- they want the best college they have a shot at.
+  const bandRank: Record<Chance, number> = { GOOD: 0, POSSIBLE: 1, REACH: 2 };
+  const competitiveness = (r: PredictionRow) =>
+    rankType === 'PERCENTILE' ? -(r.closing_percentile ?? 0) : (r.closing_rank ?? 0);
+
+  return out.sort(
+    (a, b) =>
+      bandRank[a.chance] - bandRank[b.chance] ||
+      competitiveness(a) - competitiveness(b) ||
+      a.round_order - b.round_order,
+  );
 }
 
 export function summarise(rows: PredictionRow[]) {
