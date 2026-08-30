@@ -1,0 +1,98 @@
+code,category_group,label,gender,university_scope,special
+DEFNT2S,NT2,Defence - Nomadic Tribes 2 - State Level,ANY,STATE,DEFENCE
+DEFNT3S,NT3,Defence - Nomadic Tribes 3 - State Level,ANY,STATE,DEFENCE
+DEFOBCS,OBC,Defence - Other Backward Class - State Level,ANY,STATE,DEFENCE
+DEFOPENS,OPEN,Defence - Open - State Level,ANY,STATE,DEFENCE
+DEFRNT1S,NT1,Defence Common Reserved Seat - Nomadic Tribes 1 - State Level,ANY,STATE,DEFENCE_RESERVED
+DEFRNT2S,NT2,Defence Common Reserved Seat - Nomadic Tribes 2 - State Level,ANY,STATE,DEFENCE_RESERVED
+DEFRNT3S,NT3,Defence Common Reserved Seat - Nomadic Tribes 3 - State Level,ANY,STATE,DEFENCE_RESERVED
+DEFROBCS,OBC,Defence Common Reserved Seat - Other Backward Class - State Level,ANY,STATE,DEFENCE_RESERVED
+DEFRSCS,SC,Defence Common Reserved Seat - Scheduled Caste - State Level,ANY,STATE,DEFENCE_RESERVED
+DEFRSEBCS,SEBC,Defence Common Reserved Seat - Socially and Educationally Backward Class - State Level,ANY,STATE,DEFENCE_RESERVED
+DEFRSTS,ST,Defence Common Reserved Seat - Scheduled Tribe - State Level,ANY,STATE,DEFENCE_RESERVED
+DEFRVJS,VJ,Defence Common Reserved Seat - Vimukta Jati - State Level,ANY,STATE,DEFENCE_RESERVED
+DEFSCS,SC,Defence - Scheduled Caste - State Level,ANY,STATE,DEFENCE
+DEFSEBCS,SEBC,Defence - Socially and Educationally Backward Class - State Level,ANY,STATE,DEFENCE
+DEFSTS,ST,Defence - Scheduled Tribe - State Level,ANY,STATE,DEFENCE
+EWS,EWS,Economically Weaker Section,ANY,,
+GNT1H,NT1,General - Nomadic Tribes 1 - Home University,ANY,HOME,
+GNT1O,NT1,General - Nomadic Tribes 1 - Other Than Home University,ANY,OTHER,
+GNT1S,NT1,General - Nomadic Tribes 1 - State Level,ANY,STATE,
+GNT2H,NT2,General - Nomadic Tribes 2 - Home University,ANY,HOME,
+GNT2O,NT2,General - Nomadic Tribes 2 - Other Than Home University,ANY,OTHER,
+GNT2S,NT2,General - Nomadic Tribes 2 - State Level,ANY,STATE,
+GNT3H,NT3,General - Nomadic Tribes 3 - Home University,ANY,HOME,
+GNT3O,NT3,General - Nomadic Tribes 3 - Other Than Home University,ANY,OTHER,
+GNT3S,NT3,General - Nomadic Tribes 3 - State Level,ANY,STATE,
+GOBCH,OBC,General - Other Backward Class - Home University,ANY,HOME,
+GOBCO,OBC,General - Other Backward Class - Other Than Home University,ANY,OTHER,
+GOBCS,OBC,General - Other Backward Class - State Level,ANY,STATE,
+GOPENH,OPEN,General - Open - Home University,ANY,HOME,
+GOPENO,OPEN,General - Open - Other Than Home University,ANY,OTHER,
+GOPENS,OPEN,General - Open - State Level,ANY,STATE,
+GSCH,SC,General - Scheduled Caste - Home University,ANY,HOME,
+GSCO,SC,General - Scheduled Caste - Other Than Home University,ANY,OTHER,
+GSCS,SC,General - Scheduled Caste - State Level,ANY,STATE,
+GSEBCH,SEBC,General - Socially and Educationally Backward Class - Home University,ANY,HOME,
+GSEBCO,SEBC,General - Socially and Educationally Backward Class - Other Than Home University,ANY,OTHER,
+GSEBCS,SEBC,General - Socially and Educationally Backward Class - State Level,ANY,STATE,
+GSTH,ST,General - Scheduled Tribe - Home University,ANY,HOME,
+GSTO,ST,General - Scheduled Tribe - Other Than Home University,ANY,OTHER,
+GSTS,ST,General - Scheduled Tribe - State Level,ANY,STATE,
+GVJH,VJ,General - Vimukta Jati - Home University,ANY,HOME,
+GVJO,VJ,General - Vimukta Jati - Other Than Home University,ANY,OTHER,
+GVJS,VJ,General - Vimukta Jati - State Level,ANY,STATE,
+LNT1H,NT1,Ladies - Nomadic Tribes 1 - Home University,FEMALE,HOME,
+LNT1O,NT1,Ladies - Nomadic Tribes 1 - Other Than Home University,FEMALE,OTHER,
+LNT1S,NT1,Ladies - Nomadic Tribes 1 - State Level,FEMALE,STATE,
+LNT2H,NT2,Ladies - Nomadic Tribes 2 - Home University,FEMALE,HOME,
+LNT2O,NT2,Ladies - Nomadic Tribes 2 - Other Than Home University,FEMALE,OTHER,
+LNT2S,NT2,Ladies - Nomadic Tribes 2 - State Level,FEMALE,STATE,
+LNT3H,NT3,Ladies - Nomadic Tribes 3 - Home University,FEMALE,HOME,
+LNT3O,NT3,Ladies - Nomadic Tribes 3 - Other Than Home University,FEMALE,OTHER,
+LNT3S,NT3,Ladies - Nomadic Tribes 3 - State Level,FEMALE,STATE,
+LOBCH,OBC,Ladies - Other Backward Class - Home University,FEMALE,HOME,
+LOBCO,OBC,Ladies - Other Backward Class - Other Than Home University,FEMALE,OTHER,
+LOBCS,OBC,Ladies - Other Backward Class - State Level,FEMALE,STATE,
+LOPENH,OPEN,Ladies - Open - Home University,FEMALE,HOME,
+LOPENO,OPEN,Ladies - Open - Other Than Home University,FEMALE,OTHER,
+LOPENS,OPEN,Ladies - Open - State Level,FEMALE,STATE,
+LSCH,SC,Ladies - Scheduled Caste - Home University,FEMALE,HOME,
+LSCO,SC,Ladies - Scheduled Caste - Other Than Home University,FEMALE,OTHER,
+LSCS,SC,Ladies - Scheduled Caste - State Level,FEMALE,STATE,
+LSEBCH,SEBC,Ladies - Socially and Educationally Backward Class - Home University,FEMALE,HOME,
+LSEBCO,SEBC,Ladies - Socially and Educationally Backward Class - Other Than Home University,FEMALE,OTHER,
+LSEBCS,SEBC,Ladies - Socially and Educationally Backward Class - State Level,FEMALE,STATE,
+LSTH,ST,Ladies - Scheduled Tribe - Home University,FEMALE,HOME,
+LSTO,ST,Ladies - Scheduled Tribe - Other Than Home University,FEMALE,OTHER,
+LSTS,ST,Ladies - Scheduled Tribe - State Level,FEMALE,STATE,
+LVJH,VJ,Ladies - Vimukta Jati - Home University,FEMALE,HOME,
+LVJO,VJ,Ladies - Vimukta Jati - Other Than Home University,FEMALE,OTHER,
+LVJS,VJ,Ladies - Vimukta Jati - State Level,FEMALE,STATE,
+MI,MINORITY,Minority,ANY,,MINORITY
+ORPHANI,ORPHAN,Institutional Orphan,ANY,,ORPHAN_INSTITUTIONAL
+ORPHANN,ORPHAN,Non Institutional Orphan,ANY,,ORPHAN_NON_INSTITUTIONAL
+PWDNT2S,NT2,Person With Disability - Nomadic Tribes 2 - State Level,ANY,STATE,PWD
+PWDNT3S,NT3,Person With Disability - Nomadic Tribes 3 - State Level,ANY,STATE,PWD
+PWDOBCH,OBC,Person With Disability - Other Backward Class - Home University,ANY,HOME,PWD
+PWDOBCS,OBC,Person With Disability - Other Backward Class - State Level,ANY,STATE,PWD
+PWDOPENH,OPEN,Person With Disability - Open - Home University,ANY,HOME,PWD
+PWDOPENS,OPEN,Person With Disability - Open - State Level,ANY,STATE,PWD
+PWDRNT1S,NT1,PWD Common Reserved Seat - Nomadic Tribes 1 - State Level,ANY,STATE,PWD_RESERVED
+PWDRNT2S,NT2,PWD Common Reserved Seat - Nomadic Tribes 2 - State Level,ANY,STATE,PWD_RESERVED
+PWDRNT3S,NT3,PWD Common Reserved Seat - Nomadic Tribes 3 - State Level,ANY,STATE,PWD_RESERVED
+PWDROBCH,OBC,PWD Common Reserved Seat - Other Backward Class - Home University,ANY,HOME,PWD_RESERVED
+PWDROBCS,OBC,PWD Common Reserved Seat - Other Backward Class - State Level,ANY,STATE,PWD_RESERVED
+PWDRSCH,SC,PWD Common Reserved Seat - Scheduled Caste - Home University,ANY,HOME,PWD_RESERVED
+PWDRSCS,SC,PWD Common Reserved Seat - Scheduled Caste - State Level,ANY,STATE,PWD_RESERVED
+PWDRSEBCH,SEBC,PWD Common Reserved Seat - Socially and Educationally Backward Class - Home University,ANY,HOME,PWD_RESERVED
+PWDRSEBCS,SEBC,PWD Common Reserved Seat - Socially and Educationally Backward Class - State Level,ANY,STATE,PWD_RESERVED
+PWDRSTH,ST,PWD Common Reserved Seat - Scheduled Tribe - Home University,ANY,HOME,PWD_RESERVED
+PWDRSTS,ST,PWD Common Reserved Seat - Scheduled Tribe - State Level,ANY,STATE,PWD_RESERVED
+PWDRVJS,VJ,PWD Common Reserved Seat - Vimukta Jati - State Level,ANY,STATE,PWD_RESERVED
+PWDSCH,SC,Person With Disability - Scheduled Caste - Home University,ANY,HOME,PWD
+PWDSCS,SC,Person With Disability - Scheduled Caste - State Level,ANY,STATE,PWD
+PWDSEBCH,SEBC,Person With Disability - Socially and Educationally Backward Class - Home University,ANY,HOME,PWD
+PWDSEBCS,SEBC,Person With Disability - Socially and Educationally Backward Class - State Level,ANY,STATE,PWD
+PWDSTS,ST,Person With Disability - Scheduled Tribe - State Level,ANY,STATE,PWD
+TFWS,TFWS,Tuition Fee Waiver Scheme,ANY,,
