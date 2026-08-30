@@ -72,7 +72,9 @@ export function PredictorFlow() {
   } | null>(null);
 
   useEffect(() => {
-    fetch('/api/predictor/options')
+    // no-store: the option lists change when a dataset is published, and a
+    // cached empty payload would leave the form with nothing to pick.
+    fetch('/api/predictor/options', { cache: 'no-store' })
       .then((r) => r.json())
       .then(setOptions)
       .catch(() => setError('We could not load the form. Please refresh the page.'));
@@ -330,7 +332,7 @@ export function PredictorFlow() {
         <div className="space-y-5">
           <Field
             label="Your category"
-            hint="Open seats are always included alongside your category."
+            hint="Required. Open seats are always included alongside your category. Without this, results would mix in cutoffs for categories you cannot claim."
           >
             <div className="flex flex-wrap gap-2">
               {options!.categories.map((c) => (
@@ -393,7 +395,11 @@ export function PredictorFlow() {
             </Field>
           )}
 
-          <StepNav onBack={() => go(1)} onNext={() => go(3)} />
+          <StepNav
+            onBack={() => go(1)}
+            onNext={() => go(3)}
+            nextDisabled={!answers.categoryGroup}
+          />
         </div>
       )}
 
@@ -405,6 +411,12 @@ export function PredictorFlow() {
             hint="Pick as many as you like, or none to see everything."
           >
             <div className="space-y-4">
+              {branchesByFamily.length === 0 && (
+                <p className="text-sm text-ink-muted">
+                  No branches are available to filter on yet. Continue to see
+                  results across all branches.
+                </p>
+              )}
               {branchesByFamily.map(([family, list]) => (
                 <div key={family}>
                   <p className="mb-2 text-xs font-medium uppercase tracking-wide text-ink-faint">
