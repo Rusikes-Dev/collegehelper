@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white text-ink font-sans antialiased;
+  }
+  /* Ranks and percentiles are the product. Tabular figures keep columns of
+     numbers aligned so two cutoffs can be compared by eye. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    @apply font-mono;
+  }
+  :focus-visible {
+    outline: 2px solid theme('colors.brand.DEFAULT');
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+  /* Stop iOS Safari zooming when a form field is focused. */
+  input, select, textarea { font-size: 16px; }
+}
+
+@layer components {
+  .container-page { @apply mx-auto w-full max-w-content px-4 sm:px-6; }
+  .card { @apply rounded-card border border-rule bg-white shadow-card; }
+  .label { @apply block text-sm font-medium text-ink; }
+  .hint { @apply text-sm text-ink-muted; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
