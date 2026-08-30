@@ -200,12 +200,11 @@ async function main() {
   });
   await upsertChunked('college_programs', programRows, 'college_id,course_code');
 
-  const { data: cpRows, error: cpErr } = await db
-    .from('college_programs').select('id, college_id, course_code');
-  if (cpErr) throw cpErr;
+  const cpRows = await selectAll<{ id: string; college_id: string; course_code: string }>(
+    'college_programs', 'id, college_id, course_code');
   const programKey = (collegeId: string, code: string) => `${collegeId}::${code}`;
   const programIdByKey = new Map(
-    cpRows!.map((p) => [programKey(p.college_id, p.course_code), p.id]),
+    cpRows.map((p) => [programKey(p.college_id, p.course_code), p.id]),
   );
 
   // --- datasets + cutoff records -------------------------------------------
