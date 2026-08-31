@@ -144,14 +144,33 @@ async function main() {
       slug,
       city: r.city_hint || null,
       district: r.district_hint || null,
-      location_verified: false,
-      // Left unpublished on purpose: an admin reviews each college before it
-      // appears publicly, so derived location hints never ship unchecked.
-      is_published: false,
-      data_completeness: 'stub',
     };
   });
-  await upsertChunked('colleges', colleges, 'institute_code');
+
+  // New colleges arrive unpublished and unverified: an admin reviews each one
+  // before it appears publicly, so derived location hints never ship unchecked.
+  // Colleges that already exist are updated in place WITHOUT those columns,
+  // because re-importing a corrected round must not unpublish work an admin
+  // has already done or overwrite a city they verified by hand.
+  const existing = new Set(
+    (await selectAll<{ institute_code: string }>('colleges', 'institute_code')).map(
+      (c) => c.institute_code,
+    ),
+  );
+  const fresh = colleges
+    .filter((c) => !existing.has(c.institute_code))
+    .map((c) => ({
+      ...c,
+      location_verified: false,
+      is_published: false,
+      data_completeness: 'stub',
+    }));
+  const known = colleges
+    .filter((c) => existing.has(c.institute_code))
+    .map(({ city, district, ...rest }) => rest);
+
+  await upsertChunked('colleges', fresh, 'institute_code');
+  await upsertChunked('colleges', known, 'institute_code');
 
   const collegeRows = await selectAll<{ id: string; institute_code: string }>(
     'colleges', 'id, institute_code');
