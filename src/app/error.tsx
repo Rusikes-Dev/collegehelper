@@ -4,17 +4,19 @@ import { Button, ButtonLink } from '@/components/ui';
 
 export default function Error({ reset }: { error: Error; reset: () => void }) {
   return (
-    <div className="container-page max-w-lg py-20">
-      <h1 className="font-display text-display-lg font-semibold text-ink">
-        Something went wrong
-      </h1>
-      <p className="mt-3 text-ink-muted">
-        The page failed to load. Trying again usually fixes it \u2014 nothing you
-        entered has been lost.
+    <div className="screen py-16">
+      <h1 className="text-display-sm font-bold text-ink">Something broke on our side</h1>
+      <p className="mt-2 max-w-[46ch] leading-relaxed text-ink-muted">
+        Nothing you entered was lost. Try again, and if it keeps happening, tell us what
+        you were doing and we will fix it.
       </p>
-      <div className="mt-6 flex flex-wrap gap-3">
-        <Button onClick={reset}>Try again</Button>
-        <ButtonLink href="/" variant="secondary">Go to homepage</ButtonLink>
+      <div className="mt-6 flex flex-wrap gap-2">
+        <Button size="lg" onClick={reset}>
+          Try again
+        </Button>
+        <ButtonLink href="/about" variant="secondary" size="lg">
+          Contact us
+        </ButtonLink>
       </div>
     </div>
   );

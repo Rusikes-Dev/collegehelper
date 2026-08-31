@@ -8,32 +8,70 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-white text-ink font-sans antialiased;
+    @apply bg-white font-sans text-ink antialiased;
   }
-  /* Ranks and percentiles are the product. Tabular figures keep columns of
-     numbers aligned so two cutoffs can be compared by eye. */
+  /* Percentiles, ranks and course codes are the product. Tabular figures keep
+     a column of numbers aligned so two cutoffs can be compared by eye. */
   .tnum {
-    font-variant-numeric: tabular-nums;
     @apply font-mono;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
   }
   :focus-visible {
     outline: 2px solid theme('colors.brand.DEFAULT');
     outline-offset: 2px;
-    border-radius: 3px;
+    border-radius: 4px;
   }
-  /* Stop iOS Safari zooming when a form field is focused. */
-  input, select, textarea { font-size: 16px; }
+  /* Stops iOS Safari zooming the page when a field is focused. */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
 }
 
 @layer components {
-  .container-page { @apply mx-auto w-full max-w-content px-4 sm:px-6; }
-  .card { @apply rounded-card border border-rule bg-white shadow-card; }
-  .label { @apply block text-sm font-medium text-ink; }
-  .hint { @apply text-sm text-ink-muted; }
+  /* One column, phone width, centred on larger screens. Every screen in the
+     app uses this so the layout never shifts between tabs. */
+  .screen {
+    @apply mx-auto w-full max-w-screen px-4;
+  }
+  .screen-wide {
+    @apply mx-auto w-full max-w-wide px-4;
+  }
+  /* Older name, kept so the admin panel keeps its layout. */
+  .container-page {
+    @apply mx-auto w-full max-w-wide px-4 sm:px-6;
+  }
+  .panel {
+    @apply rounded-card border border-line bg-white;
+  }
+  /* Older name, kept so the admin panel keeps its styling. */
+  .card {
+    @apply rounded-card border border-line bg-white shadow-card;
+  }
+  .label {
+    @apply block text-[0.9375rem] font-semibold text-ink;
+  }
+  .hint {
+    @apply text-sm leading-relaxed text-ink-muted;
+  }
+  .divide-rows > * + * {
+    @apply border-t border-line;
+  }
+  /* Clears the fixed tab bar plus the iOS home indicator. */
+  .tabbar-gap {
+    padding-bottom: calc(5.25rem + env(safe-area-inset-bottom));
+  }
+  .tabbar-inset {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
