@@ -35,11 +35,17 @@ export function TopBar() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
       <div className="screen-wide flex h-14 items-center justify-between gap-4">
-        <Link href="/" className="flex items-baseline gap-1.5">
-          <span className="text-[1.0625rem] font-bold tracking-tight text-brand">
+        <Link href="/" className="flex items-center gap-2">
+          {/* The mark is the three chance bands stacked — the thing the site
+              exists to tell you, at 20px. */}
+          <span className="flex h-7 w-7 flex-col justify-center gap-[3px] rounded-chip bg-brand p-1.5" aria-hidden>
+            <span className="h-[3px] w-full rounded-full bg-white/90" />
+            <span className="h-[3px] w-3/4 rounded-full bg-white/60" />
+            <span className="h-[3px] w-1/2 rounded-full bg-white/35" />
+          </span>
+          <span className="text-[1.0625rem] font-bold tracking-tight text-ink">
             CollegeHelper
           </span>
-          <span className="text-xs text-ink-faint">.xyz</span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="Sections">
@@ -51,8 +57,8 @@ export function TopBar() {
                 href={t.href}
                 aria-current={on ? 'page' : undefined}
                 className={
-                  'rounded-lg px-3 py-2 text-sm font-medium transition-colors ' +
-                  (on ? 'bg-brand-tint text-brand' : 'text-ink-muted hover:text-ink')
+                  'rounded-chip px-3 py-2 text-sm font-medium transition-colors ' +
+                  (on ? 'bg-brand-tint text-brand' : 'text-ink-muted hover:bg-wash hover:text-ink')
                 }
               >
                 {t.label}
@@ -61,8 +67,8 @@ export function TopBar() {
           })}
         </nav>
 
-        <span className="tnum rounded-full border border-line px-2.5 py-1 text-[0.6875rem] text-ink-muted md:hidden">
-          MHT-CET 2026-27
+        <span className="tnum rounded-full border border-line bg-wash px-2.5 py-1 text-[0.6875rem] font-medium text-ink-muted md:hidden">
+          CET 2026-27
         </span>
       </div>
     </header>
@@ -87,8 +93,17 @@ export function TabBar() {
               <Link
                 href={t.href}
                 aria-current={on ? 'page' : undefined}
-                className="flex h-15 flex-col items-center justify-center gap-1"
+                className="relative flex h-15 flex-col items-center justify-center gap-1"
               >
+                {/* A short rule at the top edge marks the active tab, so the
+                    state survives for anyone who cannot separate the two
+                    colours. */}
+                {on && (
+                  <span
+                    className="absolute inset-x-0 top-0 mx-auto h-[3px] w-8 rounded-b-full bg-brand"
+                    aria-hidden
+                  />
+                )}
                 <span
                   className={
                     'flex h-7 w-12 items-center justify-center rounded-full transition-colors ' +
