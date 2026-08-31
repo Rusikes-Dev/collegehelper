@@ -121,23 +121,15 @@ update cutoff_datasets set is_published = true where academic_year = '2026-27';
 See `DATA_PIPELINE.md` for what the extractor does and the five traps in the
 source PDFs it handles.
 
-## 9. Add a college
+## 9. Add a college page
 
-The public college page is one reusable template at `src/app/colleges/[slug]/page.tsx`.
-You never copy it. To fill in a college:
+College pages are hand-written records in `src/data/colleges.ts`, not database
+rows. Copy the existing block, edit it, save. The page, the Search entry and the
+sitemap all follow. See `EDITING.md`.
 
-1. `/admin/colleges` → find it (it already exists if it appears in the cutoff data).
-2. In the Supabase table editor, update the `colleges` row: `description`,
-   `address`, `city`, `district`, `institute_type`, `affiliation`,
-   `established_year`, `website_url`, `admission_url`, `maps_url`.
-3. Set `location_verified = true` once you have checked the city.
-4. Add fees as rows in `program_fees` (one per program, category and year).
-5. Add campus, placement and links as rows in `college_facts`, using
-   `section` = `campus` / `placement` / `hostel` / `links`.
-6. Set `data_completeness` to `partial` or `complete`, then `is_published = true`.
-
-Sections with no data render as "not added yet" rather than being hidden or
-filled in. A visitor can always tell a fact from a gap.
+The database still holds every college in the cutoff data, and the predictor
+still searches all of them; `src/data/colleges.ts` is only the set that has a
+written-up page.
 
 ## 10. Add a new academic year
 
