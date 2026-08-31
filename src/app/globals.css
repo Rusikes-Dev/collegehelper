@@ -6,16 +6,21 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /* Sticky section nav on a college page must not cover the heading it
+       scrolls to. */
+    scroll-padding-top: 7.5rem;
   }
   body {
     @apply bg-white font-sans text-ink antialiased;
+    text-rendering: optimizeLegibility;
   }
   /* Percentiles, ranks and course codes are the product. Tabular figures keep
-     a column of numbers aligned so two cutoffs can be compared by eye. */
+     a column of numbers aligned so two cutoffs can be compared by eye. Mono is
+     used for figures only, never for labels. */
   .tnum {
     @apply font-mono;
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
   }
   :focus-visible {
     outline: 2px solid theme('colors.brand.DEFAULT');
@@ -27,6 +32,10 @@
   select,
   textarea {
     font-size: 16px;
+  }
+  ::selection {
+    background: theme('colors.brand.tint');
+    color: theme('colors.brand.deep');
   }
 }
 
@@ -43,13 +52,15 @@
   .container-page {
     @apply mx-auto w-full max-w-wide px-4 sm:px-6;
   }
+
   .panel {
-    @apply rounded-card border border-line bg-white;
+    @apply rounded-panel border border-line bg-white;
   }
   /* Older name, kept so the admin panel keeps its styling. */
   .card {
-    @apply rounded-card border border-line bg-white shadow-card;
+    @apply rounded-panel border border-line bg-white shadow-card;
   }
+
   .label {
     @apply block text-[0.9375rem] font-semibold text-ink;
   }
@@ -59,9 +70,37 @@
   .divide-rows > * + * {
     @apply border-t border-line;
   }
+
+  /* Horizontal chip strips: filters, CAP rounds, districts. Scrollbar hidden
+     because on a phone the overflow is discovered by dragging, and a visible
+     bar just eats a row of height. */
+  .rail {
+    @apply flex gap-2 overflow-x-auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+  .rail::-webkit-scrollbar {
+    display: none;
+  }
+  .rail > * {
+    scroll-snap-align: start;
+  }
+  /* Lets a rail bleed to the screen edge so it reads as scrollable. */
+  .rail-bleed {
+    @apply -mx-4 px-4;
+  }
+
+  /* Section heading used down the college page and the home tab. The rule sits
+     under the text rather than around it, so it separates without boxing. */
+  .section-head {
+    @apply flex items-baseline justify-between gap-3 border-b border-line pb-2;
+  }
+
   /* Clears the fixed tab bar plus the iOS home indicator. */
   .tabbar-gap {
-    padding-bottom: calc(5.25rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
   }
   .tabbar-inset {
     padding-bottom: env(safe-area-inset-bottom);

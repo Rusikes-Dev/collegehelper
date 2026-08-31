@@ -1,21 +1,25 @@
 import type { Metadata, Viewport } from 'next';
-import { Public_Sans, IBM_Plex_Mono } from 'next/font/google';
+import { Archivo, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import { TabBar, TopBar } from '@/components/nav/tabs';
 import { SiteFooter } from '@/components/site-footer';
 
 /**
- * Two typefaces, one job each.
+ * One family for text, one for figures.
  *
- * Public Sans is drawn for public-information services: plain, legible at
- * small sizes on a cheap phone, and with none of the personality of a
- * marketing font. IBM Plex Mono carries every percentile, rank and course
- * code, because tabular figures are what make a column of cutoffs readable.
+ * Archivo is a grotesque with enough grit to hold a headline at 700 and enough
+ * discipline to set a paragraph at 400, and it stays legible at 13px on a
+ * cheap Android screen — which matters more here than novelty. Display sizes
+ * get tighter tracking rather than a second typeface.
+ *
+ * IBM Plex Mono carries every percentile, rank and course code. Tabular
+ * figures are the only reason: a column of closing cutoffs is comparable by
+ * eye only when the digits line up.
  */
-const sans = Public_Sans({
+const sans = Archivo({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
-  variable: '--font-public-sans',
+  variable: '--font-archivo',
   display: 'swap',
 });
 const mono = IBM_Plex_Mono({
@@ -54,7 +58,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#10346B',
+  themeColor: '#4C3AA8',
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
