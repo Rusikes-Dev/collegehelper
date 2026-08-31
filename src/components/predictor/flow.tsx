@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, FileText, Loader2, ShieldCheck } from 'lucide-react';
 import { Button, Chip, Field, Input, cn } from '@/components/ui';
 import type { PredictionRow, RankType } from '@/lib/predictor';
@@ -56,6 +56,7 @@ export function PredictorFlow() {
   const [options, setOptions] = useState<Options | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [optionsError, setOptionsError] = useState<string | null>(null);
   const [payload, setPayload] = useState<{
     unlocked: boolean;
     accessMode: 'FREE' | 'PAID';
@@ -65,19 +66,31 @@ export function PredictorFlow() {
     results: PredictionRow[];
   } | null>(null);
 
+  const loadOptions = useCallback(async () => {
+    setOptionsError(null);
+    try {
+      // no-store: the lists change the moment a dataset is published, and a
+      // cached empty payload would leave the form with nothing to pick.
+      const res = await fetch('/api/predictor/options', { cache: 'no-store' });
+      // Checking res.ok matters: a failing route still returns a body, and
+      // parsing it would put a null where the form expects its lists.
+      if (!res.ok) throw new Error(String(res.status));
+      const json = (await res.json()) as Options | null;
+      if (!json || !Array.isArray(json.branchGroups)) throw new Error('empty');
+      setOptions(json);
+    } catch {
+      setOptionsError('The form could not load. Check your connection and try again.');
+    }
+  }, []);
+
   useEffect(() => {
-    // no-store: the lists change the moment a dataset is published, and a
-    // cached empty payload would leave the form with nothing to pick.
-    fetch('/api/predictor/options', { cache: 'no-store' })
-      .then((r) => r.json())
-      .then(setOptions)
-      .catch(() => setError('The form could not load. Check your connection and refresh.'));
+    void loadOptions();
     fetch('/api/analytics/track', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ event: 'predictor_started', path: '/' }),
     }).catch(() => {});
-  }, []);
+  }, [loadOptions]);
 
   // The phone's back button moves back one question instead of leaving the site.
   useEffect(() => {
@@ -138,7 +151,20 @@ export function PredictorFlow() {
     }
   }
 
-  if (!options && !error) {
+  // Nothing below this point may run without the lists, so the guard returns
+  // on `!options` alone. The previous version let a null through whenever an
+  // error had been set, and the form then crashed the whole page on the first
+  // `options!` it reached.
+  if (!options) {
+    if (optionsError) {
+      return (
+        <div className="panel my-10 flex flex-col items-start gap-3 p-6">
+          <h2 className="text-display-sm font-semibold text-ink">The predictor did not load</h2>
+          <p className="text-sm leading-relaxed text-ink-muted">{optionsError}</p>
+          <Button onClick={() => void loadOptions()}>Try again</Button>
+        </div>
+      );
+    }
     return (
       <div className="flex items-center gap-2 py-20 text-ink-muted">
         <Loader2 className="animate-spin" size={18} aria-hidden /> Loading the predictor
@@ -287,7 +313,7 @@ export function PredictorFlow() {
 
           <ul className="space-y-2.5 pt-2">
             {[
-              [FileText, `Built from the official CAP cutoff PDFs for ${options!.academicYear}.`],
+              [FileText, `Built from the official CAP cutoff PDFs for ${options.academicYear}.`],
               [Check, 'Percentile and rank are never converted into each other.'],
               [ShieldCheck, 'Nothing is estimated. A missing figure is shown as missing.'],
             ].map(([Icon, text], i) => {
@@ -311,7 +337,7 @@ export function PredictorFlow() {
             hint="Open seats are always included alongside it. Without a category the list would mix in cutoffs you cannot claim."
           >
             <div className="flex flex-wrap gap-2">
-              {options!.categories.map((c) => (
+              {options.categories.map((c) => (
                 <Chip
                   key={c}
                   active={answers.categoryGroup === c}
@@ -352,13 +378,13 @@ export function PredictorFlow() {
             </div>
           </Field>
 
-          {options!.specials.length > 0 && (
+          {options.specials.length > 0 && (
             <Field
               label="Special seat types"
               hint="Only tick one if you actually hold it. Ticking a type you cannot claim shows cutoffs that do not apply to you."
             >
               <div className="flex flex-wrap gap-2">
-                {options!.specials.map((s) => (
+                {options.specials.map((s) => (
                   <Chip
                     key={s}
                     active={answers.specials.includes(s)}
@@ -390,7 +416,7 @@ export function PredictorFlow() {
             hint="Pick one or more, or skip to see every branch."
           >
             <div className="panel divide-rows overflow-hidden">
-              {options!.branchGroups.map((g) => {
+              {options.branchGroups.map((g) => {
                 const on = answers.branchGroups.includes(g.key);
                 return (
                   <button
@@ -433,13 +459,13 @@ export function PredictorFlow() {
             </div>
           </Field>
 
-          {options!.rounds.length > 0 && (
+          {options.rounds.length > 0 && (
             <Field
               label="CAP rounds"
               hint="Leave all unticked to compare against every published round."
             >
               <div className="flex flex-wrap gap-2">
-                {options!.rounds.map((r) => (
+                {options.rounds.map((r) => (
                   <Chip
                     key={r}
                     active={answers.capRounds.includes(r)}
