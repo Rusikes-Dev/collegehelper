@@ -1,37 +1,47 @@
 import type { Metadata } from 'next';
-import { COLLEGES } from '@/data/colleges';
+import { collegeIndex, districts } from '@/data/colleges';
 import { CollegeSearch } from '@/components/college/college-search';
 import { PageHeader } from '@/components/ui';
 
 export const metadata: Metadata = {
   title: 'Search colleges',
   description:
-    'Course lists and official MHT-CET CAP cutoffs for Maharashtra engineering colleges.',
+    'Branch lists and official MHT-CET CAP closing cutoffs for every engineering ' +
+    'college in the Maharashtra CAP dataset.',
   alternates: { canonical: '/colleges' },
 };
 
-export default function CollegesPage() {
-  // Only the fields the list needs. The cutoff rows stay on the server.
-  const list = COLLEGES.map((c) => ({
-    slug: c.slug,
-    name: c.name,
-    shortName: c.shortName,
-    code: c.code,
-    city: c.city,
-    type: c.type,
-  }));
+export default function CollegesPage({
+  searchParams,
+}: {
+  searchParams?: { district?: string };
+}) {
+  const list = collegeIndex();
+  const byDistrict = districts();
+  const placed = list.filter((c) => c.district).length;
+
+  // Only honour a district that exists, so a stale link degrades to the full
+  // list rather than an empty one.
+  const requested = searchParams?.district;
+  const district = byDistrict.some((d) => d.name === requested) ? requested! : null;
 
   return (
     <div className="screen">
       <PageHeader
         title="Search colleges"
-        intro="Courses, official CAP cutoffs and admission links for the colleges we have written up in full."
+        intro={`Every college in the ${
+          list.length
+        }-institute CAP dataset, with its branch list and official closing cutoffs.`}
       />
-      <CollegeSearch colleges={list} />
-      <p className="mt-5 rounded-card border border-line bg-wash px-4 py-3 text-[0.8125rem] leading-relaxed text-ink-muted">
-        We are adding colleges one at a time so that every page is checked before it goes
-        up. The predictor already compares your score against the cutoffs of every college
-        in the CAP data, whether or not it has a page here yet.
+
+      <CollegeSearch colleges={list} districts={byDistrict} initialDistrict={district} />
+
+      <p className="mt-6 rounded-card border border-line bg-wash px-4 py-3 text-[0.8125rem] leading-relaxed text-ink-muted">
+        City and district are worked out from each institute&rsquo;s registered name, which is
+        the only location the cutoff documents carry. They are right for {placed} of{' '}
+        {list.length} colleges and blank for the rest; nothing here is a confirmed address.
+        Fees, placements and hostel details appear only on the colleges someone has checked
+        against a primary source.
       </p>
     </div>
   );
