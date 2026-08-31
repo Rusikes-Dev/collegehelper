@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Instagram, Mail, MessageCircle } from 'lucide-react';
 import { PageHeader, Disclaimer } from '@/components/ui';
 import { AFFILIATION_DISCLAIMER, PREDICTION_DISCLAIMER } from '@/lib/predictor';
+import { CONTACT, DATA, HAS_CONTACT } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'About and contact',
@@ -11,22 +12,11 @@ export const metadata: Metadata = {
   alternates: { canonical: '/about' },
 };
 
-/* ---------------------------------------------------------------------------
- * PUT YOUR REAL CONTACT DETAILS HERE.
- *
- * These are placeholders. A student who cannot reach a person will not pay,
- * so replace all three before going live — and use an address you actually
- * read. Set a value to null to hide that row.
- * ------------------------------------------------------------------------- */
-const CONTACT = {
-  email: 'hello@collegehelper.xyz',
-  whatsapp: '+91 00000 00000',
-  instagram: '@collegehelper.xyz',
-  instagramUrl: 'https://instagram.com/',
-  /** Shown at the bottom. Required in India if you take payments. */
-  operator: 'CollegeHelper.xyz, Maharashtra, India',
-};
-
+/*
+ * Contact details now live in src/lib/site.ts, so they are defined once and a
+ * value still holding a placeholder is not rendered at all. A visible dead
+ * phone number costs more trust than a missing row.
+ */
 const WHAT_WE_DO = [
   {
     title: 'The predictor',
@@ -71,6 +61,15 @@ export default function AboutPage() {
 
       <section className="space-y-3">
         <h2 className="text-[1.0625rem] font-bold text-ink">Where the numbers come from</h2>
+        <p className="text-sm leading-relaxed text-ink-muted">
+          The short version is below. The{' '}
+          <Link href="/methodology" className="font-semibold text-brand hover:underline">
+            data and method page
+          </Link>{' '}
+          names every source document, explains what a closing cutoff is, and sets out
+          how the three chance bands are calculated — {DATA.cutoffRows.toLocaleString('en-IN')}{' '}
+          records from the {DATA.academicYear} CAP documents, imported {DATA.importedOn}.
+        </p>
         <ul className="space-y-2.5">
           {HOW_WE_WORK.map((h) => (
             <li key={h} className="flex gap-2.5 text-sm leading-relaxed text-ink-muted">
@@ -107,7 +106,7 @@ export default function AboutPage() {
               </span>
             </li>
           )}
-          {CONTACT.instagram && (
+          {CONTACT.instagram && CONTACT.instagramUrl && (
             <li>
               <a
                 href={CONTACT.instagramUrl}
@@ -124,6 +123,11 @@ export default function AboutPage() {
             </li>
           )}
         </ul>
+        {!HAS_CONTACT && (
+          <p className="rounded-card border border-dashed border-line px-4 py-3 text-sm text-ink-faint">
+            No contact method has been published yet.
+          </p>
+        )}
         <p className="text-sm leading-relaxed text-ink-muted">
           Paid and cannot get back in?{' '}
           <Link href="/restore-access" className="font-semibold text-brand hover:underline">
@@ -139,6 +143,23 @@ export default function AboutPage() {
         <Disclaimer>{PREDICTION_DISCLAIMER}</Disclaimer>
         <Disclaimer>{AFFILIATION_DISCLAIMER}</Disclaimer>
         <p className="text-xs text-ink-faint">Operated by {CONTACT.operator}.</p>
+        <div className="flex flex-wrap gap-x-4 gap-y-2 pt-1 text-sm">
+          <Link href="/methodology" className="font-semibold text-brand hover:underline">
+            Data and method
+          </Link>
+          <Link href="/faq" className="font-semibold text-brand hover:underline">
+            FAQ
+          </Link>
+          <Link href="/disclaimer" className="font-semibold text-brand hover:underline">
+            Disclaimer
+          </Link>
+          <Link href="/privacy" className="font-semibold text-brand hover:underline">
+            Privacy policy
+          </Link>
+          <Link href="/terms" className="font-semibold text-brand hover:underline">
+            Terms of use
+          </Link>
+        </div>
       </section>
     </div>
   );
