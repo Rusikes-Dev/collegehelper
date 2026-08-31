@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "tsx scripts/build-college-pages.ts && next dev",
+    "prebuild": "tsx scripts/build-college-pages.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "extract:cutoffs": "python3 scripts/extract_cutoffs.py --out ./data",
-    "import:cutoffs": "tsx scripts/import-cutoffs.ts"
+    "import:cutoffs": "tsx scripts/import-cutoffs.ts",
+    "generate:colleges": "tsx scripts/build-college-pages.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.2",

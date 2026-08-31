@@ -10,3 +10,6 @@ __pycache__/
 *.pyc
 .DS_Store
 .vercel
+
+# Generated from data/*.csv by scripts/build-college-pages.ts at build time.
+src/data/generated/
