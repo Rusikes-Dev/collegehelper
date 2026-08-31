@@ -90,7 +90,7 @@ export default async function AdminCollegesPage({
 
       <p className="text-sm text-ink-muted">
         Editing college details, fees and campus information is done in the Supabase
-        table editor for now \u2014 see the README section &ldquo;Adding a college&rdquo;.
+        table editor for now — see the README section &ldquo;Adding a college&rdquo;.
       </p>
     </div>
   );

@@ -39,13 +39,22 @@ export async function GET() {
     counts.set(key, (counts.get(key) ?? 0) + 1);
   }
 
-  // Surfaced so an empty form can be diagnosed from the response itself.
-  // Contains no user or secret data.
-  const errors = {
-    branches: branches.error?.message ?? null,
-    seatTypes: seatTypes.error?.message ?? null,
-    rounds: rounds.error?.message ?? null,
+  // An empty form still needs to be diagnosable from the response, but a
+  // database driver's error text can name tables, columns and constraints. The
+  // response therefore carries booleans only; the message itself goes to the
+  // server log, where it is useful and not public.
+  const failures = {
+    branches: Boolean(branches.error),
+    seatTypes: Boolean(seatTypes.error),
+    rounds: Boolean(rounds.error),
   };
+  for (const [name, err] of [
+    ['branches', branches.error],
+    ['seatTypes', seatTypes.error],
+    ['rounds', rounds.error],
+  ] as const) {
+    if (err) console.error(`predictor options: ${name} query failed:`, err.message);
+  }
 
   return NextResponse.json({
     academicYear: settings.activeYear,
@@ -60,6 +69,6 @@ export async function GET() {
     categories: [...new Set((seatTypes.data ?? []).map((s: any) => s.category_group))].sort(),
     specials: [...new Set((seatTypes.data ?? []).map((s: any) => s.special).filter(Boolean))].sort(),
     rounds: (rounds.data ?? []).map((r: any) => r.cap_round),
-    diagnostics: { errors, generatedAt: new Date().toISOString() },
+    diagnostics: { failures, generatedAt: new Date().toISOString() },
   });
 }
