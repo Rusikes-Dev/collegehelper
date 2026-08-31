@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ButtonLink } from '@/components/ui';
 
 export default function NotFound() {
@@ -15,6 +16,17 @@ export default function NotFound() {
         <ButtonLink href="/colleges" variant="secondary" size="lg">
           Search colleges
         </ButtonLink>
+      </div>
+      <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 border-t border-line pt-5 text-sm">
+        <Link href="/methodology" className="font-semibold text-brand hover:underline">
+          Where the cutoff data comes from
+        </Link>
+        <Link href="/faq" className="font-semibold text-brand hover:underline">
+          Frequently asked questions
+        </Link>
+        <Link href="/about" className="font-semibold text-brand hover:underline">
+          Contact us
+        </Link>
       </div>
     </div>
   );

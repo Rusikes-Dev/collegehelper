@@ -3,6 +3,7 @@ import { Archivo, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import { TabBar, TopBar } from '@/components/nav/tabs';
 import { SiteFooter } from '@/components/site-footer';
+import { SiteJsonLd } from '@/components/seo/json-ld';
 
 /**
  * One family for text, one for figures.
@@ -74,6 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <SiteJsonLd />
         <TopBar />
         <main id="main" className="tabbar-gap flex-1 md:pb-10">
           {children}

@@ -12,7 +12,8 @@ import {
   type College,
 } from '@/data/colleges';
 import { CutoffTable } from '@/components/college/cutoff-table';
-import { Disclaimer, NotAdded, RangeBar, SectionHead, Stat, Tag } from '@/components/ui';
+import { Breadcrumbs, Disclaimer, NotAdded, RangeBar, SectionHead, Stat, Tag } from '@/components/ui';
+import { BreadcrumbJsonLd } from '@/components/seo/json-ld';
 import { isAutonomous, minorityNote, typeGroup } from '@/lib/college-type';
 import { AFFILIATION_DISCLAIMER } from '@/lib/predictor';
 
@@ -90,6 +91,15 @@ export default function CollegePage({ params }: { params: { slug: string } }) {
   const related = relatedColleges(c, 5);
   const minority = minorityNote(c.type);
 
+  const crumbs = [
+    { name: 'Home', path: '/' },
+    { name: 'Colleges', path: '/colleges' },
+    ...(c.district
+      ? [{ name: c.district, path: `/colleges?district=${encodeURIComponent(c.district)}` }]
+      : []),
+    { name: c.shortName, path: `/colleges/${c.slug}` },
+  ];
+
   const where = [c.city, c.district].filter(Boolean);
   const place = where.length === 2 && where[0] === where[1] ? where[0] : where.join(', ');
 
@@ -101,10 +111,12 @@ export default function CollegePage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="screen pb-6">
-      <div className="pt-5">
+      <BreadcrumbJsonLd items={crumbs} />
+      <Breadcrumbs items={crumbs} />
+      <div className="pt-1">
         <Link
           href="/colleges"
-          className="inline-flex min-h-[2.5rem] items-center gap-1.5 text-sm font-medium text-ink-muted hover:text-brand"
+          className="inline-flex min-h-[2.25rem] items-center gap-1.5 text-sm font-medium text-ink-muted hover:text-brand"
         >
           <ArrowLeft size={16} aria-hidden /> All colleges
         </Link>
@@ -248,6 +260,24 @@ export default function CollegePage({ params }: { params: { slug: string } }) {
         <section className="space-y-3">
           <SectionHead id="cutoffs" title="Closing cutoffs" aside={c.cutoffYear ?? undefined} />
           <CutoffTable rounds={rounds} year={c.cutoffYear} seatLabels={seatLabels} />
+          <p className="text-xs leading-relaxed text-ink-faint">
+            Each figure is the rank and percentile of the last candidate admitted to that
+            course under that seat type in that CAP round — not a qualifying mark set
+            in advance.{' '}
+            <Link href="/methodology" className="font-medium text-brand hover:underline">
+              How these numbers were collected
+            </Link>
+            .
+          </p>
+          <div className="panel flex flex-col items-start gap-2 p-4">
+            <p className="text-sm leading-relaxed text-ink-muted">
+              Want to know whether your own percentile clears these cutoffs, here and at
+              every other college in the CAP list?
+            </p>
+            <Link href="/" className="text-sm font-semibold text-brand hover:underline">
+              Check with the MHT-CET predictor
+            </Link>
+          </div>
         </section>
 
         <section className="space-y-3">

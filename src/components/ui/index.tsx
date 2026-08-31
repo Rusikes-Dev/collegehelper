@@ -325,3 +325,66 @@ export function NotAdded({ what }: { what: string }) {
     </p>
   );
 }
+
+/**
+ * Long-form text: policies, methodology, FAQ answers.
+ *
+ * Measure is capped near 68 characters. These pages are read, not scanned, and
+ * a full-width line of body copy on a laptop loses the reader's place at every
+ * carriage return.
+ */
+export function Prose({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={cn(
+        'max-w-[68ch] space-y-4 text-[0.9375rem] leading-relaxed text-ink-muted',
+        '[&_a]:font-medium [&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2',
+        '[&_h3]:mt-8 [&_h3]:text-[1.0625rem] [&_h3]:font-bold [&_h3]:text-ink',
+        '[&_li]:mb-1.5 [&_strong]:font-semibold [&_strong]:text-ink',
+        '[&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5',
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * The trail above a page title.
+ *
+ * The last item is the current page and is not a link — it is there so the
+ * visitor can see where they are, and so the matching BreadcrumbList markup
+ * describes a trail that is genuinely on the page.
+ */
+export function Breadcrumbs({ items }: { items: { name: string; path: string }[] }) {
+  return (
+    <nav aria-label="Breadcrumb" className="pt-5">
+      <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[0.8125rem] text-ink-faint">
+        {items.map((item, i) => {
+          const last = i === items.length - 1;
+          return (
+            <li key={item.path} className="flex items-center gap-1.5">
+              {i > 0 && <span aria-hidden>/</span>}
+              {last ? (
+                <span aria-current="page" className="text-ink-muted">
+                  {item.name}
+                </span>
+              ) : (
+                <Link href={item.path} className="hover:text-brand hover:underline">
+                  {item.name}
+                </Link>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}

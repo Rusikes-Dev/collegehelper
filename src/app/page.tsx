@@ -5,6 +5,7 @@ import { PredictorFlow } from '@/components/predictor/flow';
 import { collegeIndex, districts } from '@/data/colleges';
 import { RangeBar, SectionHead, Tag } from '@/components/ui';
 import { CHANCE_META } from '@/lib/predictor';
+import { DATA } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'MHT-CET college predictor',
@@ -32,8 +33,6 @@ export default function HomePage() {
   // makes them worth opening first when you are still deciding.
   const biggest = [...all].sort((a, b) => b.programCount - a.programCount).slice(0, 5);
 
-  const cutoffCount = 90289;
-
   return (
     <div className="screen">
       {/* Evidence, not a marketing hero. These three numbers are the reason to
@@ -42,7 +41,7 @@ export default function HomePage() {
         {[
           { n: all.length.toLocaleString('en-IN'), l: 'colleges' },
           { n: '3', l: 'CAP rounds' },
-          { n: `${Math.round(cutoffCount / 1000)}k`, l: 'official cutoffs' },
+          { n: `${Math.round(DATA.cutoffRows / 1000)}k`, l: 'official cutoffs' },
         ].map((s) => (
           <div key={s.l} className="flex-1 bg-white px-2 py-3">
             <div className="tnum text-display-sm font-bold text-ink">{s.n}</div>
@@ -72,6 +71,31 @@ export default function HomePage() {
               );
             })}
           </ul>
+        </section>
+
+        <section className="space-y-3">
+          <SectionHead title="Where these numbers come from" />
+          <div className="panel space-y-3 p-4">
+            <p className="text-sm leading-relaxed text-ink-muted">
+              Every cutoff on this site was read out of the official CAP Round I, II and
+              III documents published by the {DATA.publisher} for {DATA.academicYear} —{' '}
+              <span className="tnum">{DATA.cutoffRows.toLocaleString('en-IN')}</span> records
+              across {DATA.institutes} institutes, imported {DATA.importedOn}. Nothing is
+              averaged in from elsewhere, and a percentile is never converted into a rank.
+            </p>
+            <p className="text-sm leading-relaxed text-ink-muted">
+              A prediction compares your figure against those closing cutoffs. It is
+              evidence about last year, not a forecast, and it is not an admission.
+            </p>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 pt-0.5 text-sm">
+              <Link href="/methodology" className="font-semibold text-brand hover:underline">
+                Read the full method
+              </Link>
+              <Link href="/faq" className="font-semibold text-brand hover:underline">
+                Common questions
+              </Link>
+            </div>
+          </div>
         </section>
 
         <section className="space-y-3">
