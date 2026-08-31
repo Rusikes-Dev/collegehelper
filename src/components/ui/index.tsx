@@ -10,10 +10,10 @@ const BUTTON_BASE =
   'transition-colors disabled:cursor-not-allowed disabled:opacity-50';
 
 const VARIANTS = {
-  primary: 'bg-brand text-white hover:bg-brand-hover',
-  secondary: 'border border-line bg-white text-ink hover:bg-wash',
+  primary: 'bg-brand text-white hover:bg-brand-hover active:bg-brand-deep',
+  secondary: 'border border-line bg-white text-ink hover:border-brand-edge hover:bg-brand-tint',
   ghost: 'text-brand hover:bg-brand-tint',
-  danger: 'border border-reach/30 bg-white text-reach hover:bg-reach-tint',
+  danger: 'border border-reach-edge bg-white text-reach hover:bg-reach-tint',
 } as const;
 
 const SIZES = {
@@ -108,10 +108,10 @@ export function Chip({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        'min-h-[2.75rem] rounded-full border px-4 text-sm transition-colors',
+        'min-h-[2.75rem] shrink-0 rounded-full border px-4 text-sm transition-colors',
         active
-          ? 'border-brand bg-brand-tint font-semibold text-brand'
-          : 'border-line bg-white text-ink-muted hover:bg-wash',
+          ? 'border-brand bg-brand text-white font-semibold'
+          : 'border-line bg-white text-ink-muted hover:border-brand-edge hover:bg-brand-tint hover:text-brand',
       )}
     >
       {children}
@@ -134,10 +134,155 @@ export function PageHeader({
   meta?: React.ReactNode;
 }) {
   return (
-    <div className="pb-5 pt-6">
+    <div className="pb-5 pt-7">
       <h1 className="text-display-lg font-bold text-ink">{title}</h1>
-      {intro && <p className="mt-2 max-w-[46ch] leading-relaxed text-ink-muted">{intro}</p>}
-      {meta && <div className="mt-3">{meta}</div>}
+      {intro && <p className="mt-2.5 max-w-[46ch] leading-relaxed text-ink-muted">{intro}</p>}
+      {meta && <div className="mt-3.5">{meta}</div>}
+    </div>
+  );
+}
+
+/**
+ * A heading with a rule under it rather than a box around it, so a long page
+ * separates into sections without turning into a stack of identical cards.
+ */
+export function SectionHead({
+  title,
+  aside,
+  id,
+}: {
+  title: string;
+  aside?: React.ReactNode;
+  id?: string;
+}) {
+  return (
+    <div className="section-head" id={id}>
+      <h2 className="text-display-sm font-bold text-ink">{title}</h2>
+      {aside && <span className="shrink-0 text-[0.8125rem] text-ink-faint">{aside}</span>}
+    </div>
+  );
+}
+
+/** A single figure with its caption. The figure leads; the caption explains. */
+export function Stat({
+  value,
+  caption,
+  tone = 'default',
+}: {
+  value: React.ReactNode;
+  caption: string;
+  tone?: 'default' | 'brand';
+}) {
+  return (
+    <div>
+      <div
+        className={cn(
+          'tnum text-display-md font-semibold',
+          tone === 'brand' ? 'text-brand' : 'text-ink',
+        )}
+      >
+        {value}
+      </div>
+      <div className="mt-0.5 text-[0.8125rem] leading-snug text-ink-muted">{caption}</div>
+    </div>
+  );
+}
+
+/** A small non-interactive label, e.g. the institute type on a list row. */
+export function Tag({
+  children,
+  tone = 'neutral',
+}: {
+  children: React.ReactNode;
+  tone?: 'neutral' | 'brand';
+}) {
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center rounded-chip border px-1.5 py-0.5 text-[0.6875rem] font-medium leading-tight',
+        tone === 'brand'
+          ? 'border-brand-edge bg-brand-tint text-brand'
+          : 'border-line bg-wash text-ink-muted',
+      )}
+    >
+      {children}
+    </span>
+  );
+}
+
+/**
+ * Where a closing percentile sits on the full 0–100 scale.
+ *
+ * This is the one piece of decoration on the site that earns its place.
+ * "98.9878776" is four decimal places of noise to a nervous seventeen-year-old;
+ * a bar turns it into a distance they can read at a glance and compare down a
+ * column without doing arithmetic. The scale is linear and always 0–100, so
+ * two bars on different pages mean the same thing.
+ */
+export function PercentileBar({
+  value,
+  tone = 'brand',
+  className,
+}: {
+  value: number;
+  tone?: 'brand' | 'good' | 'possible' | 'reach';
+  className?: string;
+}) {
+  const pct = Math.max(0, Math.min(100, value));
+  const fill = {
+    brand: 'bg-brand',
+    good: 'bg-good',
+    possible: 'bg-possible',
+    reach: 'bg-reach',
+  }[tone];
+
+  return (
+    <div
+      className={cn('h-1.5 w-full overflow-hidden rounded-full bg-line', className)}
+      role="img"
+      aria-label={`Closes at ${pct.toFixed(2)} percentile`}
+    >
+      <div
+        className={cn('h-full origin-left rounded-full', fill)}
+        style={{ width: `${pct}%` }}
+      />
+    </div>
+  );
+}
+
+/**
+ * The spread of a college's open-category cutoffs, on the same 0–100 scale.
+ *
+ * A single figure cannot describe a college: its easiest branch and its hardest
+ * can sit thirty percentile points apart, and quoting either one alone tells a
+ * student the wrong thing about their chances. The segment shows both ends and
+ * the distance between them at once.
+ */
+export function RangeBar({
+  low,
+  high,
+  className,
+}: {
+  low: number;
+  high: number;
+  className?: string;
+}) {
+  const lo = Math.max(0, Math.min(100, Math.min(low, high)));
+  const hi = Math.max(0, Math.min(100, Math.max(low, high)));
+  // A college with one branch has no spread; keep a visible stub so the row
+  // does not look like missing data.
+  const width = Math.max(hi - lo, 1.5);
+
+  return (
+    <div
+      className={cn('relative h-1.5 w-full overflow-hidden rounded-full bg-line', className)}
+      role="img"
+      aria-label={`Open-category seats close between ${lo.toFixed(2)} and ${hi.toFixed(2)} percentile`}
+    >
+      <div
+        className="absolute inset-y-0 rounded-full bg-brand"
+        style={{ left: `${lo}%`, width: `${width}%` }}
+      />
     </div>
   );
 }
@@ -162,7 +307,7 @@ export function EmptyState({
 }) {
   return (
     <div className="panel flex flex-col items-start gap-3 p-6">
-      <h3 className="text-lg font-semibold text-ink">{title}</h3>
+      <h3 className="text-display-sm font-semibold text-ink">{title}</h3>
       <p className="text-sm leading-relaxed text-ink-muted">{body}</p>
       {action}
     </div>
@@ -175,7 +320,7 @@ export function EmptyState({
  */
 export function NotAdded({ what }: { what: string }) {
   return (
-    <p className="text-sm text-ink-faint">
+    <p className="rounded-card border border-dashed border-line px-4 py-3 text-sm text-ink-faint">
       {what} has not been added yet. We would rather leave it blank than guess.
     </p>
   );
